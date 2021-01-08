@@ -52,7 +52,7 @@
 
 
 
-## 저장
+## 저장, 불러오기
 
 ### 1.  add
 
@@ -73,3 +73,10 @@
 
 - `git push origin master`
 - 원격저장소에 master 브렌치의 데이터를 전송
+
+
+
+### 4. pull
+
+- `git pull origin master`
+- 원격저장소에서 local로 불러오기
