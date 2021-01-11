@@ -20,11 +20,19 @@
 
 ## 설치
 
-- 설치에 대한 정리는 링크로 대신한다.
+- mariadb 설치 사이트
 
-  - https://opentutorials.org/course/3161/19532
+  - https://mariadb.org/download/
 
-    
+- `mysql -u root –p`
+- `show databases;`
+- `use <name>;`
+- `create user <email name>@localhost identified by 'user name';`
+- `grant all on *.* to python@localhost;`
+- `flush privileges;`
+- `exit;`
+
+
 
 ## MariaDB의 구조
 
