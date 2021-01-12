@@ -29,5 +29,7 @@ engine = create_engine('mysql+mysqldb://python:python@localhost:3307/python_db',
 con = engine.connect()
 ```
 
-- DataFrame `to_sql()` 함수로 dataframe객체를 table로 저장 
-  - `df.to_sql(name='<name>', con=engine, if_exists='replace', index=False)
+ ```df.to_sql(name='<name>', con=engine, if_exists='replace', index=False)```
+
+- DataFrame `to_sql()` 함수로 dataframe객체를 table로 저장
+
