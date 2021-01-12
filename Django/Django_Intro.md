@@ -4,7 +4,9 @@
 - `python --version`
 - `pip --version`
 
-**주의) 맥/리눅스에서는 python 명령으로 파이썬2가 실행될 수 있습니다. 그럴 때에는 python3 명령을 입력해 보세요. 환경변수 PATH에 대한 명확한 이해가 필요합니다. **
+**주의) 맥/리눅스에서는 python 명령으로 파이썬2가 실행될 수 있습니다. **
+
+**그럴 때에는 python3 명령을 입력해 보세요. 환경변수 PATH에 대한 명확한 이해가 필요합니다. **
 
 
 
@@ -79,3 +81,7 @@
 > ORM(Object Relational Mapping)
 
 - 객체를 RDB의 Table로 매핑
+- Mapping Rule
+  - Model Class < - > Table
+  - Object < - > Row(Record), 행
+  - Variable < - > Column, 열
