@@ -24,9 +24,27 @@
 
 3) View : 애플리케이션의 제어 흐름 및 처리 로직을 정의한다. 
 
-- 모델은 model.py파읷에, 템플릿은 templates 디렉토리 하위의 *.html 파일에, 뷰는 views.py 파읷에 작성하도록 처음부터 뼈대를 만들어 줍니다.
+- 모델은 `model.py`파일에, 템플릿은 templates 디렉토리 하위의 `*.html` 파일에, 뷰는 `views.py` 파일에 작성하도록 처음부터 뼈대를 만들어 줍니다.
+
 - 모델,템플릿,뷰 모듈 각각에 독립성을 유지할 수 있고, 소프트웨어 개발의 중요한 원칙이 느슨한 결합(Loose Coupling) 설계의 원칙에도 부합된다. 
-- Django에서 프로젝트를 생성하기 위해 startproject 및 startapp 명령을 실행하면 자동으로 프로젝트 뼈대(skeleton)에 해당하는 디렉토리와 파일들을 만들어 줍니다.
+
+- Django에서 프로젝트를 생성하기 위해 `startproject` 및 `startapp` 명령을 실행하면 자동으로 프로젝트 뼈대(skeleton)에 해당하는 디렉토리와 파일들을 만들어 줍니다.
+
+  
+
+##  MVC 패턴
+
+> MVC(Model View Controller) 패턴
+>
+> Spring MVC 프레임워크
+
+1) Model : 테이블을 정의한다. 
+
+2) View : 사용자가 보게 될 화면의 모습을 정의한다. 
+
+3) Controller : 애플리케이션의 제어 흐름 및 처리 로직을 정의한다.
+
+
 
 > Django’s Structure ( https://djangobook.com/mdj2-django-structure/ )
 
@@ -54,3 +72,10 @@
    - request를 보내고 response를 waiting하지 않고, 다른 일을 하는 방식
    - javascript의 XmlHttpRequest가 비동기 방식으로 통신을 해주는 역할
 
+
+
+# ORM
+
+> ORM(Object Relational Mapping)
+
+- 객체를 RDB의 Table로 매핑
