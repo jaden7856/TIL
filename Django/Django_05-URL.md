@@ -39,16 +39,5 @@ path('', views.post_list, name='post_list'),
 ```
 
 
-
 - 'http://127.0.0.1:8000/' 요청이 오면 views.post_list를 보여준다.
-
-``` python
-# blog/urls.py
-from django.urls import path
-from . import views
-
-urlpatterns = [
-path('', views.post_list, name='post_list'),
-]
-```
 
