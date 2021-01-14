@@ -117,9 +117,9 @@ from .forms import PostForm
 
 def post_new(request):
     if request.method == "POST":
-    	form = PostForm(request.POST)
+    	form = PostModelForm(request.POST)
     else:
-    	form = PostForm()
+    	form = PostModelForm()
     return render(request, 'blog/post_edit.html', {'form': form})
 ```
 
@@ -145,11 +145,11 @@ if form.is_valid():
 
 #### 6-3)  Form 저장하기
 
-	1) 새 블로그 글을 작성한 다음에 post_detail 페이지로 이동 합니다.
+1) 새 블로그 글을 작성한 다음에 post_detail 페이지로 이동 합니다.
 	
-	2) `post_detail`은 이동 해야 할 view의 name이고, `post_detail view`는 `pk=post.pk`를 사용해서 view에게 값을 넘겨줍니다.
+2) `post_detail`은 이동 해야 할 view의 name이고, `post_detail view`는 `pk=post.pk`를 사용해서 view에게 값을 넘겨줍니다.
 	
-	3) post는 새로 생성한 블로그 글입니다.
+3) post는 새로 생성한 블로그 글입니다.
 
 ```html
 <!-- blog/views.py -->
@@ -164,6 +164,7 @@ return redirect('post_detail', pk=post.pk)
 
 ```html
 <!-- blog/views.py -->
+from django.contrib.auth.models import User
 from django.shortcuts import redirect
 
 def post_new(request):
@@ -171,11 +172,11 @@ def post_new(request):
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            post.author = request.user
+            post.author = User.objects.get(username=request.user.username)
             post.published_date = timezone.now()
             post.save()
             return redirect('post_detail', pk=post.pk)
     else:
-	    form = PostForm()
+	    form = PostModelForm()
     return render(request, 'blog/post_edit.html', {'form': form})
 ```
