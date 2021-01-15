@@ -59,7 +59,7 @@ Out[20]: django.db.models.query.QuerySet
 
 In [21]: for val in mypost:
     ...:     print(val)
-    ...: 
+    ...:
 Sample title
 
 In [22]: myposts = Post.objects.filter(title__contains='글')
@@ -72,7 +72,7 @@ Out[24]: django.db.models.query.QuerySet
 
 In [25]: for post in myposts:
     ...:     print(type(post), post.id)
-    ...: 
+    ...:
 <class 'blog.models.Post'> 1
 <class 'blog.models.Post'> 2
 
@@ -146,3 +146,169 @@ Out[50]: (1, {'blog.Post': 1})
 
 In [51]: Post.objects.all()
 Out[51]: <QuerySet [<Post: 첫번째글>, <Post: 두번째글>]>
+
+-------------------------------Comment 추가
+
+(base) C:\mypython\django_fw>python manage.py shell
+Python 3.8.5 (default, Sep  3 2020, 21:29:08) [MSC v.1916 64 bit (AMD64)]
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.19.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: from blog.models import Post,Comment
+
+In [2]: posts = Post.objects.all()
+
+In [3]: type(posts)
+Out[3]: django.db.models.query.QuerySet
+
+In [4]: for post in posts:
+   ...:     print(post.id, post.title)
+   ...:
+2 두번째글 수정
+4 세번째글
+7 test
+8 test
+9 qdddd
+
+In [5]: post2 = Post.objects.get(id=2)
+
+In [6]: post2
+Out[6]: <Post: 두번째글 수정>
+
+In [7]: post2.comments
+Out[7]: <django.db.models.fields.related_descriptors.create_reverse_many_to_one_manager.<locals>.RelatedManager at 0x20823db5b50>
+
+In [8]: post2.comments.all()
+Out[8]: <QuerySet [<Comment: 두번째글의 댓글1>, <Comment: 두번째글의 댓글2>]>
+In [9]: comments = post2.comments.all()
+
+In [10]: for comment in comments:
+    ...:     print(comment.id, comment.author, comment.text, comment.post)
+    ...:
+1 길동 두번째글의 댓글1 두번째글 수정(post의 title)
+2 둘리 두번째글의 댓글2 두번째글 수정
+
+In [11]: for comment in comments:
+    ...:     print(comment.id, comment.author, comment.post.id)
+    ...:
+1 길동 2
+2 둘리 2
+
+----------- Post에 approved_comments() 추가
+In [1]: from blog.models import Post, Comment
+
+In [2]: posts = Post.objects.all()
+
+In [3]: for post in posts:
+   ...:     print(post.pk, post.comments.count())
+2 4
+4 1
+7 0
+8 0
+9 0
+
+In [4]: post2 = Post.objects.get(id=2)
+
+In [5]: post2.comments.count()
+Out[5]: 4
+In [8]: post2.approved_comments().count()
+Out[8]: 3
+
+----------Pagination
+
+In [1]: from django.core.paginator import Paginator
+
+In [2]: objects = ['java','boot','jpa','python','django']
+
+In [3]: objects
+Out[3]: ['java', 'boot', 'jpa', 'python', 'django']
+
+In [4]: p = Paginator(objects,2)
+
+In [5]: p.count
+Out[5]: 5
+
+In [6]: p.num_pages
+Out[6]: 3
+
+In [7]: p.page_range
+Out[7]: range(1, 4)
+
+In [8]: for val in p.page_range:
+   ...:     print(val)
+   ...:
+1
+2
+3
+
+In [9]: page1 = p.page(1)
+
+In [10]: type(page1)
+Out[10]: django.core.paginator.Page
+
+In [11]: page1.object_list
+Out[11]: ['java', 'boot']
+
+In [12]: page1.has_previous()
+Out[12]: False
+
+In [13]: page1.has_next()
+Out[13]: True
+
+In [14]: page2 = p.page(2)
+
+In [15]: page2.object_list
+Out[15]: ['jpa', 'python']
+
+In [16]: page2.has_previous()
+Out[16]: True
+
+In [17]: page2.has_next()
+Out[17]: True
+
+In [18]: page3 = p.page(3)
+In [19]: page3.object_list
+Out[19]: ['django']
+
+In [20]: page3.has_previous()
+Out[20]: True
+
+In [21]: page3.has_next()
+Out[21]: False
+
+In [22]: page1.previous_page_number()
+
+EmptyPage
+
+In [23]: page1.next_page_number()
+Out[23]: 2
+
+In [24]: page2.previous_page_number()
+Out[24]: 1
+
+In [25]: page2.next_page_number()
+Out[25]: 3
+
+In [26]: page3.previous_page_number()
+Out[26]: 2
+
+In [27]: page3.next_page_number()
+---------------------------------------------------------------------------
+EmptyPage                                 Traceback (most recent call last)
+
+In [28]: page1.start_index()
+Out[28]: 1
+In [31]: page1.end_index()
+Out[31]: 2
+
+In [32]: page2.start_index()
+Out[32]: 3
+
+In [33]: page2.end_index()
+Out[33]: 4
+
+In [35]: page3.start_index()
+Out[35]: 5
+
+In [36]: page3.end_index()
+Out[36]: 5
