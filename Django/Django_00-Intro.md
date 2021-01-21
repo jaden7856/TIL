@@ -81,7 +81,23 @@
 > ORM(Object Relational Mapping)
 
 - 객체를 RDB의 Table로 매핑
+  - 테이블을 클래스로 매핑하여 CRUD 기능을 클래스 객체에 대해 수행 -> DB반영
 - Mapping Rule
   - Model Class < - > Table
   - Object < - > Row(Record), 행
   - Variable < - > Column, 열
+
+
+
+# 코딩 순서
+
+1. 프로젝트생성
+   - 프로젝트 및 앱 개발에 필요한 디렉토리와 파일 생성
+2. 모델 생성
+   - 테이블 관련 내용 개발 (model.py, admin.py)
+3. URL conf 생성
+   - URL 및 뷰 매핑 관계를 정의 (url.py)
+4. View 생성
+   - 애플리케이션 로직 개발 (views.py)
+5. Template 생성
+   - 화면 UI개발 (templates/ 디렉토리 하위의 *.html파일)

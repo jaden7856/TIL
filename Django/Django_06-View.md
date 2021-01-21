@@ -17,6 +17,7 @@
 # View
 
 - `post_list`라는 함수(def)를 만들어 요청을 받아서 직접 문자열로 HTML형식 응답하기
+  - 함수(Function-based view)방식과 클래스(Class-based view)도 사용한다. 
 
 ```python
 # blog/view.py

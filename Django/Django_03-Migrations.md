@@ -1,6 +1,8 @@
 # Migrations
 
-> django-south((https://south.readthedocs.io/en/latest/) 프로젝트가 킥스타터 펀딩 (£17,952, 507 Backers)을 통해, Django 1.7에 포함
+> django-south((https://south.readthedocs.io/en/latest/) 프로젝트가 킥스타터 펀딩을 통해, 
+>
+> Django 1.7에 포함
 
 - 모델 변경내역 히스토리 관리
 
