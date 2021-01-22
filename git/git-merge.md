@@ -7,7 +7,7 @@
 ### 1. Merge
 
 - `git merge <name>` 
-- `git branch signup` 으로 `signup` branch를 만들고 수정한 뒤에 `commit`을 하고 merge하는 사진
+- `git branch signup` 으로 `signup` branch를 만들고 수정한 뒤에 `commit`을 하고 merge하는 사진입니다.
 
 ![](git-merge.assets/1.PNG)
 
