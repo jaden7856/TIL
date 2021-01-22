@@ -1,15 +1,13 @@
-> Python에서 MariaDB를 연동하여 사용하기
+# Python에서 MariaDB를 연동하여 사용하기
+**MySQL Client에 접속**
 
-#  MySQL접속
-
-- MySQL Client에 접속
 - `mysql -u python -p`를 치고 자신의 비밀번호 입력
 - `show databases;`  
 - `use <user name>;`
 
 
 
-# pymysql과 sqlalchemy 연동
+## pymysql과 sqlalchemy 연동
 
 ``` import pymysql
 import pymysql
