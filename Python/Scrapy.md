@@ -118,6 +118,17 @@ class MymovieBotsSpider(scrapy.Spider):
 
 - response code (status code)
   - 2xx -> ok
+    - 200 - Success
+    - 201 - Created
+  
   - 3xx -> x(System에서 사용)
+  
   - 4xx -> Error(Client 문제)
+  
+    - 400 - Bad Request
+    - 401 - Unauthorized
+    - 404 - Resource Not Found
+  
   - 5xx -> Error(Server 문제)
+  
+    
