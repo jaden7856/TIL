@@ -44,6 +44,17 @@
 
 
 
+#### `$ docker exec -it [container_id] /bin/bash`
+
+- container 내부에 접속
+   
+   - `-i`가 없이 `-t`만 있으면 컨테이너 안에서 입력이 불가능
+   
+   - `-t`없이 `-i`만 있으면 접속이아닌 일반 문자입력만 가능 그러므로 `-it` 같이 쓰는게 정석
+   - `/bin/bash`는 컨테이너 실행 명령어
+
+
+
 #### `$ docker inspect [container_id, name]`
 
 - 컨테이너 상세정보
