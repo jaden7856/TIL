@@ -2,7 +2,7 @@
 
 - [Docker](https://www.docker.com/get-started) 에서 Download for Windows 클릭 후 설치 완료되면 재시작 버튼을 클릭
 
-![도커설치_1](0_Docker_Download.assets/도커설치_1.PNG)
+![도커설치_1](00_Docker_Download.assets/도커설치_1.PNG)
 
 - 재시작 후 만약 **restart** 에러가 뜬다면 링크를 타고 들어가서 다운로드 후 다시 restart
 
@@ -12,5 +12,5 @@
 
 - CMD 창에서 밑의 그림처럼 창이 뜨면 복사 후 시작한다!
 
-![도커설치_2](0_Docker_Download.assets/도커설치_2.PNG)
+![도커설치_2](00_Docker_Download.assets/도커설치_2.PNG)
 
