@@ -195,5 +195,25 @@ FROM [--platform=<platform>] <image>[@<digest>] [AS <name>]
 7. Container 실행
 
    - HostPC와 container가 연결이 되기위해 `-p` 옵션을 사용한다.
+- `$ docker run -p 8080:8080 mynodejs`
 
-   - `$ docker run -p 8080:8080 mynodejs`
+
+
+## 배포
+
+Image의 이름앞에 자신의 계정명을 입력해야한다. `[계정명]/[Image_name]` 
+
+기존의 Image를 바꾸는 방법은 아래처럼 기존 이미지이름과 뒤에 바꿀 이름을 입력한다.
+
+```dockerfile
+docker tag [Image_name]:[tag] [rename_Image]:[tag]
+```
+
+
+
+배포는 Git과 유사하다.
+
+```dockerfile
+docker push [ID]/[Image_name]:[Tag]
+```
+
