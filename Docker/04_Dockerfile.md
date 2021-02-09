@@ -66,6 +66,30 @@
 
 
 
+## Volume
+
+Volume Mount는 windows나 MacOS같이 HostPC에서 작업한 파일이 수정, 삭제, 추가 같은 작업이 발생하면 Docker Image파일과 Container파일도 새로 `build`를 하고 `run`을 해 줘야하는 것을 연결된 디렉토리 끼리는 자동으로 업데이트가 되어 **HostPC에서 변경된 작업이 Docker내에서 자동으로 변경이 된다.**
+
+1. dockerfile을 작성합니다.
+
+```dockerfile
+FROM python:3.7.9-stretch
+
+WORKDIR /mydata
+RUN pip install numpy
+
+CMD python ${EXEC_FILE}
+```
+
+2. `$ docker build -t [Image_name]:[Tag] .`
+
+
+
+3. `$ docker run -it -v [Windows 파일 URL]:[Container 파일 URL] -e EXEC_FILE=test.py [Image_name]`
+   - ex) `-v c:/work/my_test:/mydata`
+
+
+
 ## FROM
 
 ```dockerfile
