@@ -9,10 +9,12 @@
 Local에서 작업하던 프로젝트를 복사하여 docker 폴드로 옮기던지 그 프로젝트 폴더에 Docker를 연결해도 상관없습니다. 저는 MySQL을 사용하여 Django를 연결할 예정입니다. 그러므로 우선 docker에서 mysql을 설치하도록 하겠습니다.
 
 ```shell
-docker run -d -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true --name mysql_server -v [Local 작업한 폴더 URL]:/var/lib/mysql mysql:5.7
+docker run -d -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_DATABASE=[DB_NAME] --name mysql_server -v [Local 작업한 폴더 URL]:/var/lib/mysql mysql:5.7
 ```
 
 - mysql을 `--volume`을 사용하여 Local과 연결하도록 합니다.
+- `MYSQL_ALLOW_EMPTY_PASSWORD`: 비밀번호를 입력하지 않아도 되도록 설정
+- `MYSQL_DATABASE` : 새로운 Database를 SQL단에서 만들지 않고 바로 생성하도록 설정
 
 
 
@@ -46,13 +48,13 @@ DATABASES = {
 
 
 
-4. DB에 접속(HeidiSQL이나 다른 IDE)하여 **`create database [DB_NAME];`을 입력**
-5. Model을 바꿨으니 적용하도록 합시다.
+4. Model을 바꿨으니 적용하도록 합시다.
+
    - `$ python manage.py migrations`
    - `$ python manage.py migrate`
    - `$ python manage.py createsuperuser`
 
-
+   
 
 ### Django 정상작동 확인작업
 
