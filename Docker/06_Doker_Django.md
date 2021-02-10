@@ -195,3 +195,13 @@ docker push [MY_ID]/[Image_name]:[Tag]
 
 ### Private Registry 사용
 
+`$ docker pull registry`
+
+`$ docker run -d -p 5000:5000 --restart always --name registry registry:latest`
+
+```dockerfile
+$ docker pull ubuntu
+$ docker tag ubuntu localhost:5000/ubuntu:latest
+$ docker push localhost:5000/ubuntu:latest
+```
+
