@@ -15,6 +15,18 @@
 
 
 
+#### `$ docker ps [OPTION]`
+
+- `docker container ls` 랑 같은 기능을 한다.
+
+
+
+#### `$ docker images [OPTION]`
+
+- `docker image ls`랑 같은 기능을 한다.
+
+
+
 #### `$ docker stop [CONTAINER ID]` 
 
 -  container 중지
@@ -34,12 +46,6 @@
 #### `$ docker rmi [IMAGE ID]`
 
 - image 삭제
-
-
-
-#### `$ docker ps [OPTION]`
-
-- `docker container ls` 랑 같은 기능을 한다.
 
 
 
@@ -83,3 +89,10 @@
 
 - 쓰지않는(Stoped) container, image, volume data를 모두 삭제
   - 하나만 삭제하고싶다면 `docker volume prune`처럼 입력
+
+
+
+#### `$ docker network [OPTION]`
+
+- docker 에서 container를 연결하고 관리하는 기능으로써 예를들어`ls`를 붙이면 목록을 보여주고 `inpect [network_name]`을 붙이면 해당 network의 상세정보를 보여준다.
+- 자세한 사용법은 [여기](https://github.com/jaden7856/TIL/blob/master/Docker/05_Docker_network.md)에 적어놓도록 하겠습니다.
