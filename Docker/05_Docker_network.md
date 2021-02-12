@@ -4,7 +4,7 @@ Docker 컨테이너(container)는 격리된 환경에서 돌아가기 때문에 
 
 
 
-## 네트워크 종류
+### 네트워크 종류
 
 Docker 네트워크는 `bridge`, `host`, `overlay` 등 목적에 따라 다양한 종류의 네트워크 드라이버(driver)를 지원하는데요.
 
@@ -13,6 +13,33 @@ Docker 네트워크는 `bridge`, `host`, `overlay` 등 목적에 따라 다양�
 - `overlay` 네트워크는 여러 호스트에 분산되어 돌아가는 컨테이너들 간에 네트워킹을 위해서 사용됩니다.
 
 
+
+# 컨테이너 간 통신
+
+디폴트 네트워크 안에서 컨테이너 간의 통신에서는 서비스의 이름이 호스트명으로 사용됩니다.
+
+예를 들어, `Django(WEB)` 서비스의 컨테이너에서 `MriaDB(DB)` 서비스의 컨테이너를 대상으로 `ping` 명령어를 날릴 수 있습니다. 
+
+##### `$ docker-compose exec [Django_NAME] ping [MariaDB_NAME]`
+
+
+
+컨테이넌 간 통신에서 주의할 점은 접속하는 위치가 디폴트 네트워크 내부냐 외부냐에 따라서 포트(port)가 달라질 수 있다는 것입니다.
+
+##### `$ run -p 8001:800 [Image_name]:[Tag]`
+
+호스트 컴퓨터에서 접속할 때는 `8001` 포트를 사용해야 하고, 같은 디폴트 네트워크 내의 다른 컨테이너에서 접속할 때는 포트 `8000`을 사용해야 합니다.
+
+
+
+- 호스트 컴퓨터에서 `web` 서비스 컨테이너 접속
+  - `$ curl -I localhost:8001`
+- 같은 네트워크 내의 다른 컨테이너에서 `web` 서비스 컨테이너 접속
+  - `$ docker-compose exec [CONTAINER_NAME] curl -I web:8000`
+
+
+
+# 외부 네트워크 사용
 
 ### 네트워크 조회
 
@@ -52,6 +79,7 @@ Docker 네트워크는 `bridge`, `host`, `overlay` 등 목적에 따라 다양�
   
 
 - `$ ping [connected_container_name]`
+  
   - network에 연결된 여러 container중에 연결이 되어있는지 확인을 위해 ping을 걸어본다.
 
 
