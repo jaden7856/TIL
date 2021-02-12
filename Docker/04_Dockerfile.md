@@ -1,3 +1,52 @@
+# Dockerfile 자주쓰는 명령어
+
+### FROM
+
+```dockerfile
+FROM [--platform=<platform>] <image> [AS <name>]
+```
+
+또는
+
+```dockerfile
+FROM [--platform=<platform>] <image>[:<tag>] [AS <name>]
+```
+
+또는
+
+```dockerfile
+FROM [--platform=<platform>] <image>[@<digest>] [AS <name>]
+```
+
+`FROM` 명령어는 새로운 빌드 단계를 준비하고 다음 명령어들의 *기본 이미지* 를 지정한다. 따라서 유효한 `Dockerfile` 은 `FROM` 명령어로 시작해야 한다.
+
+
+
+### RUN
+
+`RUN` 은 두 가지 형태가 있다.
+
+- `RUN <command>` (기본적으로 리눅스에서는 `/bin/sh` 로 실행되고 윈도우에서는 `cmd /S /C` 로 실행된다. 따라서 커맨드는 그 형식에 맞게 작성되어야 한다)
+- `RUN ["executable", "param1", "param2"]` (*exec* 형식)
+
+`RUN` 명령어는 현재 이미지의 위 새 래이어에서 실행되고 결과를 커밋한다. 커밋된 이미지의 결과물은 `Dockerfile` 의 다음 스탭에서 사용된다.
+
+
+
+### CMD
+
+`CMD` 명령어는 다음 세 가지 형식이 있다.
+
+- `CMD ["executable", "param1", "param2"]` (*exec* 형식, 이 형식을 자주 사용한다)
+- `CMD ["param1", "param2"]` (*기본 파라미터를 `ENTRYPOINT` 로 갖는다.*)
+- `CMD command param1 param2` (*shell* 형식)
+
+**`CMD` 명령의 주 목적은 실행중인 컨테이너에 기본 환경을 제공하기 위함이다.**
+
+
+
+
+
 # Dockerfile 작성
 
 1. Dockerfile 생성
@@ -87,53 +136,6 @@ CMD python ${EXEC_FILE}
 
 3. `$ docker run -it -v [Windows 파일 URL]:[Container 파일 URL] -e EXEC_FILE=test.py [Image_name]`
    - ex) `-v c:/work/my_test:/mydata`
-
-
-
-## FROM
-
-```dockerfile
-FROM [--platform=<platform>] <image> [AS <name>]
-```
-
-또는
-
-```dockerfile
-FROM [--platform=<platform>] <image>[:<tag>] [AS <name>]
-```
-
-또는
-
-```dockerfile
-FROM [--platform=<platform>] <image>[@<digest>] [AS <name>]
-```
-
-`FROM` 명령어는 새로운 빌드 단계를 준비하고 다음 명령어들의 *기본 이미지* 를 지정한다. 따라서 유효한 `Dockerfile` 은 `FROM` 명령어로 시작해야 한다.
-
-
-
-## RUN
-
-`RUN` 은 두 가지 형태가 있다.
-
-- `RUN <command>` (기본적으로 리눅스에서는 `/bin/sh` 로 실행되고 윈도우에서는 `cmd /S /C` 로 실행된다. 따라서 커맨드는 그 형식에 맞게 작성되어야 한다)
-- `RUN ["executable", "param1", "param2"]` (*exec* 형식)
-
-`RUN` 명령어는 현재 이미지의 위 새 래이어에서 실행되고 결과를 커밋한다. 커밋된 이미지의 결과물은 `Dockerfile` 의 다음 스탭에서 사용된다.
-
-
-
-## CMD
-
-`CMD` 명령어는 다음 세 가지 형식이 있다.
-
-- `CMD ["executable", "param1", "param2"]` (*exec* 형식, 이 형식을 자주 사용한다)
-- `CMD ["param1", "param2"]` (*기본 파라미터를 `ENTRYPOINT` 로 갖는다.*)
-- `CMD command param1 param2` (*shell* 형식)
-
-**`CMD` 명령의 주 목적은 실행중인 컨테이너에 기본 환경을 제공하기 위함이다.**
-
-
 
 
 
