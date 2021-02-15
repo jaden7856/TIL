@@ -97,6 +97,7 @@ sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
 ```
 systemctl stop firewalld && systemctl disable firewalld
+
 systemctl stop NetworkManager && systemctl disable NetworkManager
 ```
 
@@ -160,51 +161,67 @@ ping jenkins-server
 
 
 
-## 5. Docker 설치, 실행 - Master, Node 모두
+## 5. Kubernetes 설치 - Master, Node 모두
+
+- `Apply & Restart` 클릭
+
+![image-20210215143542154](00_Kubernetes_Download.assets/image-20210215143542154.png)
+
+
+
+- `install` 클릭
+
+![image-20210215143721904](00_Kubernetes_Download.assets/image-20210215143721904.png)
+
+
+
+#### 만약 설치오류가 떠서 되지 않는다면 minikube를 설치해보자!
+
+- 제어판 -> 프로그램 및 기능 -> Windows 기능 켜기/끄기 -> Hyper-V를 체크! (Windows 10 Pro 화면입니다.)
+
+![image-20210215151840223](00_Kubernetes_Download.assets/image-20210215151840223.png)
+
+
+
+- 원하는 장소에 minikube라는 이름의 폴더를 생성후, 다음 명령으로 최신 릴리스를 다운로드한 파일을  minikube 폴더에 옮긴다.
 
 ```
-yum install -y yum-utils device-mapper-persistent-data lvm2 
-yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-yum update && yum install docker-ce
-useradd dockeradmin
-
-passwd dockeradmin <-- password: dockeradmin
-usermod -aG docker dockeradmin
-systemctl enable --now docker && systemctl start docker
-```
-
-
-
-## 5-1. Docker compose 설치
-
-```
-curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
-ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-docker-compose -version 
-```
-
-
-
-## 5-2. Docker 설치 확인
-
-```
-docker run hello-world
+curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
 ```
 
 
 
-## 6. Kubernetes 설치 - Master, Node 모두
+-  [minikube-windows-amd64.exe](https://github.com/kubernetes/minikube/releases/download/v1.17.1/minikube-windows-amd64.exe) 를 다운로드 해서 minikube 폴더에 저장후 경로를 복사
 
-- 설치
+- 시작에서 검색하여 `시스템 환경 변수 편집`을 클릭
 
-```
-yum install -y --disableexcludes=kubernetes kubeadm-1.15.5-0.x86_64 kubectl-1.15.5-0.x86_64 kubelet-1.15.5-0.x86_64
-```
+![image-20210215153502115](00_Kubernetes_Download.assets/image-20210215153502115.png)
+
+`환경 변수`를 클릭
 
 
 
-## 7. Kubernetes 설정 - Master
+![image-20210215153539289](00_Kubernetes_Download.assets/image-20210215153539289.png)
+
+Path에서 편집 클릭
+
+
+
+![image-20210215153609462](00_Kubernetes_Download.assets/image-20210215153609462.png)
+
+새로 만들기를클릭하여 복사했던 경로를 추가한다.
+
+
+
+- 다음 명령 프롬프트 창을 열어서
+
+  - `$  minikube version`을 해서 확인
+
+  - `$ minikube start`
+
+
+
+## 6. Kubernetes 설정 - Master
 
 - 실행
 
@@ -219,6 +236,7 @@ systemctl enable --now kubelet
 ```
 kubeadm init --pod-network-cidr=10.96.0.0/16 --apiserver-advertise-address=192.168.56.10
 - 설치 성공 후 아래 커맨드 부분을 복사 (생성되는 값은 본인의 환경에 따라 다름)
+
 kubeadm join 192.168.56.10:6443 --token x1qogf.3i1d8zc267sm4gq8 \
 --discovery-token-ca-cert-hash sha256:1965b56832292d3de10fc95f92b8391334d9404c914d407baa2b6cec1dbe5322
 ```
@@ -229,8 +247,11 @@ kubeadm join 192.168.56.10:6443 --token x1qogf.3i1d8zc267sm4gq8 \
 
 ```
 mkdir -p $HOME/.kube
+
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
 kubectl get pods --all-namespaces # 모든 pods가 Running 상태인지 확인 
 ```
 
