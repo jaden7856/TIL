@@ -60,8 +60,8 @@ services:
   my-mysql:
     container_name: mysql_server
     image: jhg7856/mymysql:latest
-    volumes:
-      - ./mysql-data:/var/lib/mysql
+    # volumes:
+    #   - ./mysql-data:/var/lib/mysql
     ports:
       - 3306:3306
     environment:
@@ -75,9 +75,6 @@ services:
       - 8000:8000
     depends_on:
       - my-mysql
-    command:
-      python manage.py migrate
-      python manage.py runserver 0.0.0.0:8000
     networks:
       - my-network
 
