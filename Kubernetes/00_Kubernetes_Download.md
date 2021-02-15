@@ -55,11 +55,11 @@ C:\Work\vagrant>vagrant up
 
 ```
 C:\Work\vagrant>vagrant status
-    
-        # ansible-server -> Kubernetes Master
-        # jenkins-server -> Kubernetes Node1
-        # tomcat-server -> Kubernetes Node2
-        # docker-server -> Kubernetes Node3
+
+# Vagrantfile 작성에따라 다르다.
+node-1                    running (virtualbox)
+node-2                    running (virtualbox)
+master                    running (virtualbox)
 ```
 
 
@@ -175,7 +175,9 @@ ping jenkins-server
 
 
 
-#### 만약 설치오류가 떠서 되지 않는다면 minikube를 설치해보자!
+#### 만약 설치오류가 떠서 되지 않는다면 minikube를 설치해보자! 
+
+> 위의 설치가 된다면 하지않아도 된다.
 
 - 제어판 -> 프로그램 및 기능 -> Windows 기능 켜기/끄기 -> Hyper-V를 체크! (Windows 10 Pro 화면입니다.)
 
@@ -299,34 +301,6 @@ kubeadm reset
 
 ```
 kubectl get nodes
-```
-
-
-
-## 9. Dashboard 설치 - Master
-
-- 설치
-
-```
-kubectl apply -f https://raw.githubusercontent.com/kubetm/kubetm.github.io/master/sample/practice/appendix/gcp-kubernetes-dashboard.yaml
-```
-
-
-
-- Proxy 설정
-
-```
-nohup kubectl proxy --port=8000 --address=192.168.56.14 --accept-hosts='^*$' >/dev/null 2>&1 &
-nohup kubectl proxy --port=8000 --address=172.20.10.10 --accept-hosts='^*$' >/dev/null 2>&1 &
-```
-
-
-
-- 접속
-
-```
-http://192.168.56.14:8000/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
-http://172.20.10.10:8000/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
 ```
 
 
