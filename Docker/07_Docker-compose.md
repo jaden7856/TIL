@@ -34,7 +34,7 @@ $ docker run -d -p 3306:3306 -e MYSQL_DATABASE=[생성할 DB이름] -e MYSQL_ROO
 ```yaml
 version: "3.9"
 service:
-		servicename:
+		servicename1:
 				build: . # image build를 할꺼면 생성
 				image: # optioanl
 				command: # optional
@@ -42,6 +42,8 @@ service:
 				volumes: # optioanl
 				...
 		servicename2: # if have second service...
+				depends_on:	# servicename1이 뭔저 실행되어야 할 때 사용
+					- servicename1	
 		
 volumes: # optional
 network: # optional
@@ -49,22 +51,42 @@ network: # optional
 
 
 
-저는 방금전에 작성했던 `run`코드를 통하여 `mysql`을 만들어보겠습니다.
+저는 방금전에 작성했던 `run`코드를 통하여 `mysql`과 저번에 만들었던 `mydjango`를 만들어보겠습니다.
 
 ```yaml
 version: "3.9"
 
 services:
   my-mysql:
-    image: mysql:5.7
+    container_name: mysql_server
+    image: jhg7856/mymysql:latest
     volumes:
       - ./mysql-data:/var/lib/mysql
     ports:
       - 3306:3306
     environment:
-      MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: mydb
+    networks:
+      - my-network
+
+  my-django:
+    image: jhg7856/mydjango:latest
+    ports:
+      - 8000:8000
+    depends_on:
+      - my-mysql
+    command:
+      python manage.py migrate
+      python manage.py runserver 0.0.0.0:8000
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
 ```
+
+Django를 정상작동하기 위해선 MySQL을 뭔저 작동시켜야 하므로 `depends_on`을 활용하여 `my-mysql`이 뭔저 작동하도록 하였습니다.
 
 
 
@@ -75,6 +97,14 @@ docker-compose.yml 파일이 위치한 디렉토리에서 이 정의에 따라 �
 ```
 $ docker-compose up
 $ docker-compose up --build  # Dockerfile을 다시 빌드
+```
+
+
+
+만약 docker-compose.yml 파일이아닌 다른 이름으로 파일을 생성한 경우
+
+```yaml
+docker-compose --file [file_name].yml up
 ```
 
 
