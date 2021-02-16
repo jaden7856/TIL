@@ -222,7 +222,7 @@ ping master
 
 
 
-## 5. Vagrant에서 Kubernetes 설치 - Master, Node 모두
+## 5. Vagrant에서 Docker 설치 - Master, Node 모두
 
 ```
 yum install -y yum-utils device-mapper-persistent-data lvm2 
@@ -258,7 +258,17 @@ docker run hello-world
 
 
 
-## 6. Kubernetes 설정 - Master
+## 6. Vagrant에서 Kubernetes 설치 - Master, Node 모두
+
+- 설치
+
+```
+yum install -y --disableexcludes=kubernetes kubeadm-1.15.5-0.x86_64 kubectl-1.15.5-0.x86_64 kubelet-1.15.5-0.x86_64
+```
+
+
+
+## 7. Kubernetes 설정 - Master
 
 - 실행
 
@@ -272,8 +282,11 @@ systemctl enable --now kubelet
 
 ```
 kubeadm init --pod-network-cidr=10.96.0.0/16 --apiserver-advertise-address=192.168.56.10
+```
+
 - 설치 성공 후 아래 커맨드 부분을 복사 (생성되는 값은 본인의 환경에 따라 다름)
 
+```
 kubeadm join 192.168.56.10:6443 --token x1qogf.3i1d8zc267sm4gq8 \
 --discovery-token-ca-cert-hash sha256:1965b56832292d3de10fc95f92b8391334d9404c914d407baa2b6cec1dbe5322
 ```
@@ -284,11 +297,8 @@ kubeadm join 192.168.56.10:6443 --token x1qogf.3i1d8zc267sm4gq8 \
 
 ```
 mkdir -p $HOME/.kube
-
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
 kubectl get pods --all-namespaces # 모든 pods가 Running 상태인지 확인 
 ```
 
