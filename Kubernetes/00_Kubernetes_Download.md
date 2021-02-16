@@ -97,7 +97,6 @@ sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
 ```
 systemctl stop firewalld && systemctl disable firewalld
-
 systemctl stop NetworkManager && systemctl disable NetworkManager
 ```
 
@@ -151,12 +150,11 @@ yum update
 
 ```
 vi /etc/hosts
-192.168.56.10 ansible-server
-192.168.56.11 jenkins-server
-192.168.56.12 tomcat-server
-192.168.56.13 docker-server
+192.168.56.10 master
+192.168.56.11 node1
+192.168.56.12 node2
 
-ping jenkins-server 
+ping master
 ```
 
 
