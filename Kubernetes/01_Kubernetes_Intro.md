@@ -50,9 +50,11 @@ kubectl [command] [TYPE] [NAME] [flags]
 
       -  ```
         TYPE1/name1 TYPE1/name2 TYPE2/name3 TYPE<#>/name<#>
-         ```
+        ```
 
       - 예: `kubectl get pod/example-pod1 replicationcontroller/example-rc1`
+      
+      
 
   - 하나 이상의 파일로 리소스를 지정하려면 다음을 사용한다. 
 
@@ -62,6 +64,8 @@ kubectl [command] [TYPE] [NAME] [flags]
 
     - YAML이 특히 구성 파일에 대해 더 사용자 친화적이므로, [JSON 대신 YAML을 사용한다](https://kubernetes.io/ko/docs/concepts/configuration/overview/#일반적인-구성-팁).
       예: `kubectl get -f ./pod.yaml`
+    
+    
 
 - `flags`: 선택적 플래그를 지정한다. 예를 들어, `-s` 또는 `--server` 플래그를 사용하여 쿠버네티스 API 서버의 주소와 포트를 지정할 수 있다.
 
@@ -83,4 +87,6 @@ kubectl [command] [TYPE] [NAME] [flags]
 | ConfigMap               | 설정 정보를 정의하고 파드에 전달                             |
 | Persistent Volume       | 파드가 사용할 스토리지의 크기 및 종류를 정의                 |
 | Persistent Volume Claim | 퍼시스턴트 볼륨을 동적으로 확보                              |
+
+
 
