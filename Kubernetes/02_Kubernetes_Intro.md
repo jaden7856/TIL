@@ -73,6 +73,69 @@ kubectl [command] [TYPE] [NAME] [flags]
 
 
 
+### Basic Commands(Intermediate)
+
+- `# kubectl get [name]` -- `pods`, `nodes`, `services` 들의 리소스 리스트를 불러온다.
+  - `-o wide` -- 상세 정보
+
+- `# kubectl edit [type] [name]` -- 리소스의 정보를 수정
+
+- `# kubectl delete [COMMAND] [NAME]` -- 삭제
+
+
+
+### Basic Commands (Beginner)
+
+- `# kubectl expose (-f FILENAME \| TYPE NAME) [--port=port] ...[option]` -- 서비스를 생성
+  - ex) `kubectl expose pod nginx-test` 
+- `# kubectl create -f FILENAME [flags]` -- 리소스 file 생성
+
+- `# kubectl run [pod_name] -- image [image] --port=[port] ... [option]` -- pod 실행, 생성
+  - ex) `# kubectl run nginx-test --image=nginx --port 80 --generator=run-pod/v1`
+
+- `# systemctl start kubelet` -- kubelet 재시작
+
+
+
+### Troubleshooting and Debugging Commands
+
+- `# kubectl exec POD [-c CONTAINER] [-i][-t] [flags] [– COMMAND [args…]]` -- pod 내부의 컨테이너에 명령어 날리기
+
+- `# kubectl describe [type] [name]` -- 리소스 상태 조회
+- `# kubectl logs -f [pod_name]` -- 로그 확인
+
+- `# kubectl port-forward [type] [name] [port:port]` -- 파드 이름과 같이 리소스 이름을 사용하여 일치하는 파드를 선택해 포트 포워딩하는 것을 허용
+
+
+
+### Advanced Commands
+
+- `# kubectl apply -f [file_name, URL]` -- 존에 존재하는 것을 제외한, 지정한 디렉터리 내 구성 파일에 의해 정의된 모든 오브젝트를 생성
+  - `apply`와 `create`의 사용 차이
+    - 처음 생성은 `create`로 실행하고, 그 다음 업데이트가 발생할경우 `apply`를 하면 된다.
+
+- `# kubectl replace -f [file_name]` -- 설정 파일 수정하거나, 설정 파일을 새로 만들어서 그 파일로 설정을 업데이트
+
+
+
+### Other Commands
+
+- `# kubectl api-versions [flags]` -- 사용가능한 API version 조회
+
+- `# kubectl api-resources` -- [API 그룹](https://kubernetes.io/ko/docs/concepts/overview/kubernetes-api/#api-그룹)과 함께 지원되는 모든 리소스 유형들, 그것들의 [네임스페이스](https://kubernetes.io/ko/docs/concepts/overview/working-with-objects/namespaces)와 [종류(Kind)](https://kubernetes.io/ko/docs/concepts/overview/working-with-objects/kubernetes-objects)를 나열
+  - API 리소스를 탐색하기 위한 다른 작업
+
+```bash
+kubectl api-resources --namespaced=true      # 네임스페이스를 가지는 모든 리소스
+kubectl api-resources --namespaced=false     # 네임스페이스를 가지지 않는 모든 리소스
+kubectl api-resources -o name                # 모든 리소스의 단순한 (리소스 이름 만) 출력
+kubectl api-resources -o wide                # 모든 리소스의 확장된 ("wide"로 알려진) 출력
+kubectl api-resources --verbs=list,get       # "list"와 "get"의 요청 동사를 지원하는 모든 리소스 출력
+kubectl api-resources --api-group=extensions # "extensions" API 그룹의 모든 리소스
+```
+
+
+
 ## Kubernetes 주요 개념
 
 | Resource or Object      | 용도                                                         |
@@ -90,3 +153,47 @@ kubectl [command] [TYPE] [NAME] [flags]
 
 
 
+# 리소스[RESOURCE] 종류
+
+**kubectl에 적용 가능한 쿠버네티스 리소스 종류와 단축어 리스트 입니다.**
+
+| 리소스 종류                | 단축어 |
+| :------------------------- | :----- |
+| apiservices                |        |
+| certificatesigningrequests | csr    |
+| clusters                   |        |
+| clusterrolebindings        |        |
+| clusterroles               |        |
+| componentstatuses          | cs     |
+| configmaps                 | cm     |
+| controllerrevisions        |        |
+| cronjobs                   |        |
+| customresourcedefinition   | crd    |
+| daemonsets                 | ds     |
+| deployments                | deploy |
+| endpoints                  | ep     |
+| events                     | ev     |
+| horizontalpodautoscalers   | hpa    |
+| ingresses                  | ing    |
+| jobs                       |        |
+| limitranges                | limits |
+| namespaces                 | ns     |
+| networkpolicies            | netpol |
+| nodes                      | no     |
+| persistentvolumeclaims     | pvc    |
+| persistentvolumes          | pv     |
+| poddisruptionbudget        | pdb    |
+| podpreset                  |        |
+| pods                       | po     |
+| podsecuritypolicies        | psp    |
+| podtemplates               |        |
+| replicasets                | rs     |
+| replicationcontrollers     | rc     |
+| resourcequotas             | quota  |
+| rolebindings               |        |
+| roles                      |        |
+| secrets                    |        |
+| serviceaccounts            | sa     |
+| services                   | svc    |
+| statefulsets               |        |
+| storageclasses             |        |
