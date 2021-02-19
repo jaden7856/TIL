@@ -28,6 +28,7 @@ Vagrant 는 이런 문제를 해결하기 위한 솔루션으로 설정 스크�
 - `$ vagrant provision` -- forces reprovisioning of the vagrant machine
 - `$ vagrant reload` -- `vagrant halt`를 하고 다시 `up`을 할 필요없이 `reload`로 한번에 가능하다.
 - `$ vagrant reload --provision` -- 가상 머신을 다시 시작하고 강제 프로비저닝
+- `$ su -` -- vagrant계정에서 root계정으로 접속
 
 
 
