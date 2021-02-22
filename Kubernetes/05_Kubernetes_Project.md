@@ -8,6 +8,27 @@ Linux에서 Node.js를 이용한 작은 파일을 생성하여 Docker를 커쳐 
 
 
 
+### STATUS가 NotReady인 경우 해당 노드에 접속해서 kubelet 실행 상태 확인 후 실행
+
+```yaml
+[vagrant@node1 ~]$ systemctl status kubelet
+● kubelet.service - kubelet: The Kubernetes Node Agent
+   Loaded: loaded (/usr/lib/systemd/system/kubelet.service; disabled; vendor preset: disabled)
+  Drop-In: /usr/lib/systemd/system/kubelet.service.d
+           └─10-kubeadm.conf
+   Active: inactive (dead)
+     Docs: https://kubernetes.io/docs/
+
+```
+
+- Active 상태가 dead라면 밑의 명령어를 실행
+
+```yaml
+$ sudo systemctl restart kubelet
+```
+
+
+
 ### 1. Node 설치
 
 Linux에서 Node를 설치하겠습니다.
