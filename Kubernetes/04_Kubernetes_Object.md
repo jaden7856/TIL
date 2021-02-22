@@ -146,11 +146,11 @@
 
 
 
-## 2. 기본 오브젝트
+# 기본 오브젝트
 
-대표적인 기본 오브젝트들을 조금 더 자세히 살펴본다.
+### 1. Types (Kinds)
 
-### 1) Pod
+#### 1) Pod
 
 쿠버네티스에서 가장 기본적인 배포 단위다.
 하나 이상의 컨테이너들을 포함한다.
@@ -260,65 +260,7 @@ spec:
 
   
 
-### 3) Volume
-
-Volume 은 **Pod 에 종속**된 디스크다.
-따라서 **Pod 내 여러 컨테이너들이 공유해서 사용할 수 있다.**
-
-예를 들면 다음과 같이 Pod 을 정의할 때 `volumes` 를 통해 정의할 수 있다.
-
-```
-apiVersion: v1
-kind: Pod
-metadata:
-  name: shared-volumes 
-spec:
-  containers:
-  - name: redis
-    image: redis
-    volumeMounts:
-    - name: shared-storage
-      mountPath: /data/shared
-  - name: nginx
-    image: nginx
-    volumeMounts:
-    - name: shared-storage
-      mountPath: /data/shared
-  volumes:
-  - name : shared-storage
-    emptyDir: {}
-```
-
-종류는 다음과 같다.
-
-- 임시 디스크(Pod 단위 공유)
-
-  - emptyDir
-  - Pod 이 생성되고 삭제될 때, 같이 생성되고 삭제되는 임시 디스크
-    - 생성 당시에는 아무 것도 없는 빈 상태
-  - 물리 디스크(노드), 메모리에 저장
-  
-
-
-
-- 로컬 디스크(노드 단위 공유)
-
-  - hostPath
-  - emptyDir 와 같은 컨셉이지만, 공유 범위가 노드라는 점만 다름
-  
-
-
-
-- 네트워크 디스크
-
-  - gitRepo (지금은 deprecated 라고 한다.)
-    - 생성시에 지정된 git repo 를 clone 한 후, 디스크 생성
-    - emptyDir -> git clone 이라보면 됨
-  - 그 외 클라우드 서비스 별로 더 있음.
-
-
-
-### 4) Service
+### 3) Service
 
 Service 는 같은 어플리케이션을 운용하는 **Pod 간의 로드 밸런싱 역할**을 한다.
 또, 동적으로 생성되는 Pod 들의 동적 IP 와 달리 Service 는 **지정된 IP 로 생성가능**하다.
@@ -377,9 +319,68 @@ Service 는 같은 어플리케이션을 운용하는 **Pod 간의 로드 밸런
 
   - 서비스에 별도의 외부 IP 를 지정해줄 수 있음
 
-  
 
-### 3) Ingress
+
+
+### 2. Spec
+
+#### 1) Volume
+
+Volume 은 **Pod 에 종속**된 디스크다.
+따라서 **Pod 내 여러 컨테이너들이 공유해서 사용할 수 있다.**
+
+예를 들면 다음과 같이 Pod 을 정의할 때 `volumes` 를 통해 정의할 수 있다.
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: shared-volumes 
+spec:
+  containers:
+  - name: redis
+    image: redis
+    volumeMounts:
+    - name: shared-storage
+      mountPath: /data/shared
+  - name: nginx
+    image: nginx
+    volumeMounts:
+    - name: shared-storage
+      mountPath: /data/shared
+  volumes:
+  - name : shared-storage
+    emptyDir: {}
+```
+
+종류는 다음과 같다.
+
+- 임시 디스크(Pod 단위 공유)
+
+  - emptyDir
+  - Pod 이 생성되고 삭제될 때, 같이 생성되고 삭제되는 임시 디스크
+    - 생성 당시에는 아무 것도 없는 빈 상태
+  - 물리 디스크(노드), 메모리에 저장
+
+
+
+- 로컬 디스크(노드 단위 공유)
+
+  - hostPath
+  - emptyDir 와 같은 컨셉이지만, 공유 범위가 노드라는 점만 다름
+
+
+
+- 네트워크 디스크
+
+  - gitRepo (지금은 deprecated 라고 한다.)
+    - 생성시에 지정된 git repo 를 clone 한 후, 디스크 생성
+    - emptyDir -> git clone 이라보면 됨
+  - 그 외 클라우드 서비스 별로 더 있음.
+
+
+
+### 2) Ingress
 
 Ingress 는 api 게이트 웨이, 즉 **url 기반 라우팅 역할**을 한다.
 Service 앞에 붙는다.
@@ -391,7 +392,7 @@ Ingress 를 Service 앞에 달아두면, Service 는 `NodePort` 타입으로 선
 
 
 
-## 3. HealthCheck
+## HealthCheck
 
 HealthCheck 는 **각 컨테이너 상태를 주기적으로 문제가 있는지 체크**하는 기능이다.
 문제가 있으면 재시작하거나, 서비스에서 제외한다.
