@@ -146,281 +146,177 @@
 
 
 
-# 기본 오브젝트
-
-### 1. Types (Kinds)
-
-#### 1) Pod
-
-쿠버네티스에서 가장 기본적인 배포 단위다.
-하나 이상의 컨테이너들을 포함한다.
-
-예를 들어 다음과 같이 `yaml` 포맷으로 정의할 수 있다.
-
-```
-apiVersion: v1
-kind: Pod
-metadata:
-  name: nginx
-spec:
-  containers:
-  - name: nginx
-    image: nginx:1.7.9
-    ports:
-    - containerPort: 8090
-```
-
-Pod 은 다음과 같은 특징을 지닌다.
-
-- Pod 내 컨테이너들은 같은 IP 를 가지고, Port 를 공유한다.
-- Pod 내 컨테이너들끼리는 Volume 을 공유할 수 있다.
-
-
-
-### 2) Controller
-
-Controller 의 주 역할은 **Pod 을 생성, 관리하는 것**이다.
-예를 들어 다음과 같이 `yaml` 포맷으로 정의할 수 있다.
-
-```
-apiVersion: v1
-kind: ReplicationController
-metadata:
-  name: nginx
-spec:
-  replicas: 3
-  selector:
-    app: nginx
-  template:
-    metadata:
-      name: nginx
-      labels:
-        app: nginx
-      spec:
-        containers:
-          - name: nginx
-            image: nginx
-            ports:
-            - containerPort: 80
-```
-
-종류는 다음과 같다.
-
-- ReplicationController (RC)
-
-  - 지정된 숫자로 Pod 을 기동 시키고 관리한다.
-
-    - `selector` : `label` 기준으로 어떤 Pod 들을 관리할지 정의한다.
-    - `replicas` : 선택된 Pod 들을 몇 개의 인스턴스로 띄울지 정의한다.
-    - `template` : `Pod` 을 추가로 기동할 때, 어떤 Pod 을 만들지 정의한다.
-
-    
-
-- ReplicaSet
-
-  - ReplicationController 는 Equailty 기반 Selector 를 사용하는 반면
-  - ReplicaSet 는 Set 기반 Selector 를 사용한다.
-
-  
-
-- Deployment
-
-  - ReplicationController 와 ReplicaSet 을 좀더 추상화한 개념
-  - 실제 배포할 때는 이 컨트롤러를 주로 사용
-
-  
-
-- DaemonSet
-
-  - Pod 이 각각의 노드에서 하나씩만 돌게 한다. (균등하게 배포)
-  - 보통 서버 모니터링이나 로그 수집 용도
-  - 모든 노드가 아닌 특정 노드들만 선택할 수도 있다.
-
-  
-
-- Job
-
-  - 한번 실행되고 끝나는 Pod 을 관리한다.
-  - Job 컨트롤러가 종료되면 Pod 도 같이 종료한다.
-  - 컨테이너에서 Job 을 수행하기 위한 별도의 `command` 를 준다.
-  - Job `command` 의 성공 여부를 받아 재실행 또는 종료여부를 결정한다.
-
-  
-
-- CronJob
-
-  - 주기적으로 돌아야하는(배치) Pod 을 관리한다.
-  - 별도의 `schedule` 을 정의해아 한다.
-
-  
-
-- Stateful
-
-  - DB 와 같이 상태를 가지는 Pod 을 관리한다.
-
-  
-
-### 3) Service
-
-Service 는 같은 어플리케이션을 운용하는 **Pod 간의 로드 밸런싱 역할**을 한다.
-또, 동적으로 생성되는 Pod 들의 동적 IP 와 달리 Service 는 **지정된 IP 로 생성가능**하다.
-(즉 Pod 접근은 어려운 반면, Service 접근은 더 쉬움)
-
-다음과 같은 기능들이 있다.
-
-- 멀티 포트 지원
-
-  - 예를 들어 80 -> 8080 으로, 443 -> 8082 로 가도록 한번에 설정할 수 있다.
-
-  
-
-- 로드 밸런싱
-
-  - 부하(트래픽)를 여러 Pod 으로 분산한다.
-  - Pod 은 기본적으로 랜덤하게 선택된다.
-
-  
-
-- IP 주소 할당 방식과 연동 서비스에 따른 Type
-
-  - Cluster IP
-
-    - 디폴트 값
-    - 서비스에 클러스터 내부 IP 를 할당
-    - 즉 클러스터 내부 접근 O, 외부 접근 X
-
-  - Load Balancer
-
-    - 외부 IP 를 가지고 있는 로드밸런서를 할당
-    - 즉 외부 접근 O
-
-  - NodePort
-
-    - 클러스터 내 노드의 `ip:port` 로도 접근가능하게 함
-    - ex. `curl 10.146.0.10:30036`
-    - `10.146.0.10` 는 노드의 ip 고, `30036` 는 NodePort 로 설정한 포트임
-
-  - ExternalName
-
-    - 외부 서비스를 쿠네터네스 내부에서 호출하고자 할 때 사용
-    - 모든 Pod 들은 Cluster IP 를 가지고 있기 때문에, 외부에서도 접근이 가능함.
-    - 요청 -> (외부 서비스) -> 클러스터 내 쿠버네티스. 일종의 프록시 역할
-
-    
-
-- headless 서비스
-
-  - 서비스 디스커버리 솔루션을 제공하는 경우, 서비스의 IP 가 필요 없음
-  - `clusterIP: None` 으로 주면 된다.
-
-  
-
-- External IP
-
-  - 서비스에 별도의 외부 IP 를 지정해줄 수 있음
-
-
-
-
-### 2. Spec
-
-#### 1) Volume
-
-Volume 은 **Pod 에 종속**된 디스크다.
-따라서 **Pod 내 여러 컨테이너들이 공유해서 사용할 수 있다.**
-
-예를 들면 다음과 같이 Pod 을 정의할 때 `volumes` 를 통해 정의할 수 있다.
-
-```
-apiVersion: v1
-kind: Pod
-metadata:
-  name: shared-volumes 
-spec:
-  containers:
-  - name: redis
-    image: redis
-    volumeMounts:
-    - name: shared-storage
-      mountPath: /data/shared
-  - name: nginx
-    image: nginx
-    volumeMounts:
-    - name: shared-storage
-      mountPath: /data/shared
-  volumes:
-  - name : shared-storage
-    emptyDir: {}
-```
-
-종류는 다음과 같다.
-
-- 임시 디스크(Pod 단위 공유)
-
-  - emptyDir
-  - Pod 이 생성되고 삭제될 때, 같이 생성되고 삭제되는 임시 디스크
-    - 생성 당시에는 아무 것도 없는 빈 상태
-  - 물리 디스크(노드), 메모리에 저장
-
-
-
-- 로컬 디스크(노드 단위 공유)
-
-  - hostPath
-  - emptyDir 와 같은 컨셉이지만, 공유 범위가 노드라는 점만 다름
-
-
-
-- 네트워크 디스크
-
-  - gitRepo (지금은 deprecated 라고 한다.)
-    - 생성시에 지정된 git repo 를 clone 한 후, 디스크 생성
-    - emptyDir -> git clone 이라보면 됨
-  - 그 외 클라우드 서비스 별로 더 있음.
-
-
-
-### 2) Ingress
-
-Ingress 는 api 게이트 웨이, 즉 **url 기반 라우팅 역할**을 한다.
-Service 앞에 붙는다.
-
-예를 들어, `/user` 로 들어오는 트래픽은 `service A` 에,
-`/products` 로 들어오는 트래픽은 `service B` 로 라우팅 시켜준다.
-
-Ingress 를 Service 앞에 달아두면, Service 는 `NodePort` 타입으로 선언되어야 한다.
-
-
-
 ## HealthCheck
 
 HealthCheck 는 **각 컨테이너 상태를 주기적으로 문제가 있는지 체크**하는 기능이다.
-문제가 있으면 재시작하거나, 서비스에서 제외한다.
 
-### 1) 방법
+- 헬스 체크 결과, 이상이 감지되는 경우에는 컨테이너를 강제 종료하고 재시작할 수 있음
+- kubelet이 컨테이너의 헬스 체크를 담당
+
+
+
+### 방법
 
 - Liveness probe
 
-  - 응답이 없으면 컨테이나 자동 재시작
-  - kubelet 을 통해서 재시작함.
+  - 컨테이너의 어플리케이션이 정상적으로 실행 중인 것을 검사
+  - 검사에 실패하면 포드상의 컨테이너를 강제로 종료하고 재시작
+  - 매니페스트에 명시적으로 설정해야 사용할 수 있음
 
 - Readiness probe
 
-  - 서비스가 일시적으로 작동 불가인 경우 서비스에서 제외
-
+  - 컨테이너의 어플리케이션이 요청을 받을 준비가 되었는지 검사
+- 검사에 실패하면 서비스에 의한 요청 트래픽 전송을 준비
+  - 포드가 기동되고 나서 준비가 될 때까지 요청이 전송되지 않도록 하기 위해 사용
+  - 매니페스트에 명시적으로 설정해야 사용할 수 있음
+  
   
 
-### 2) 방식
+### 1. 작업 디렉터리 생성 후 매니페스트 파일(YAML) 작성
 
-- Commnad probe
+- **`[vagrant@master]$ vi webapl-pod.yaml`**
 
-  - `cat /tmp/healthy` 실행. 성공 시 0 리턴 -> 정상 판단
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webapl
+spec:
+  containers:
+    - name: webapl
+      image: myanjini/webapl:0.1     # 핸들러를 구현한 어플리케이션
+      livenessProbe:                 # 어플리케이션이 동작하지 여부를 확인
+        httpGet:                     #   지정된 포트와 경로로 HTTP GET 요청을 주기적으로 실행  
+          path: /healthz             #     확인 경로
+          port: 3000                 #     확인 포트
+        initialDelaySeconds: 3       # 검사 개시 대시 시간
+        periodSeconds: 5             # 검사 주기
+      readinessProbe:                # 어플리케이션이 준비되었는지 확인
+        httpGet:
+          path: /ready
+          port: 3000
+        initialDelaySeconds: 15
+        periodSeconds: 6
 
-- HTTP probe
+```
 
-  - GET 요청 -> status 200 시 정상 판단
 
-- TCP probe
 
-  - TCP 연결 시도 -> 연결 성공하면 정상 판단
+### 2. 컨테이너 이미지를 정의
+
+- **`[vagrant@master]$ vi Dockerfile`**
+
+```dockerfile
+FROM alpine:latest
+
+RUN apk update && apk add --no-cache nodejs npm
+
+WORKDIR /
+ADD ./package.json /
+RUN npm install
+ADD ./webapl.js /
+
+CMD node /webapl.js
+```
+
+
+
+- **`[vagrant@master]$ vi package.json`**
+
+```json
+{
+    "name": "webapl",
+    "version": "1.0.0",
+    "description": "",
+    "main": "webapl.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "express": "^4.16.3"
+    }
+  }
+```
+
+
+
+- **`[vagrant@master]$ vi webapl.js`**
+
+```js
+//  웹 어플리케이션 
+const express = require('express')
+const app = express()
+var start = Date.now()               // 어플리케이션이 시작된 시간
+
+//  http://CONTAINER_IP:3000/healthz 형식으로 요청이 들어왔을 때 수행하는 기능을 정의하는 함수
+app.get('/healthz', function(request, response) {
+    var msec = Date.now() - start    // 어플리케이션이 시작된 후 경과된 시간
+    var code = 200
+    if (msec > 40000 ) {      // 경과된 시간이 40초 보다 작으면 200을, 크면 500을 응답코드로 반환
+    code = 500
+    }
+    console.log('GET /healthz ' + code)
+    response.status(code).send('OK')
+})
+
+app.get('/ready', function(request, response) {
+    var msec = Date.now() - start
+    var code = 500
+    if (msec > 20000 ) {
+    code = 200
+    }
+    console.log('GET /ready ' + code)
+    response.status(code).send('OK')
+})
+
+app.get('/', function(request, response) {
+    console.log('GET /')
+    response.send('Hello from Node.js')
+})
+
+app.listen(3000);
+```
+
+
+
+### 3. 컨테이너 이미지 생성 후 도커허브에 등록
+
+```shell
+[vagrant@master]$ docker build --tag [USER_ID]/webapl:[TAG] .
+```
+
+```sh
+[vagrant@master]$ docker push [USER_ID]/webapl:[TAG]
+```
+
+
+
+### 4. 포드를 배포하고 헬스체크 기능을 확인
+
+```sh
+[vagrant@master hc-probe]$ kubectl apply -f webapl-pod.yaml
+pod/webapl created
+```
+
+```sh
+[vagrant@master hc-probe]$ kubectl get pods
+NAME           READY   STATUS    RESTARTS   AGE
+webapl         1/1     Running   0          30s
+```
+
+```sh
+[vagrant@master hc-probe]$ kubectl logs webapl
+GET /healthz 200
+GET /healthz 200
+GET /healthz 200
+GET /ready 500   	15 + 6초  
+GET /healthz 200	20초
+GET /ready 200    	15 + 12초 → 20초 초과	⇒ READY 상태 1/1가 설정
+GET /healthz 200
+GET /ready 200
+GET /healthz 200
+	:
+```
 
