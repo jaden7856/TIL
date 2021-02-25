@@ -180,3 +180,85 @@ root@debug:/# curl hostname-svc-clusterip:8080 --silent | grep Hello
 service "hostname-svc-clusterip" deleted
 ```
 
+
+
+## NodePort 타입 서비스
+
+- 서비스를 이용해 포드를 외부에 노출하기 위해서 사용
+- 모든 노드의 특정 포트를 개방해 서비스에 접근하는 방식
+
+
+
+### 1. YAML 파일 생성
+
+- **`[vagrant@master ~]$ vi hostname-svc-nodeport.yaml`**
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: hostname-svc-nodeport
+spec:
+  ports:
+    - name: web-port
+      port: 8080
+      targetPort: 80
+  selector:
+    app: webserver
+  type: NodePort		⇐ 서비스 타입을 NodePort로 변경
+```
+
+
+
+### 2. 서비스 생성 및 확인
+
+```sh
+[vagrant@master ~]$ kubectl apply -f hostname-svc-nodeport.yaml
+service/hostname-svc-nodeport created
+
+[vagrant@master ~]$ kubectl get services
+NAME                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+hostname-svc-nodeport   NodePort    10.98.73.80      <none>        8080:30355/TCP   6s	
+kubernetes              ClusterIP   10.96.0.1        <none>        443/TCP          7d20h
+```
+
+- PORT(S) 부분에서 외부포트 `8080`을 연결하는 랜덤으로 `30355`가 생성되었습니다. 
+
+
+
+### 3. 외부 IP를 통해 30355 포트로 접근
+
+```sh
+[vagrant@master ~]$ curl 127.0.0.1:30355
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<link rel="stylesheet" type="text/css" href="./css/layout.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+<div class="form-layout">
+        <blockquote>
+        <p>Hello,  hostname-deployment-6cd58767b4-5mtjb</p>     </blockquote>
+</div>
+```
+
+
+
+### 4. 내부 IP와 내부 DNS 이름을 이용한 접근
+
+```sh
+vagrant@master ~]$ kubectl run -it --rm debug --image=alicek106/ubuntu:curl --restart=Never -- bash
+If you don't see a command prompt, try pressing enter.
+
+root@debug:/# curl 10.98.73.80:8080
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<link rel="stylesheet" type="text/css" href="./css/layout.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+<div class="form-layout">
+        <blockquote>
+        <p>Hello,  hostname-deployment-6cd58767b4-s9rrs</p>     </blockquote>
+</div>
+```
+
+- 10.98.73.80은 서비스의 IP입니다. 내부에서 접속하기때문에 외부 IP가아닌 `8080`을 사용하여 접속합니다.
