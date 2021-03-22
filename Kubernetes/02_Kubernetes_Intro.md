@@ -113,8 +113,12 @@ kubectl [command] [TYPE] [NAME] [flags]
 - `# kubectl apply -f [file_name, URL]` -- 존에 존재하는 것을 제외한, 지정한 디렉터리 내 구성 파일에 의해 정의된 모든 오브젝트를 생성
   - `apply`와 `create`의 사용 차이
     - 처음 생성은 `create`로 실행하고, 그 다음 업데이트가 발생할경우 `apply`를 하면 된다.
-
+- `--record` : `rollout`의 history를 기록합니다.
 - `# kubectl replace -f [file_name]` -- 설정 파일 수정하거나, 설정 파일을 새로 만들어서 그 파일로 설정을 업데이트
+- `# kubectl rollout history <TYPE> <NAME>` -- `deployment`나 `replicaset`, `pod`들을 수정할때 그 기록이 남아 조회를 할 수 있습니다.
+  - `--revision=<NUMBER>` : 특정 `history`의 내용을 조회합니다.
+  - `kubectl rollout undo <TYPE> <NAME> --to-revision=<revision>` -- 특정 `revision`으로 수정을 합니다.
+- `# kubectl annotate deployment/echo kubernetes.io/change-cause="<바꿀 이름>"` -- `history`의 이름을 자신이 알아보기 쉽게 원하는 이름으로 변경
 
 
 
