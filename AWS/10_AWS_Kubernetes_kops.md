@@ -231,6 +231,16 @@ $ kubectl -n kube-system get po 	# kube-system 네임스페이스 안의 Pod 목
 
 
 
+Instance에 만들어진 `master` 1개와 `node` 3개를 확인합니다. 그리고 `master`의 PublicIP를 확인하여 `kops`를 설치했던 ubuntu 터미널에서 `master`에 접속하는 방법입니다.
+
+```cmd
+# ssh <master-publicIP>
+```
+
+Instance Terminal에서 접속하는 이유는 `master`와 `node`가 만들어질때 적용된 Key값이 저희가 가지고있지않은 것이기 때문입니다.
+
+
+
 ### 클러스터 삭제
 
 ```cmd
@@ -243,13 +253,7 @@ $ kops delete cluster --name ${NAME} --yes
 
 # TEST
 
-Instance에 만들어진 `master` 1개와 `node` 3개를 확인합니다. 그리고 `master`의 PublicIP를 확인하여 `kops`를 설치했던 ubuntu 터미널에서 `master`에 접속하겠습니다.
-
-```cmd
-# ssh <master-publicIP>
-```
-
-Instance Terminal에서 접속하는 이유는 `master`와 `node`가 만들어질때 적용된 Key값이 저희가 가지고있지않은 것이기 때문입니다.
+`master`로 접속하여 해도되고 kops를 설치한 Terminal에서 작업해도 상관없습니다. kops를 설치한 Terminal에서 작업을 하여도 `master`로 자동 연결이 되기 때문입니다.
 
 
 
