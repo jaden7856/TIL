@@ -213,6 +213,10 @@ $ kops export kubecfg <cluster name> --admin
 
 
 
+만약 도메인 등록을 하지 않았을때의 오류 발생
+
+![error](10_AWS_Kubernetes_kops.assets/error.PNG)
+
 
 
 ### 11. 클러스터 테스트
@@ -333,7 +337,30 @@ spec:
 $ kubectl apply -f service.yaml
 ```
 
+
+
+- `$ kubelet get svc`을 하여 PORT가 `8080`과 몇번이 연결이 되어있는지 확인을 한다.
+
 ```cmd
-$ kubectl run 
+NAME              TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+my-user-service   NodePort    100.65.244.240   <none>        8080:30453/TCP   5s
 ```
 
+
+
+- `30453`번을 `master Instance`의 Security Group에서 Inbound rules를 편집합니다.
+
+![11](10_AWS_Kubernetes_kops.assets/11.PNG)
+
+
+
+- `30453` 추가
+
+![image-20210324094341954](10_AWS_Kubernetes_kops.assets/image-20210324094341954.png)
+
+
+
+- Postman이나 웹 브라우저에서 `http://<Master-PublicIP>:<PORT>/users`을 test 해보자
+  - 웹 브라우저에서 할 경우 json뷰어가 설정되어 있지 않다면 일렬로 보입니다
+
+![13](10_AWS_Kubernetes_kops.assets/13.PNG)
