@@ -122,7 +122,6 @@ config.vm.define:"ansible-server" do |cfg|
 ```sh
 #! /user/bin/env bash
 
-yum install -y net-tools
 yum install -y epel-release
 yum install -y ansible 
 
@@ -240,6 +239,16 @@ $ vagrant destroy ansible-server
 $ vagrant up ansible-server
 ```
 
+```cmd
+$ ssh-keygen
+$ ssh-copy-id root@ansible-node-1
+$ ssh-copy-id root@ansible-node-2
+$ ssh-copy-id root@ansible-node-3
+$ ssh-copy-id vagrant@ansible-node-1
+$ ssh-copy-id vagrant@ansible-node-2
+$ ssh-copy-id vagrant@ansible-node-3
+```
+
 
 
 ##### 확인
@@ -265,4 +274,106 @@ ansible-node-1 | SUCCESS => {
     "changed": false,
     "ping": "pong"
 }
+```
+
+
+
+### Nginx, Timezone Playbook
+
+CentOS와 Ubuntu의 Nginx 설치를 Playbook으로 사용
+
+ `$ vi install_nginx.yml`
+
+```yaml
+---
+- name: install nginx on CentOS
+  hosts: centos
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: install epel-release
+      yum: name=epel-release state=latest
+    - name: install nginx web server
+      yum: name=nginx state=present
+    - name: upload default index.html for web server
+      get_url: url=https://www.nginx.com dest=/usr/share/nginx/html/
+    - name: start nginx web server
+      service: name=nginx state=started
+
+- name: install nginx on Ubuntu
+  hosts: ubuntu
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: install nginx web server
+      apt: pkg=nginx state=present update_cache=yes
+    - name: upload default index.html for web server
+      get_url: url=http://www.apache.com dest=/usr/share/nginx/html/ validate_certs=no
+    - name: start nginx web server
+      service: name=nginx state=started
+```
+
+```cmd
+$ ansible-playbook install_nginx_yml -k
+```
+
+
+
+`$ vi timezone.yml`
+
+```yaml
+  1 ---
+  2 - name: setup timezone
+  3   hosts: centos:ubuntu
+  4   gather_facts: no
+  5   become: yes
+  6
+  7   tasks:
+  8     - name: set timezone to Asia/Seoul
+  9       timezone: name=Asia/Seoul
+ 10
+ 11 - name: setup timezone for localhost
+ 12   hosts: localhost
+ 13   gather_facts: no
+ 14   become: yes
+ 15
+ 16   tasks:
+ 17     - name: set timezone to Asia/Seoul
+ 18       timezone: name=Asia/Seoul
+```
+
+
+
+#### 삭제
+
+`$ vi nginx_remove.yml`
+
+```yaml
+  1 ---
+  2 - name: Remove nginx on CentOS
+  3   hosts: centos
+  4   gather_facts: no
+  5   become: yes
+  6
+  7   tasks:
+  8     - name: remove epel-release
+  9       yum: name=epel-release state=absent
+ 10     - name: remove nginx web server
+ 11       yum: name=nginx state=absent
+ 12
+ 13 - name: Remove nginx on Ubuntu
+ 14   hosts: ubuntu
+ 15   gather_facts: no
+ 16   become: yes
+ 17
+ 18   tasks:
+ 19     - name: remove nginx web server
+ 20       apt: name=nginx state=absent
+ 21     - name: remove useless packages from the cache
+ 22       apt: autoclean=yes
+ 23     - name: remove dependencies that are no longer required
+ 24       apt:
+ 25         autoremove: yes
 ```
