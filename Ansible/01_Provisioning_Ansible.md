@@ -331,6 +331,43 @@ test_server.txt
 
 
 
+#### 특정 서비스 설치
+
+그룹명 변경
+
+- 만약 전에 작업했던 그룹 `nginx`가 있다면 그것을 바꿔주세요
+
+`$ sudo vi /etc/ansible/hosts`
+
+```
+[centos]
+172.20.10.11
+172.20.10.12
+```
+
+
+
+root 계정으로 접속 후 설치
+
+```cmd
+$ su -
+$ ansible centos -m yum -a "name=httpd state=present"
+$ ansible centos -m yum -a "name=httpd state=present" -k
+SSH password: vagrant
+```
+
+
+
+**Node에서 설치 확인**
+
+```cmd
+$ yum list installed | grep httpd
+$ systemctl status httpd			# 실행중인지 확인 여부
+$ systemctl start httpd				# `loaded` 상태가 되어있다면 시작
+```
+
+
+
 
 
 ## Test
