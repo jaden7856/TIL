@@ -286,12 +286,84 @@ $ ssh -i [KEY-NAME.pem ec2-user@[Public-IP]
 - 연결이 잘 되어있는지 확인
 
 ```cmd
+**Server**
 $ ping [Private_IP-Node-1]
 $ ping [Private_IP-Node-2]
 ```
 
 
 
-만약 핑이 오류가 난다면 Security Group에서 development Inbound rules를 `Edit`하여 밑의 사진처럼   동그라미를 클릭후 생성하고 다시 `ping`을 해보겠습니다.
+만약 핑이 오류가 난다면 Security Group에서 development Inbound rules를 `Edit`하고 `development`를 선택하여 생성하고 다시 `ping`을 해보겠습니다.
 
-![image-20210331180307436](03_AWS_Ansible.assets/image-20210331180307436.png)
+![image-20210401093243778](03_AWS_Ansible.assets/image-20210401093243778.png)
+
+![image-20210401093042259](03_AWS_Ansible.assets/image-20210401093042259.png)
+
+
+
+
+
+`ssh-key`값을 받고 Node에 `ssh-copy-id`를 하면 `Permission denied`를 받기때문에 같은 Public Key로 하기위해 아래와 같은 작업을 하겠습니다.
+
+```cmd
+**Server**
+$ ssh-keygen
+```
+
+
+
+- Server에서 `keygen`을 하고 밑의 코드를 통해 값을 불러와 복사를 합니다.
+
+```cmd
+$ cat ./.ssh/id_rsa.pub
+```
+
+
+
+- Node에서 밑의 코드로 들어가 기존의 값을 지우고 Server에서 복사했던 key값을 붙여넣기합니다.
+
+```cmd
+$ vi ./.ssh/authorized_keys
+```
+
+
+
+##### Test
+
+```cmd
+**Server**
+$ ssh-copy-id [Private-Node01-IP]
+$ ssh-copy-id [Private-Node02-IP]
+```
+
+
+
+- `hosts`에 들어가서 밑의 코드를 맨 밑에 입력합니다.
+
+```cmd
+$ sudo vi /etc/ansible/hosts
+[ec2]
+[Private-Node01-IP]
+[Private-Node02-IP]
+
+[node1]
+[Private-Node01-IP]
+
+[node2]
+[Private-Node02-IP]
+```
+
+
+
+- Node test
+
+```cmd
+$ ansible ec2 -m shell -a "uptime"
+$ ansible ec2 -m ping					# ping test
+```
+
+```cmd
+$ ansible node1 -m shell -a "free -h"	# 메모리 출력
+$ ansible node2 -m shell -a "df -h"		# 10% 이상의 디렉토리를 출력
+```
+
