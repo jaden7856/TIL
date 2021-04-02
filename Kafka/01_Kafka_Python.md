@@ -1,5 +1,31 @@
 # Python에서 Kafka 사용
 
+**맨 처음 터미널 두개를 열어서 zookeeper와 kafka를 실행**
+
+**Windows**
+
+- `> bin\windows\zookeeper-server-start.bat config\zookeeper.properties`
+
+**Linux or MacOS**
+
+- `$ bin/zookeeper-server-start.sh config/zookeeper.properites`
+
+
+
+새로운 터미널을 오픈
+
+**Windows**
+
+- `> bin\windows\kafka-server-start.bat config\server.properties`
+
+**Linux or MacOS**
+
+- `$ bin/kafka-server-start.sh config/server.properties`
+
+
+
+
+
 python에서 kafka를 쓰기위해 다운로드하는데, 저는 conda를 사용하여 가상환경에 다운로드 하겠습니다.
 
 ```cmd
