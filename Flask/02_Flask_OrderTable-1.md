@@ -246,4 +246,4 @@ if __name__ == '__main__':
 
 ##### SQL orders table에 데이터가 정상적으로 들어가 있는지 확인
 
-![image-20210406114439163](02_Flask_MariaDB.assets/image-20210406114439163.png)
+![image-20210406114439163](02_Flask_OrderTable-1.assets/image-20210406114439163.png)
