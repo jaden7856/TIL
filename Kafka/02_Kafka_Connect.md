@@ -23,6 +23,11 @@
 ### Kafka Connect 실행
 
 ```cmd
+> bin\windows\zookeeper-server-start.bat config\zookeeper.properties
+> bin\windows\kafka-server-start.bat config\server.properties
+```
+
+```cmd
 > .\bin\windows\connect-distributed.bat .\etc\kafka\connect-distributed.properties
 Classpath is empty. Please build the project first e.g. by running 'gradlew jarAll'
 ```
