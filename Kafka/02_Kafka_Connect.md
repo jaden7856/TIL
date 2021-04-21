@@ -84,7 +84,7 @@ connect-status
 
 압축폴더를 원하는 위치에 해제하고 폴더 하위 lib폴더의 경로를 복사합니다.
 
-아래의 파일을 열기
+confluent 폴더 경로에서 아래의 파일을 열기
 
 ```cmd
 > code .\etc\kafka\connect-distributed.properties
