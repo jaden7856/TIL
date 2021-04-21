@@ -6,8 +6,6 @@
 
 - MySQL을 사용한다면 [MySQL Java](https://mvnrepository.com/artifact/mysql/mysql-connector-java)에서 MySQL 버전과 같은 버전을 설치
 
-다운 받은 `.jar` 파일을 `./share/java/kafka/` 폴더에 넣어주세요
-
 터미널을 Kafka 설치한 폴더에 접속
 
 ```cmd
@@ -15,6 +13,8 @@
 > tar xvf confluent-community-6.1.0.tar.gz
 > cd confluent-6.1.0
 ```
+
+다운 받은 `.jar` 파일을 `./share/java/kafka/` 폴더에 넣어주세요
 
 
 
