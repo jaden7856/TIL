@@ -47,7 +47,7 @@ from flask import Flask, jsonify, request
 from datetime import datetime
 from flask_restful import reqparse
 import flask_restful
-import mariadb
+import pymysql
 import json
 import uuid
 
@@ -70,13 +70,13 @@ def index():
 
 class Order(flask_restful.Resource):
     def __init__(self):
-        self.conn = mariadb.connect(**config)
+        self.conn = pymysql.connect(**config)
         self.cursor = self.conn.cursor()
     
     def get(self, user_id):
         sql = '''SELECT user_id, order_id, coffee_name, 
         		coffee_price, coffee_qty, ordered_at
-                FROM orders WHERE user_id=? order by id desc
+                FROM orders WHERE user_id=%s order by id desc
         '''
         self.cursor.execute(sql, [user_id])
         
@@ -150,7 +150,7 @@ def post(self, user_id):
         							coffee_price, 
         							coffee_qty, 
         							ordered_at)
-                    VALUES(?, ?, ?, ?, ?, ?)
+                    VALUES(%s, %s, %s, %s, %s, %s)
         '''
         self.cursor.execute(sql, [user_id, 
                             json_data['order_id'],
