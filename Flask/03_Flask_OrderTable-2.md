@@ -65,7 +65,7 @@ Kafka Consumer를 만들어 Kafka Topic에 추가한 Data를 바로 읽어들이
 from kafka import KafkaConsumer
 from datetime import datetime
 import threading
-import mariadb
+import pymysql
 import time
 import json
 import uuid
@@ -81,13 +81,15 @@ consumer = KafkaConsumer('new_orders',
 config = {
     'host': '127.0.0.1',
     'port': 3306,
+    'password' : '<pwd>'
     'user': 'root',
     'database': 'mydb'
 }
 
-conn = mariadb.connect(**config)
+conn = pymysql.connect(**config)
 cursor = conn.cursor()
-sql = '''INSERT INTO delivery_status(delivery_id, order_json, status) VALUES(?, ?, ?)'''
+sql = '''INSERT INTO delivery_status(delivery_id, order_json, status) 
+		VALUES(%s, %s, %s)'''
 
 
 def fetch_latest_orders(next_call_in):
