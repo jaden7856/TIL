@@ -9,7 +9,7 @@ from flask import Flask, jsonify, request
 from datetime import datetime
 from flask_restful import reqparse
 import flask_restful
-import mariadb
+import pymysql
 import json
 import uuid
 
@@ -19,7 +19,8 @@ api = flask_restful.Api(app)
 
 config = {
     'host': '127.0.0.1',
-    'port': 13306,
+    'port': 3306,
+    'password' : '<pwd>'
     'user': 'root',
     'database': 'mydb'
 }
@@ -31,7 +32,7 @@ def index():
 
 class Delivery(flask_restful.Resource):
     def __init__(self):
-        self.conn = mariadb.connect(**config)
+        self.conn = pymysql.connect(**config)
         self.cursor = self.conn.cursor()
     
     def get(self):
@@ -53,7 +54,7 @@ class Delivery(flask_restful.Resource):
 
 class DeliveryStatus(flask_restful.Resource):
     def __init__(self):
-        self.conn = mariadb.connect(**config)
+        self.conn = pymysql.connect(**config)
         self.cursor = self.conn.cursor()
 
     def put(self, delivery_id):
@@ -61,7 +62,7 @@ class DeliveryStatus(flask_restful.Resource):
         status = json_data['status']
 
         # DB INSERT
-        sql = '''UPDATE delivery_status SET status=? WHERE delivery_id=?'''
+        sql = '''UPDATE delivery_status SET status=? WHERE delivery_id=%s'''
         self.cursor.execute(sql, [status, delivery_id])
         self.conn.commit()
 
