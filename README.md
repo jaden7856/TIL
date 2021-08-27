@@ -45,13 +45,15 @@ Golang, Typescript, Node.js는 [구름 EDU](https://edu.goorm.io/)에서 강의�
 - [Go언어의 특징과 설치방법](https://github.com/jaden7856/TIL/blob/master/Go/00_Go_Intro.md)
 - [Go언어로 Hello World를 만들어보자](https://github.com/jaden7856/TIL/blob/master/Go/01_Hello_World.md)
 - [Go언어의 변수와 상수선언](https://github.com/jaden7856/TIL/blob/master/Go/02_Var_Const.md)
-- [Go의 연산자](https://github.com/jaden7856/TIL/blob/master/Go/03-01_Operator.md)
-- [Go의 연산자2](https://github.com/jaden7856/TIL/blob/master/Go/03-02_Operator.md)
+- [Go언어의 연산자](https://github.com/jaden7856/TIL/blob/master/Go/03-01_Operator.md)
+- [Go언어의 연산자2](https://github.com/jaden7856/TIL/blob/master/Go/03-02_Operator.md)
 - [Go언어의 자료형 종류와 특징 및 변환](https://github.com/jaden7856/TIL/blob/master/Go/04_Data_type.md)
 - [Go언어의 for문](https://github.com/jaden7856/TIL/blob/master/Go/05_For.md)
 - [Go언어의 if-else문](https://github.com/jaden7856/TIL/blob/master/Go/06_ifElse.md)
 - [Go언어의 Print와 Scan](https://github.com/jaden7856/TIL/blob/master/Go/07_Print_Scan.md)
 - [Go언어의 Swich문](https://github.com/jaden7856/TIL/blob/master/Go/08_Swich.md)
+- [Go언어의 Break, Continue, Goto문](https://github.com/jaden7856/TIL/blob/master/Go/09_Break_Continue_Goto.md)
+- [Go언어의 Collenction문](https://github.com/jaden7856/TIL/blob/master/Go/10_Collection.md)
 
 
 
@@ -119,5 +121,8 @@ Golang, Typescript, Node.js는 [구름 EDU](https://edu.goorm.io/)에서 강의�
 
 
 ### Python
+
+- [Python 기본 문법 및 활용 코드 연습](https://github.com/jaden7856/python_programming_stu)
+
 - [Python Scrapy를 활용하여 웹 사이트 크롤링하기](https://github.com/jaden7856/TIL/blob/master/Python/Scrapy.md)
 - [Pandas를 활용하여 문제들을 풀이](https://github.com/jaden7856/TIL/blob/master/Python/Pandas_Ecom_Exercise.md)
