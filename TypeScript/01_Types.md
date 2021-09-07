@@ -360,3 +360,216 @@ console.log(Color.Red); // red
 console.log(Color['Green']); // green
 ```
 
+
+
+
+
+## 모든 타입 : Any
+
+Any는 모든 타입을 의미합니다. 따라서 일반적인 자바스크립트 변수와 동일하게 어떠 타입의 값도 할당할 수 있습니다. 외부 자원을 활용해 개발할 때 불가피하게 타입을 단언할 수 없는 경우, 유용할 수 있습니다.
+
+```js
+let any: any = 123;
+any = 'Hello world';
+any = {};
+any = null;
+```
+
+
+
+다양한 값을 포함하는 배열을 나타낼 때 사용할 수도 있습니다.
+
+``` js
+const list: any[] = [1, true, 'Anything!'];
+```
+
+강한 타입 시스템의 장점을 유지하기 위해 Any 사용을 엄격하게 금지하려면, 컴파일 옵션 `"noImplicitAny" : true`를 통해 Any사용 시 에러를 발생시킬 수 있습니다.
+
+
+
+## 알 수 없는 타입 : Unkonown
+
+Any와 같이 최상위 타입인 Unknown은 알 수 없는 타입을 의미합니다.
+
+Any와 같이 Unknown에는 어떤 타입의 값도 할당할 수 있지만, Unknown을 다른 타입에는 할당할 수 없습니다.
+
+
+
+> 일반적인 경우 Unknown은 타입 단언(Assertions)이나 타입 가드(Guards)를 필요올 합니다.
+>
+> 타입 단언이나 가드에 대한 내용은 다른 파트에서 정리합니다.
+
+```js
+let a: any = 123;
+let u: unknown = 123;
+
+let v1: boolean = a; // 모든 타입(any)은 어디든 할당할 수 있습니다.
+let v2: number = u; // 알 수 없는 타입(unknown)은 모든 타입(any)을 제외한 다른 타입에 할당할 수 없습니다.
+let v3: any = u; // OK!
+let v4: number = u as number; // 타입을 단언하면 할당할 수 있습니다.
+```
+
+
+
+다양한 타입을 반환할 수 있는 API에서 유용할 수 있습니다.
+
+> Unknown 보단 좀 더 명확한 타입을 사용하는 것이 좋습니다.
+
+```js
+type Result = {
+  success: true,
+  value: unknown
+} | {
+  success: false,
+  error: Error
+}
+
+export default function getItems(user: IUser): Result {
+  // Some logic...
+  if (id.isValid) {
+    return {
+      success: true,
+      value: ['Apple', 'Banana']
+    };
+  } else {
+    return {
+      success: false,
+      error: new Error('Invalid user.')
+    }
+  }
+}
+```
+
+
+
+
+
+## 객체 : Object
+
+기본적으로 `typeof`연산자가 `"object"`로 반환하는 모든 타입을 나타냅니다.
+
+> 컴파일러 옵션에서 엄격한 타입 검사(`strict`)를 `true`로 설정하면, `null`은 포함하지 않습니다.
+
+```js
+let obj: object = {};
+let arr: object = [];
+let func: object = function () {};
+let nullValue: object = null;
+let date: object = new Date();
+// ...
+```
+
+
+
+여러 타입의 상위 타입이기 때문에 그다지 유용하지 않습니다.
+
+보다 정확하게 타입 지정을 하기 위해 다음과 같이 객체 속성(Properties)들에 대한 타입을 개별적으로 지정할 수 있습니다.
+
+```js
+let userA: { name: string, age: number } = {
+  name: 'HEROPY',
+  age: 123
+};
+
+let userB: { name: string, age: number } = {
+  name: 'HEROPY',
+  age: false, // Error
+  email: 'thesecon@gmail.com' // Error
+};
+```
+
+
+
+반복적인 사용을 원하는 경우, `interface`나 `type`을 사용하는 것을 추천합니다.
+
+```js
+interface IUser {
+  name: string,
+  age: number
+}
+
+let userA: IUser = {
+  name: 'HEROPY',
+  age: 123
+};
+
+let userB: IUser = {
+  name: 'HEROPY',
+  age: false, // Error
+  email: 'thesecon@gmail.com' // Error
+};
+```
+
+
+
+
+
+## Null과 Undefined
+
+기본적으로 Null과 Undefined는 모든 타입의 하위 타입으로, 다음과 같이 각 타입에 할당할 수 있습니다. 심지어 서로의 타입에도 할당 가능합니다.
+
+```js
+let num: number = undefined;
+let str: string = null;
+let obj: { a: 1, b: false } = undefined;
+let arr: any[] = null;
+let und: undefined = null;
+let nul: null = undefined;
+let voi: void = null;
+// ...
+```
+
+
+
+이는 컴파일 옵션 `"strictNullChecks" : true`을 통해 엄격하게 Null과 Undefined 서로의 타입까지 더 이상 할당할 수 없게 합니다. 단, Void에는 Undefined를 할당할 수 있습니다.
+
+```js
+let voi: void = undefined; // ok
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
