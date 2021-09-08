@@ -131,6 +131,7 @@ Golang, Typescript, Node.js는 [구름 EDU](https://edu.goorm.io/)에서 강의�
 
 ### TypeScript
 
-- [왜 타입스크립트인가?](https://github.com/jaden7856/TIL/blob/master/TypeScript/00_TypeScript_Intro.md)
+- [왜 타입스크립트인가? 기능 및 개발환경](https://github.com/jaden7856/TIL/blob/master/TypeScript/00_TypeScript_Intro.md)
 
-- [타입 선언문](https://github.com/jaden7856/TIL/blob/master/TypeScript/01_Types.md)
+- [타입 지정, 타입 에러, 타입 선언문](https://github.com/jaden7856/TIL/blob/master/TypeScript/01_Types.md)
+
