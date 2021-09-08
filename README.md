@@ -126,3 +126,11 @@ Golang, Typescript, Node.js는 [구름 EDU](https://edu.goorm.io/)에서 강의�
 
 - [Python Scrapy를 활용하여 웹 사이트 크롤링하기](https://github.com/jaden7856/TIL/blob/master/Python/Scrapy.md)
 - [Pandas를 활용하여 문제들을 풀이](https://github.com/jaden7856/TIL/blob/master/Python/Pandas_Ecom_Exercise.md)
+
+
+
+### TypeScript
+
+- [왜 타입스크립트인가?](https://github.com/jaden7856/TIL/blob/master/TypeScript/00_TypeScript_Intro.md)
+
+- [타입 선언문](https://github.com/jaden7856/TIL/blob/master/TypeScript/01_Types.md)
