@@ -270,3 +270,257 @@ class NodeMgmt:
                     node = node.next
 ```
 
+
+
+#### 테스트를 위해 1개 노드를 만들어 봄
+
+```python
+linkedlist1 = NodeMgmt(0)
+linkedlist1.desc()	# 0
+```
+
+
+
+#### head 가 살아있음을 확인
+
+```python
+linkedlist1.head
+# <__main__.Node at 0x1099fc6a0>
+```
+
+
+
+#### head 를 지워봄(위에서 언급한 경우의 수1)
+
+```python
+linkedlist1.delete(0)
+```
+
+
+
+#### 다음 코드 실행시 아무것도 안나온다는 것은 linkedlist1.head 가 정상적으로 삭제되었음을 의미
+
+```python
+linkedlist1.head
+```
+
+
+
+#### 다시 하나의 노드를 만들어봄
+
+```python
+linkedlist1 = NodeMgmt(0)
+linkedlist1.desc()	# 0
+```
+
+
+
+#### 이번엔 여러 노드를 더 추가해봄
+
+```python
+for data in range(1, 10):
+    linkedlist1.add(data)
+linkedlist1.desc()
+# 0
+# 1
+# 2
+# 3
+# 4
+# 5
+# 6
+# 7
+# 8
+# 9
+```
+
+
+
+#### 노드 중에 한개를 삭제후 확인 (위에서 언급한 경우의 수2)
+
+```python
+linkedlist1.delete(4)
+linkedlist1.desc()
+# 0
+# 1
+# 2
+# 3
+# 5
+# 6
+# 7
+# 8
+# 9
+```
+
+
+
+
+
+### 7. 다양한 링크드 리스트 구조 
+* 더블 링크드 리스트(Doubly linked list) 기본 구조 
+  - 이중 연결 리스트라고도 함
+  
+  - 장점: 양방향으로 연결되어 있어서 노드 탐색이 양쪽으로 모두 가능
+
+  
+  
+    <img src="https://www.fun-coding.org/00_Images/doublelinkedlist.png" />
+    (출처: wikipedia, https://en.wikipedia.org/wiki/Linked_list)
+
+```python
+class Node:
+    def __init__(self, data, prev=None, next=None):
+        self.prev = prev
+        self.data = data
+        self.next = next
+
+class NodeMgmt:
+    def __init__(self, data):
+        self.head = Node(data)
+        self.tail = self.head
+
+    def insert(self, data):
+        if self.head == None:
+            self.head = Node(data)
+            self.tail = self.head
+        else:
+            node = self.head
+            while node.next:
+                node = node.next
+            new = Node(data)
+            node.next = new
+            new.prev = node
+            self.tail = new
+
+    def desc(self):
+        node = self.head
+        while node:
+            print (node.data)
+            node = node.next
+```
+
+```python
+double_linked_list = NodeMgmt(0)
+for data in range(1, 10):
+    double_linked_list.insert(data)
+double_linked_list.desc()
+# 0
+# 1
+# 2
+# 3
+# 4
+# 5
+# 6
+# 7
+# 8
+# 9
+```
+
+
+
+<strong><font color="blue" size="3em">연습3: 위 코드에서 노드 데이터가 특정 숫자인 노드 앞에 데이터를 추가하는 함수를 만들고, 테스트해보기</font></strong><br>
+
+- 더블 링크드 리스트의 tail 에서부터 뒤로 이동하며, 특정 숫자인 노드를 찾는 방식으로 함수를 구현하기<br>
+- 테스트: 임의로 0 ~ 9까지 데이터를 링크드 리스트에 넣어보고, 데이터 값이 2인 노드 앞에 1.5 데이터 값을 가진 노드를 추가해보기
+
+```python
+class Node:
+    def __init__(self, data, prev=None, next=None):
+        self.prev = prev
+        self.data = data
+        self.next = next
+
+class NodeMgmt:
+    def __init__(self, data):
+        self.head = Node(data)
+        self.tail = self.head
+
+    def insert(self, data):
+        if self.head == None:
+            self.head = Node(data)
+            self.tail = self.head
+        else:
+            node = self.head
+            while node.next:
+                node = node.next
+            new = Node(data)
+            node.next = new
+            new.prev = node
+            self.tail = new
+
+    def desc(self):
+        node = self.head
+        while node:
+            print (node.data)
+            node = node.next
+    
+    def search_from_head(self, data):
+        if self.head == None:
+            return False
+    
+        node = self.head
+        while node:
+            if node.data == data:
+                return node
+            else:
+                node = node.next
+        return False
+    
+    def search_from_tail(self, data):
+        if self.head == None:
+            return False
+    
+        node = self.tail
+        while node:
+            if node.data == data:
+                return node
+            else:
+                node = node.prev
+        return False
+    
+    def insert_before(self, data, before_data):
+        if self.head == None:
+            self.head = Node(data)
+            return True
+        else:
+            node = self.tail
+            while node.data != before_data:
+                node = node.prev
+                if node == None:
+                    return False
+            new = Node(data)
+            before_new = node.prev
+            before_new.next = new
+            new.prev = before_new
+            new.next = node
+            node.prev = new
+            return True
+```
+
+```python
+double_linked_list = NodeMgmt(0)
+for data in range(1, 10):
+    double_linked_list.insert(data)
+double_linked_list.desc()
+```
+
+```python
+node_3 = double_linked_list.search_from_tail(3)
+node_3.data	# 3
+```
+
+```python
+double_linked_list.insert_before(1.5, 2)
+double_linked_list.desc()
+# 0
+# 1
+# 1.5
+# 2
+# 3
+# 4
+# 5
+# 6
+# 7
+# 8
+# 9
+```
+
