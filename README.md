@@ -65,6 +65,10 @@ Golang, Typescript, Node.js는 [구름 EDU](https://edu.goorm.io/)에서 강의�
 - [자료구조 Queue](https://github.com/jaden7856/TIL/blob/master/Algorithm/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0_Queue.md)
 - [자료구조 Stack](https://github.com/jaden7856/TIL/blob/master/Algorithm/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0_Stack.md)
 - [자료구조 Linked List](https://github.com/jaden7856/TIL/blob/master/Algorithm/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0_Linked-List.md)
+- [자료구조 시간복잡도](https://github.com/jaden7856/TIL/blob/master/Algorithm/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0_%EC%8B%9C%EA%B0%84%EB%B3%B5%EC%9E%A1%EB%8F%84.md)
+- [자료구조 Hash Table](https://github.com/jaden7856/TIL/blob/master/Algorithm/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0_Hash-Table.md)
+- [자료구조 Tree](https://github.com/jaden7856/TIL/blob/master/Algorithm/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0_Tree.md)
+- [자료구조 Heap](https://github.com/jaden7856/TIL/blob/master/Algorithm/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0_Heap.md)
 
 
 
