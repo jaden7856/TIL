@@ -17,6 +17,8 @@
 
 
 
+
+
 ### 2. 간단한 링크드 리스트 예
 
 #### Node 구현
@@ -37,6 +39,8 @@ class Node:
         self.next = next
 ```
 
+위의 코드에서 두개의 클래스간에 다른점은 `__init__`메소드에 `next`값의 default를 정해준것이 다른 점입니다.
+
 
 
 #### Node와 Node 연결하기 (포인터 활용)
@@ -47,6 +51,8 @@ node2 = Node(2)
 node1.next = node2
 head = node1
 ```
+
+Node연결을 위해 node1의 `next`에 node2의 `data`값을 넣어주고 node1의 `data`값을 `head`라는 변수에 저장하겠습니다.
 
 
 
@@ -65,12 +71,22 @@ def add(data):
     node.next = Node(data) 
 ```
 
+`add`라는 메서드를 생성하여 추가하는 코드를 연습하겠습니다.
+
+우선 node에 제일 처음값 head를 넣어주고 맨끝의 노드에 찾아가기 위해서 `node.next`에 에 값이 **있으면** `node`에 `node.next`의 값을 넣어주고 **없으면** `data`의 값을 넣어줍니다.
+
+
+
 ```python
 node1 = Node(1)
 head = node1
 for index in range(2, 10):
     add(index)
 ```
+
+테스트를 위해 확인을 하면 `node1`에 `1`이라는 `data`값을 넣어주고 `head`에 저장합니다. 그 다음 `2`부터 `9`까지 값을 넣어주기위해서 `add`라는 함수를 넣어주도록 하겠습니다.
+
+
 
 
 
@@ -92,6 +108,8 @@ print (node.data)
 # 8
 # 9
 ```
+
+
 
 
 
@@ -131,9 +149,17 @@ print (node.data)
 # 9
 ```
 
+위의 코드에서 새로운값을 코드 중간에 추가해보도록 하겠습니다.
+
+
+
 ```python
 node3 = Node(1.5)
 ```
+
+`1.5`라는 값을 `node3`변수에 저장을 합니다. 그러면 제가 원하는 위치는 `1`과 `2`사이에 넣기위해서 `1`의 위치를 찾기위해 코드를 작성하겠습니다.
+
+
 
 ```python
 node = head
@@ -148,6 +174,14 @@ node_next = node.next
 node.next = node3
 node3.next = node_next
 ```
+
+맨처음 값은 `head`에 저장후 `search`라는 `True`값을 넣어준 다음 `node.data`가 만약 `1`이면 `search`를 `False`값을 주고 아니면 `node.next`값을 찾습니다.
+
+`1`이라는 `data`값을 찾으면 빠져나와 `node.next`값을 다른 변수에 저장후, 우리가 원하는 `1.5`값을 `node.next`값에 넣어주겠습니다.
+
+그러면 `1.5`다음에 `2`가 와야하기때문에 다른 변수에 저장했던 것을 `node3.next`에 저장하도록 하겠습니다.
+
+
 
 ```python
 node = head
@@ -167,6 +201,10 @@ print (node.data)
 # 9
 ```
 
+제가 원했던 `1` 다음에 `1.5` 그리고 `2`가 오도록 완성하였습니다.
+
+
+
 
 
 ### 5. 파이썬 객체지향 프로그래밍으로 링크드 리스트 구현하기
@@ -178,9 +216,11 @@ class Node:
         self.next = next
     
 class NodeMgmt:
+    # 맨 처음 노드값을 알고있어야 하기때문에 head에 추가
     def __init__(self, data):
         self.head = Node(data)
-        
+    
+    # 맨 끝에 값을 추가하는 메서드
     def add(self, data):
         if self.head == '':
             self.head = Node(data)
@@ -189,7 +229,8 @@ class NodeMgmt:
             while node.next:
                 node = node.next
             node.next = Node(data)
-        
+    
+    # 값 전체를 출력시키는 메서드    
     def desc(self):
         node = self.head
         while node:
@@ -218,6 +259,8 @@ linkedlist1.desc()
 # 8
 # 9
 ```
+
+
 
 
 
@@ -272,12 +315,16 @@ class NodeMgmt:
 
 
 
+
+
 #### 테스트를 위해 1개 노드를 만들어 봄
 
 ```python
 linkedlist1 = NodeMgmt(0)
 linkedlist1.desc()	# 0
 ```
+
+
 
 
 
@@ -290,11 +337,15 @@ linkedlist1.head
 
 
 
+
+
 #### head 를 지워봄(위에서 언급한 경우의 수1)
 
 ```python
 linkedlist1.delete(0)
 ```
+
+
 
 
 
@@ -306,12 +357,16 @@ linkedlist1.head
 
 
 
+
+
 #### 다시 하나의 노드를 만들어봄
 
 ```python
 linkedlist1 = NodeMgmt(0)
 linkedlist1.desc()	# 0
 ```
+
+
 
 
 
@@ -332,6 +387,8 @@ linkedlist1.desc()
 # 8
 # 9
 ```
+
+
 
 
 
