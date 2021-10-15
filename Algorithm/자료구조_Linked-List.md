@@ -272,44 +272,43 @@ class Node:
     def __init__(self, data, next=None):
         self.data = data
         self.next = next
-    
+
+# 위의 기존 코드에서 `delete`메서드만 추가하겠습니다.
 class NodeMgmt:
-    def __init__(self, data):
-        self.head = Node(data)
-        
-    def add(self, data):
-        if self.head == '':
-            self.head = Node(data)
-        else:
-            node = self.head
-            while node.next:
-                node = node.next
-            node.next = Node(data)
-        
-    def desc(self):
-        node = self.head
-        while node:
-            print (node.data)
-            node = node.next
+    		:
+	        :
     
+    # 삭제 메서드
     def delete(self, data):
+        # 처음 head값이 없으면
         if self.head == '':
             print ("해당 값을 가진 노드가 없습니다.")
             return
         
+        # head값이 있을때 data변수가 같으면
         if self.head.data == data:
+            # self.head 객체를 삭제하기 위해, 임시로 temp에 담아서 객체를 삭제한 이유는
+            # self.head 객체를 삭제하면, 밑의 코드에서 실행이 안되기 때문!
             temp = self.head
+            # head의 주소가 다음 노드의 head로 변경이 되어야 하기때문에 바꾸는 코드
             self.head = self.head.next
+            # temp변수를 삭제
             del temp
         else:
             node = self.head
+            # 다음 노드가 있으면
             while node.next:
+                # 다음 노드의 데이터가 같은 데이터면
                 if node.next.data == data:
                     temp = node.next
+                    # 삭제할 노드의 다음 노드를 그 이전 노드와 연결
                     node.next = node.next.next
                     del temp
                     return
+                
+                # 다음의 노드의 데이터가 다른 데이터면
                 else:
+                    # 다음 노드로 간다
                     node = node.next
 ```
 
