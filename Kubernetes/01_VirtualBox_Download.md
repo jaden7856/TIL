@@ -18,7 +18,7 @@ C:> bcdedit /set hypervisorlaunchtype off
 
 ## 1. Virtual Box 설치
 
-- https://www.virtualbox.org/
+- https://www.virtualbox.org/wiki/Downloads
 
 
 
