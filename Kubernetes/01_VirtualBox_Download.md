@@ -25,6 +25,7 @@ C:> bcdedit /set hypervisorlaunchtype off
 ## 2. Vagrant 설치
 
 - https://www.vagrantup.com/
+  - 만약 VMware를 쓴다면 https://www.vagrantup.com/vmware/downloads 여기서 다운받자!
 
 
 
