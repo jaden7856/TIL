@@ -2,7 +2,7 @@
 
 ### 1. 라이센스 신청
 
-- 라이센스 신청하는 방법은 [게시물](https://github.com/jaden7856/Tibero/blob/main/1_Tibero-License.md)을 참조합니다.
+- 라이센스 신청하는 방법은 [게시물](https://github.com/jaden7856/TIL/blob/master/Tibero/1_Tibero-License.md)을 참조합니다.
 
 
 
