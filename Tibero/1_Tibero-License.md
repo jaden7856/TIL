@@ -26,5 +26,5 @@ DESKTOP-3HOH52D
 
 
 
-**발급이 완료되면 자기 계정의 이메일로 온 license.xml을 설치디렉토리/license 폴더 밑에 위치시킨다.**
+발급이 완료되면 자기 계정의 **이메일**로 온 `license.xml`을 **Tibero6/license 폴더 밑에 위치시킨다.**
 
