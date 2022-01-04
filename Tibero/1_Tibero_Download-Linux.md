@@ -74,11 +74,13 @@ semaphore max value = 32767
 #tibero
 kernel.sem = 10000 32000 10000 10000
 kernel.shmall = ceil(SHMMAX/PAGE_SIZE)값보다 크게	# Linux 기본 PAGE_SIZE는 4096
-kernel.shmmax = 18014398509465599
+kernel.shmmax = 8014398509465599		# 시스템의 물리적인 메모리 절반 (byte 단위)
 kernel.shmmni = 4096
 fs.file-max = 6815744
 net.ipv4.ip_local_port_range = 1024 65000
 ```
+
+시스템 메모리가 16GB이고 Tibero RDBMS가 사용할 최대 메모리가 8GB인 경우를 기준으로 설정
 
  `sysctl.conf`에 추가한 후에 **`sysctl -p`명령어로 동적 적용**
 
