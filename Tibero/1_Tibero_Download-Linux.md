@@ -73,8 +73,8 @@ semaphore max value = 32767
 ```
 #tibero
 kernel.sem = 10000 32000 10000 10000
+kernel.shmmax = 8589934592		# 시스템의 물리적인 메모리 절반 (byte 단위)
 kernel.shmall = ceil(SHMMAX/PAGE_SIZE)값보다 크게	# Linux 기본 PAGE_SIZE는 4096
-kernel.shmmax = 8014398509465599		# 시스템의 물리적인 메모리 절반 (byte 단위)
 kernel.shmmni = 4096
 fs.file-max = 6815744
 net.ipv4.ip_local_port_range = 1024 65000
