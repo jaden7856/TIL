@@ -18,7 +18,11 @@ Tibero Active Cluster(TAC)는 **확장성, 고가용성을 목적으로 제공**
 
 ![img](https://blog.kakaocdn.net/dn/byJwrH/btroWoiZ0Mf/hELrGDtSU1KvV0iXy1IX71/img.png)
 
+PORT 번호는 임의의 숫자입니다.
+
 [출처 : https://novice-data.tistory.com/60]
+
+
 
 
 
