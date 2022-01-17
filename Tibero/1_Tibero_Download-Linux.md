@@ -17,7 +17,7 @@
 Tibero를 설치하기 위해서는 `JDK 1.5.17` 이상 버전이 필요합니다. 저는 Openjdk 8 버전을 설치했습니다.
 
 ```
-# yum install java-1.8.0-openjdk-devel.x86_64
+# yum -y install java-1.8.0-openjdk-devel.x86_64
 ```
 
 
@@ -27,7 +27,7 @@ Tibero를 설치하기 위해서는 `JDK 1.5.17` 이상 버전이 필요합니�
 Tibero 설치 시 필요한 패키지들을 설치
 
 ```
-# yum install gcc gcc-c++ libgcc libstdc++ libstdc++-devele compat-libstdc++ libaio libaio-devel
+# yum -y install gcc gcc-c++ libgcc libstdc++ libstdc++-devele compat-libstdc++ libaio libaio-devel
 ```
 
 
