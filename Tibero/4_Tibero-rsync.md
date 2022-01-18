@@ -4,7 +4,7 @@
 
 
 
-
+<br><br>
 
 ## rsync
 
@@ -20,7 +20,7 @@ server 구동시 SSH 나 RSH 같은 Remote Shell protocol 기반에서 동작할
 
 
 
-
+<br><br>
 
 ### 설치
 
@@ -38,7 +38,7 @@ server 구동시 SSH 나 RSH 같은 Remote Shell protocol 기반에서 동작할
 
 
 
-
+<br><br>
 
 ### 명령어
 
@@ -77,7 +77,7 @@ server 구동시 SSH 나 RSH 같은 Remote Shell protocol 기반에서 동작할
 
 
 
-
+<br><br>
 
 ### Test
 
@@ -92,7 +92,7 @@ server 구동시 SSH 나 RSH 같은 Remote Shell protocol 기반에서 동작할
 root@192.168.33.138's password: [root계정 비밀번호 입력]
 ```
 
-
+<br>
 
 #### Authentication failed 오류!
 
@@ -133,7 +133,7 @@ secrets file = /etc/rsyncd.secrets
  # chown root:root rsyncd.secrets
  ```
 
-
+<br>
 
 - Target 서버
 
@@ -142,6 +142,10 @@ secrets file = /etc/rsyncd.secrets
 위의 사진과 같이 Target 서버에 제대로 복사가 완료가 되었습니다.
 
 
+
+<br>
+
+#### 추가
 
 이제 설정값 복사를 하지않은 `sysctl.conf`파일에 들어간 후 맨밑 하단에 밑의 값들을 추가합니다.
 
@@ -164,6 +168,12 @@ net.ipv4.ip_local_port_range = 1024 65000
  `sysctl.conf`에 추가한 후에 **`sysctl -p`명령어로 동적 적용**
 
 
+
+**그리고 만약 기업에서 라이센스를 신청하지 않고 개인이라면 그 노드의 `hostname`에 맞게 라이센스발급 받은걸로 바꿔주세요!**
+
+
+
+<br>
 
 #### 확인
 
