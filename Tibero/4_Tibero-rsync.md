@@ -145,6 +145,8 @@ secrets file = /etc/rsyncd.secrets
 
 <br>
 
+<br>
+
 #### 추가
 
 이제 설정값 복사를 하지않은 `sysctl.conf`파일에 들어간 후 맨밑 하단에 밑의 값들을 추가합니다.
@@ -167,11 +169,27 @@ net.ipv4.ip_local_port_range = 1024 65000
 
  `sysctl.conf`에 추가한 후에 **`sysctl -p`명령어로 동적 적용**
 
+<br>
+
+밑의 파일로 들어가서 `CONTROL_FILES`의 절대 경로를 자신의 계정 경로에맞게 설정합니다.
+
+```
+$ vi $TB_HOME/config/tibero.tip
+
+DB_NAME=tibero
+LISTENER_PORT=8629
+CONTROL_FILES="/home/tibero/tibero6/database/tibero/c1.ctl"
+					:
+					:
+```
+
+<br>
+
+**주의! 만약 기업에서 라이센스를 신청하지 않고 개인이라면 그 노드의 `hostname`에 맞게 라이센스발급 받은걸로 바꿔주세요!**
 
 
-**그리고 만약 기업에서 라이센스를 신청하지 않고 개인이라면 그 노드의 `hostname`에 맞게 라이센스발급 받은걸로 바꿔주세요!**
 
-
+<br>
 
 <br>
 
