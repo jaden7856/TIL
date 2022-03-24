@@ -103,26 +103,26 @@ func main() {
 
 우선 main 함수가 호출되면서 지역변수 `a`가 선언되고 메모리상에 `a`라는 이름의 변수가 할당되고 28로 초기화됩니다.
 
-<center>
+<p align="center">
     <img src="11_Function.assets/1.png" width="300" height="200" />
-</center>
+</p>
 
 `var a int = 28` 다음 문장을 실행하면 바로 `exampleFunc1` 함수가 호출되고 지역변수 `a`를 선언하고 초기화를 했기 때문에 메모리 공간에는 추가로 변수 `a`가 할당되고 10으로 초기화됩니다. 하지만 이 상태는 main 함수가 종료된 상황이 아니기 때문에 main 함수 호출 시 할당된 변수 `a`도 메모리 공간에 함께 존재하게 됩니다. 위에 설명한 것처럼 지역변수는 실행되고 있는 지역에서만 유효하므로 다른 지역의 변수의 변수명과 관계없습니다. 따라서 변수명이 같으면 가린다는 느낌이 듭니다. 
 
-<center>
+<p align="center">
     <img src="11_Function.assets/2.png" width="300" height="200" />
-</center>
+</p>
 
 그리고 `exampleFunc1`의 코드를 차례로 실행하고 함수가 종료되면 `exampleFunc1` 함수에서 선언된 변수 `a`는 메모리 공간에서 사라지게 됩니다. 그래서 메모리 공간에는 main 함수의 변수 `a`만 남게됩니다. 그리고나서 코드의 흐름은 다시 main 함수로 돌아와 `exampleFunc2` 함수를 호출합니다. `exmapleFunc2` 함수 역시 지역변수 `b`와 `c`를 선언해 메모리 공간에 변수 `b`와 `c`가 각각 할당되고 20, 30으로 초기화 됩니다.
 
-<center>
+<p align="center">
     <img src="11_Function.assets/3.png" width="300" height="200" />
-</center>
+</p>
 그리고 `exampleFunc2`의 코드를 차례로 실행하고 함수가 종료되면, 또 함수 내에서 선언했던 변수 `b`와 `c`는 소멸하게 되고 코드의 흐름이 다시 main 함수로 돌아와 a만 메모리에 남게됩니다. 그리고 main 함수도 종료되면  메모리 공간의 모든 변수가 소멸되는 것입니다.
 
-<center>
+<p align="center">
     <img src="11_Function.assets/1.png" width="300" height="200" />
-</center>
+</p>
 
 지역변수를 이해했다면 전역변수는 수월할 것입니다. 아래 코드는 예시입니다.
 
