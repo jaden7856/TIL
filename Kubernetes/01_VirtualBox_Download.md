@@ -3,6 +3,7 @@
 > Vagrant를 사용하지 않고, 직접 VM을 구성하셔도 됩니다. (VirrualBox or VMWare)
 > Windows 10의 Docker Desktop은 Cluster 구성이 되지 않기 때문에, VM사용을 권장합니다.
 
+<br>
 
 ## 0. VirutalBox를 사용하기 위해 HyperV off
 
@@ -14,20 +15,20 @@ C:> bcdedit # 명령어로 현재 활성화되어 있는 기능 확인
 C:> bcdedit /set hypervisorlaunchtype off
 ```
 
-
+<br>
 
 ## 1. Virtual Box 설치
 
 - https://www.virtualbox.org/wiki/Downloads
 
-
+<br>
 
 ## 2. Vagrant 설치
 
 - https://www.vagrantup.com/
   - 만약 VMware를 쓴다면 https://www.vagrantup.com/vmware/downloads 여기서 다운받자!
 
-
+<br>
 
 ## 3. 작업 폴더 생성
 
@@ -74,7 +75,7 @@ C:\Work\vagrant>vagrant ssh [Vagrant VM 이름]
         ex) vagrant ssh jenkins-server
 ```
 
-
+<br>
 
 ## 4. 사전 준비 - Master, Node 모두
 
@@ -160,7 +161,7 @@ vi /etc/hosts
 ping master
 ```
 
-
+<br>
 
 ## 5. Vagrant에서 Docker 설치 - Master, Node 모두
 
@@ -196,7 +197,7 @@ docker-compose -version
 docker run hello-world
   ```
 
-
+<br>
 
 ## 6. Vagrant에서 Kubernetes 설치 - Master, Node 모두
 
@@ -206,7 +207,7 @@ docker run hello-world
 yum install -y --disableexcludes=kubernetes kubeadm-1.15.5-0.x86_64 kubectl-1.15.5-0.x86_64 kubelet-1.15.5-0.x86_64
 ```
 
-
+<br>
 
 ## 7. Kubernetes 설정 - Master
 
@@ -216,7 +217,25 @@ yum install -y --disableexcludes=kubernetes kubeadm-1.15.5-0.x86_64 kubectl-1.15
 systemctl enable --now kubelet
 ```
 
+- init 오류 방지
+```
+cat <<EOF | sudo tee /etc/docker/daemon.json
+{
+"exec-opts": ["native.cgroupdriver=systemd"],
+"log-driver": "json-file",
+"log-opts": {
+"max-size": "100m"
+},
+"storage-driver": "overlay2"
+}
+EOF
 
+sudo systemctl enable docker
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+
+<br>
 
 - 초기화
 
@@ -261,7 +280,7 @@ sed s/192.168.0.0\\/16/10.96.0.0\\/12/g -i calico.yaml
 kubectl apply -f calico.yaml
 ```
 
-
+<br>
 
 ## 8. Kubernetes 노드 연결 - Node
 
@@ -288,7 +307,7 @@ kubeadm reset
 kubectl get nodes
 ```
 
-
+<br>
 
 ## 9. 테스트
 
