@@ -48,8 +48,12 @@ func main() { //간결해진 main문
 	printResult(result)
 }
 ```
+
+
 <br>
 <br>
+
+
 
 ## 전역변수와 지역변수
 매개변수는 값 자체를 전달하는 방식(Pass by value)과 값의 주소를 전달하는 방식(Pass by reference)이 있습니다.
@@ -300,3 +304,102 @@ func main() {
 ```
 
 위 코드는 기능은 다르지 않고 슬라이스의 접근 방법을 다르게 활용한 `addOne`과 `addTwo` 가변 인자 함수를 보여줍니다. 
+
+
+
+<br>
+
+<br>
+
+
+
+## 반환값(리턴값)
+
+함수의 제일 기본적인 기능은 입력된 값의 연산 후 출력입니다. 예를 들어, 덧셈 기능을 하는 함수라면 3과 4가 입력됐을 때 7이라는 값이 반환되어야 하는 것입니다. Go언어는 다른 언어와 다른 반환값의 특징이 있습니다. 바로 **Go언어에서는 복수개의 반환값을 반환할 수 있다는 것입니다.**
+
+- 환값의 개수만큼 반환형을 명시해야 합니다. 2개 이상의 반환형을 입력할 때는 괄호(())안에 명시합니다.
+- 동일한 반환형이더라도 모두 명시해야합니다.((int, int, int)) 
+
+```go
+package main
+
+import "fmt"
+
+func add(num ...int) (int, int) {
+	var result int
+	var count int
+	
+	for i := 0; i < len(num); i++ { //for문을 이용한 num[i] 순차 접근
+		result += num[i]
+		count++
+	}
+	
+	return result, count
+}
+
+func main() {
+	nums := []int{10, 20, 30, 40, 50}
+
+	fmt.Println(add(nums...))	// 150 5
+}
+```
+
+숫자를 모두 더한 값인 `result`와 몇개의 매개변수가 전달됐는지 확인하는 `count`가 반환됩니다.
+
+<br>
+
+
+
+### Named Return Parameter
+
+------
+
+Named return parameter는 직역하면 '이름이 붙여진 반환 인자'입니다. 여러 개의 값을 반환할 때 괄호 안에 반환형을 모두 명시해야 한다고 했습니다. 그런데 반환 값이 많고 반환형이 다양하다면 가독성이 좋지 않을 수 있습니다. 따라서 Named return parameter는 반환형과 반환 값의 이름을 같이 명시하는 것을 말합니다.
+
+- (반환값이름1 반환형1, 반환값이름2 반환형2, 반환값이름3 반환형3, ...) 형식으로 입력합니다.
+- **"반환값이름 반환형" 자체가 변수 선언입니다**. 따라서 함수 안에서 따로 선언할 필요가 없습니다. 만약 선언하면 에러가 발생합니다.
+- 'return'을 생략하면 안 됩니다. 반환 값이 있을 때는 반드시 return을 명시해야합니다.
+- 반환 값이 하나라도 반환값이름을 명시했다면 괄호 안에 써야합니다.
+
+```go
+package main
+
+import "fmt"
+
+func dessertList(fruit ...string) (count int, list []string) { //여기서 이미 선언된 것이다
+
+	for i := 0; i < len(fruit); i++ {
+		list = append(list, fruit[i])
+		count++
+	}
+
+	return //생략하면 안 된다
+}
+
+func inputFruit() (list []string) { //Named return parameter는 값이 하나라도 괄호를 써야한다
+
+	for {
+		var fruit string
+		fmt.Print("과일을 입력하세요:")
+		fmt.Scanln(&fruit)
+
+		if fruit != "1" {
+			list = append(list, fruit)
+		} else {
+			fmt.Println("입력을 종료합니다.\n")
+			break //반복문을 빠져나간다
+		}
+	}
+
+	return
+}
+
+func main() {
+	fmt.Println("디저트로 먹을 과일을 입력하고 출력합니다. \n1을 입력하면 입력을 멈춥니다.\n")
+	count, list := dessertList(inputFruit()...) //함수를 변수처럼 사용할 수 있습니다
+	fmt.Printf("%d개의 과일을 입력하셨고, 입력한 과일의 리스트는 %s입니다.\n", count, list)
+}
+```
+
+`dessertList` 함수 안에 `inputFruit` 함수를 심지어 뒤에 `... `용법까지 사용했습니다. 이는 함수 자체를 전달인자로 사용했다는 것입니다. 이렇게 무조건 함수의 반환값을 변수를 따로 선언해서 초기화할 필요는 없습니다. 필요에 따라 **함수를 변수처럼 사용할 수 있습니다.**
+
