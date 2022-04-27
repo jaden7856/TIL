@@ -490,7 +490,75 @@ $ bin/kafka-topics.sh --delete --topic <TOPIC_NAME> --bootstrap-server <IP>:9092
 ※ Windows에서 `topic`을 삭제하면 삭제가 되고나서 kafka server가 강제 종료가 되어 버립니다.  kafka server를 다시 실행해도 shutdown이 되기 때문에 `C:\tmp`에서 `kafka-logs`파일을 삭제하고 zookeeper server도 종료 한뒤 `zookeeper`파일도 삭제 해 주셔야 합니다.
 이러한 일이 발생하는 이유는 Kafka자체가 Linux기반이기 때문에 Window에서 작은 오류가 발생하는 것 같습니다. 이러한 문제를 해결 하기 위해서는 `topic`을 삭제하기 보다는 새로 만드는 것을 추천 드립니다.
 
+<br>
 
+#### **특정 메시지 삭제**
+토픽을 삭제하지 않고 그 토픽안에 메시지만 삭제하고싶을때가 있습니다.
 
+만약 특정 topic `test`에서 offset 0~90까지 메시지 삭제를 원한다면 json 파일을 만들고 실행합니다.
+```shell
+$ ./bin/kafka-delete-records.sh --bootstrap-server 192.168.XX.XX:9092,... --offset-json-file {JSON_FILE_NAME}
+```
 
+- json file
+```json
+{"partitions": [{"topic": "test", "partition": 0, "offset": 90}], "version":1 }
+```
 
+<br>
+
+그리고 여러 파티션이 있는경우 원하는 파티션과 모든 메시지를 삭제하고 싶은 경우의 Json 파일 내용입니다.
+```json
+{
+
+"partitions": [
+
+    {
+
+        "topic": "test",
+
+        "partition": 0,
+
+        "offset": -1
+
+    }, {
+
+        "topic": "test",
+
+        "partition": 1,
+
+        "offset": -1
+
+    }, {
+
+        "topic": "test",
+
+        "partition": 2,
+
+        "offset": -1
+
+    }, {
+
+        "topic": "test",
+
+        "partition": 3,
+
+        "offset": -1
+
+    }
+
+],
+
+"version": 1
+
+}
+```
+
+명령을 실행하면 이 메시지가 표시됩니다.
+```shell
+Records delete operation completed:
+partition: test-0   low_watermark: 7
+partition: test-1   low_watermark: 7
+partition: test-2   low_watermark: 7
+partition: test-3   low_watermark: 7
+```
