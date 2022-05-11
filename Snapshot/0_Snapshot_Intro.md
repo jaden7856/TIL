@@ -49,7 +49,7 @@ Copy-on-write(이하 COW) Snapshot 방식은 가장 널리 쓰이는 스냅샷 �
 쓰기 작업(write)이 있을 시 데이터를 복제(copy)하기 때문에 실질적인 데이터 처리는 데이터가 변경되는 시점에서 이루어집니다. 
 따라서 **스냅샷을 생성하는 시스템에 거의 영향을 주지 않고 스냅샷 생성이 거의 즉각적으로 이루어집니다.**
 
-<div style="text-align:center"><img src="0_Snapshot_Intro.assets/1-1.png" /></div>
+<div style="text-align:center"><img src="0_Snapshot_Intro.assets/1.png" /></div>
 
 위의 그림처럼 스냅샷을 생성하면 원본 데이터(`Original Copy`) `A`, `B`, `C`, `D`의 위치를 가리키고 있는데, 이를 포인터(pointer)라고 합니다. 
 이 포인터를 통해 스토리지의 파일시스템이나 컨트롤러가 데이터를 추적할 수 있습니다. 여기서 데이터가 수정되는 경우, COW 스냅샷에서는 
