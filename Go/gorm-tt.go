@@ -1,11 +1,15 @@
 package main
 
+// go get -u gorm.io/gorm
+// go get -u gorm.io/driver/postgres
 import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
+// PolicyObjectSet 는 Gorm 에서 Table 역할을 하는 스트럭쳐입니다. Remarks 에서 `*string`의 `*`은 nullable 상태를 얘기합니다.
+// 타입선언 뒤에 `gorm:""`값을 넣어 각각의 컬럼의 옵션을 부여할 수 있습니다.
 type PolicyObjectSet struct {
 	gorm.Model
 	// ID 는 자동 증가되는 PolicyObjectSet 의 식별자이다.
@@ -24,6 +28,8 @@ type PolicyObjectSet struct {
 	UpdatedAt int64 `gorm:"autoUpdateTime;not null" json:"updatedAt,omitempty"`
 }
 
+// TableName 은 Databases 에선 소문자만 있고 `_`(언더바)를 통해 단어를 붙입니다. 때문에 그 Database table name에 맞게
+// 적용하는 함수입니다.
 func (PolicyObjectSet) TableName() string {
 	return "policy_objectset"
 }
