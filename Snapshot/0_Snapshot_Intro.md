@@ -92,7 +92,7 @@ Copy-on-write with background copy는 COW의 즉각적인 스냅샷 데이터를
 <br>
 
 ## Redirect-on-write (ROW) Snapshot
-Redirect-on-write는 COW와 비슷하지만 이중 쓰기 성능 저하를 제거합니다. ROW는 또한 COW와 같은 저장 공간 효율적인 스냅샷을 제공합니다.
+Redirect-on-write는 COW와 비슷하지만 이중 쓰기 성능 저하가 없습니다. ROW는 또한 COW와 같은 저장 공간이 효율적인 스냅샷을 제공합니다.
 원본 데이터의 복사본 한 개를 스냅샷 예약 공간(다양한 공급업체에서 설명하는 캐시, LUN 예약 또는 스냅샷 풀)과 CoW(Copy On Write)에 필요한 
 변경된 데이터 복사본에 쓰는 대신 쓰기 시 리디렉션 (RoW)는 **변경된 데이터만 새 블록에 쓰거나 리디렉션합니다.**
 
