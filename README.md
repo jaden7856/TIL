@@ -1,11 +1,11 @@
 # Today I Learned
 
 - 오늘 배운 내용을 지속적으로 학습, 정리하는 repo 입니다.
-- 좋은 개발자가 되기 위해 하루동안 학습한 내용이나 개발관련 경험들을 기록으로 남긴다.
-- Today I Learned 이지만 최대한 공부하고 기록할 수 있도록 노력하자.
+- 좋은 개발자가 되기 위해 하루동안 학습한 내용이나 개발관련 경험들을 기록으로 남기는 곳입니다.
+- Today I Learned 이지만 최대한 공부하고 기록할 수 있도록 노력하자!
 - `2021-01-07` - ing
 
-Golang, Typescript, Node.js는 [구름 EDU](https://edu.goorm.io/)에서 강의를 보며 쓴 자료입니다.
+> Golang, Typescript, Node.js는 [구름 EDU](https://edu.goorm.io/)에서 강의를 보며 쓴 자료입니다.
 
 <br>
 
@@ -55,6 +55,7 @@ Golang, Typescript, Node.js는 [구름 EDU](https://edu.goorm.io/)에서 강의�
 - [Go언어의 Swich문](https://github.com/jaden7856/TIL/blob/master/Go/08_Swich.md)
 - [Go언어의 Break, Continue, Goto문](https://github.com/jaden7856/TIL/blob/master/Go/09_Break_Continue_Goto.md)
 - [Go언어의 Collenction문](https://github.com/jaden7856/TIL/blob/master/Go/10_Collection.md)
+- [Go언어의 Function문](Go/11_Function.md)
 
 <br>
 
@@ -144,6 +145,7 @@ Golang, Typescript, Node.js는 [구름 EDU](https://edu.goorm.io/)에서 강의�
 ### Linux
 
 - [Linux 기본 명령어](https://github.com/jaden7856/TIL/blob/master/linux/00_linux-command.md)
+- [Linux NFS](linux/01_nfs.md)
 
 <br>
 
@@ -170,9 +172,18 @@ Golang, Typescript, Node.js는 [구름 EDU](https://edu.goorm.io/)에서 강의�
 
 <br>
 
+### Snapshot
+
+- [Snapshot의 6가지 스토리지](Snapshot/0_Snapshot_Intro.md)
+- [XFS의 Reflink 란?](Snapshot/1_Xfs_Reflinks.md)
+- [Reflink 사용법](Snapshot/2_Reflink_사용법.md)
+
+<br>
+
 ### Tibero
 
 - [Tibero 란?](Tibero/0_Tibero-Intro.md)
+- [Tibero License 저장](Tibero/1_Tibero-License.md)
 - [Tibero 설치법 using Linux](Tibero/1_Tibero_Download-Linux.md)
 - [Tibero Cluster : TAC-TAS](Tibero/2_Tibero-TAC-TAS.md)
 - [tbExport, tbImport](Tibero/3_Tibero-export-import.md)
@@ -182,5 +193,3 @@ Golang, Typescript, Node.js는 [구름 EDU](https://edu.goorm.io/)에서 강의�
 ### Heroku
 
 - [Heroku 설치 및 기본 사용법](https://github.com/jaden7856/TIL/blob/master/Heroku/heroku_Intro.md)
-
-<br>
