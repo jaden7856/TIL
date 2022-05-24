@@ -86,7 +86,7 @@ $ exportfs -r
 ```
 // 실행
 $ systemctl start nfs-server
-$ systemctl enable nfs-serve
+$ systemctl enable nfs-server
 
 // 확인
 $ exportfs -v
