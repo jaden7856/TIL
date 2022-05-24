@@ -69,6 +69,7 @@ $ vi /etc/exports
 <br>
 
 #### 2-2. 디렉터리 권한 부여
+NFS를 할 디렉토리에 권한을 부여하지 않으면 클라이언트에서 쓰기작업을 할 수가 없습니다.
 ```
 $ chmod 707 /share
 ```
@@ -101,6 +102,7 @@ Export list for xfs:
 <br>
 
 ### 4. 방화벽 끄기
+방화벽을 끄지않으면 클라이언트에서 서버 마운트 확인을 할 수가 없습니다.
 ```
 $ service firewalld stop
 
