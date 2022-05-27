@@ -63,17 +63,53 @@ Stub은 클라이언트와 서버 각각에 존재합니다. `Client Stub`은 �
 프로토콜 버퍼 데이터는 메시지로 구성됩니다. 기서 각 메시지는 필드 라고 하는 일련의 이름-값 쌍을 포함하는 정보의 작은 논리적 레코드입니다. 
 다음은 간단한 예입니다.
 
-```protobuf
- message Person {
-   string name = 1;
-   int32 id = 2;
-   bool has_ponycopter = 3;
- }
+```prototext
+message Person {
+  string name = 1;
+  int32 id = 2;
+  bool has_ponycopter = 3;
+}
 ```
 이렇게 작성된 `.proto`파일을 `protoc` 컴파일러로 컴파일 하면 데이터에 접근할 수 있는 각 언어에 맞는 형태의 데이터 클래스를 생성해줍니다.
 
 `proto3` 언어 가이드 및 각 언어에 대해 제공되는 [문서](https://developers.google.com/protocol-buffers/docs/proto3)에서 자세한 내용을 확인
 할 수 있습니다.
+
+<br>
+
+---
+제가 작성한 `.proto` 파일의 예시입니다. `option`에서 `go_package` protoc 명령을 따르면 프로젝트 루트에 `github.com/jaden7856/go-grpcUpload`라는 
+모듈 이름을 가진 proto 파일이 있습니다. 그런 다음 코드는 생성을 담당할 `streamProtoc` 폴더에 배치됩니다.
+
+사용을 위해 source_relative의 출력 위치를 조정해야 할 수도 있지만 최소한 경로가 중복되거나 GOPATH에 코드를 다시 배치하는 데 의존하지 않아도 됩니다.
+
+```protobuf
+syntax = "proto3";
+
+package streamProtoc;
+
+option go_package = "github.com/jaden7856/go-grpcUpload/streamProtoc";
+
+service UploadFileService {
+  rpc Upload (stream UploadRequest) returns (UploadResponse) {}
+}
+
+message UploadRequest {
+  bytes Content = 1;
+  string Filename = 2;
+}
+
+enum UploadStatusCode {
+  Unknown = 0;
+  Ok = 1;
+  Failed = 2;
+}
+
+message UploadResponse {
+  string Message = 1;
+  UploadStatusCode Code = 2;
+}
+```
 
 <br>
 <br>
