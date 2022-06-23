@@ -177,7 +177,7 @@ Go언어에서 매개변수는 Pass by value, Pass by reference, 가변 인자�
 
 <br>
 
-
+---
 
 ### Pass by value
 
@@ -205,8 +205,9 @@ func main() {
 ```
 
 <br>
+<br>
 
-
+---
 
 ### Pass by reference
 
@@ -242,8 +243,9 @@ func main() {
 이렇게 main의 변수인 `a`의 값을 `printSqure` 함수 안에서 참조함으로써 다른 함수에서 연산을했음에도 불구하고 원래 값이 바뀝니다.  
 
 <br>
+<br>
 
-
+---
 
 ### 가변 인자 함수
 
@@ -347,12 +349,11 @@ func main() {
 숫자를 모두 더한 값인 `result`와 몇개의 매개변수가 전달됐는지 확인하는 `count`가 반환됩니다.
 
 <br>
+<br>
 
-
+---
 
 ### Named Return Parameter
-
-------
 
 Named return parameter는 직역하면 '이름이 붙여진 반환 인자'입니다. 여러 개의 값을 반환할 때 괄호 안에 반환형을 모두 명시해야 한다고 했습니다. 그런데 반환 값이 많고 반환형이 다양하다면 가독성이 좋지 않을 수 있습니다. 따라서 Named return parameter는 반환형과 반환 값의 이름을 같이 명시하는 것을 말합니다.
 
@@ -406,7 +407,9 @@ func main() {
 <br>
 <br>
 
-## 익명 함수
+---
+
+### 익명 함수
 익명 함수는 단어에서도 알 수 있듯이 '이름이 없는 함수'입니다. 함수의 이름을 아무렇게나 막 붙이는 경우는 없기 때문에 함수의 이름은 상징적이고 
 가독성에 있어 중요한 역할을 합니다. 예를 들어, 숫자를  더하는 기능을 하는 함수는 `add`라고 이름을 붙일 수 있습니다. 그렇다면 아이러니하게 
 '왜 익명 함수라는 것이 있습니까?'라는 의문점이 생길 수 있습니다.
@@ -516,6 +519,97 @@ func main() {
 }
 ```
 
-## 일급 함수(First-Class Function)
+<br>
+<br>
 
-// TODO
+---
+
+### 일급 함수(First-Class Function)
+
+위의 말대로라면 **함수는 이렇게 좋은 성능을 가지고 있다** 라고 말하는 것 같지만, 무조건적으로 함수를 선언하는 것은 효율적이지 않습니다.
+이에 따라 함수의 핵심 기능만 유연하게 사용할 수 있는 `익명 함수`에 대해 알아봤습니다. 그런데 익명 함수의 사용은 Go언어에서의 함수가 `일급 함수`이기 때문에 가능한 것입니다.
+
+**일급 함수라는 의미는 함수를 기본 타입과 동일하게 사용할 수 있어 함수 자체를 다른 함수의 매개변수로 전달하거나 다른 함수의 반환 값으로 사용될 수 있다는 것입니다.**
+
+```go
+package main
+
+import "fmt"
+
+func calc(f func(int, int) int, a int, b int) int {
+	result := f(a, b)
+	return result
+}
+
+func main() {
+	multi := func(i int, j int) int {
+		return i * j
+	}
+	
+	r1 := calc(multi, 10, 20)
+	fmt.Println(r1)
+
+	r2 := calc(func(x int, y int) int { return x + y }, 10, 20)
+	fmt.Println(r2)
+}
+```
+
+Go언어에서의 함수는 일급 함수이기 때문에 매개변수로 사용할 수 있고, 변수에 초기화 할 수 있습니다.
+
+위 코드에는 총 3개의 함수가 있습니다.
+- `multi`라는 변수에 할당된 두 수를 곱하는 익명 함수
+- 따로 선언하지 않고 전달 인자 자리에 만들어진 두 수를 더하는 익명함수
+- 전달 받은 매개변수를 전달받은 함수의 기능으로 계산하는 `calc` 함수
+
+핵심 기능을 하는 `calc` 함수는 두번 호출되는데 첫 번째는 `multi`라는 익명함수를 전달받아 10과 20을 곱하고, 두 번째는 두 수를 더하는 익명 함수 자체를 전달받아 10과 20을 더합니다.
+눈여겨봐야할 점은 `clac` 함수의 '매개변수형'입니다. 매개변수형으로 '함수형'을 선언했습니다. 전달 받는 함수인 `multi` 함수와 두 수를 더하는 익명 함수 둘 다 
+매개변수가 두 개고 `int` 형입니다. 그리고 반환형도 `int`입니다. 따라서 `func calc(f func(int, int) int, a int, b int) int {` 형식으로 입력했습니다. 
+함수를 매개변수형으로 사용할 때는 "매개변수함수이름 func(전달받는함수의매개변수형) 전달받는함수의반환형" 형태로 선언합니다. 매개변수형으로 함수를 쓸 때는 꼭 전달받는 함수의 형태에 주의해야합니다.
+
+<br>
+<br>
+
+---
+
+### type문을 사용한 함수 원형 정의
+
+Go언어에서는 'type'문을 사용해 함수의 원형을 정의하고 사용자가 정의한 이름을 형으로써 사용합니다.  
+이러한 사용자의 Custom Type은 C언어의 '구조체' 개념과 유사합니다. 
+
+```go
+package main
+
+import "fmt"
+
+//함수 원형 정의
+type calculatorNum func(int, int) int 
+type calculatorStr func(string, string) string
+
+func calNum(f calculatorNum, a int, b int) int {
+	result := f(a, b)
+	return result
+}
+
+func calStr(f calculatorStr, a string, b string) string {
+	sentence := f(a, b)
+	return sentence
+}
+
+func main() {
+	multi := func(i int, j int) int {
+		return i * j
+	}
+	duple := func(i string, j string) string {
+		return i + j + i + j
+	}
+
+	r1 := calNum(multi, 10, 20)
+	fmt.Println(r1)
+
+	r2 := calStr(duple, "Hello", " Golang ")
+	fmt.Println(r2)
+}
+```
+
+type문을 이용해 두 문자열을 복제하는 함수형을 `calculatorStr`로 정의하고, 두 정수를 합하는 함수형을 `calculatorNum`으로 정의했습니다. 따라서 두 함수를 
+전달받을 때 일일이 길게 선언하지 않고, 사용자가 정의한 형태만 명시할 수 있습니다. 코드가 훨씬 간결하고 깔끔해졌음을 확인할 수 있습니다.
