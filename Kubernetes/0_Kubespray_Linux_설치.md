@@ -4,8 +4,6 @@
 - [1. 개요](#1-개요)
 - \2. 준비
   - [2-1. node](#2-1-node)
-  - [2-2. specs](#2-2-specs)
-  - [2-3. version](#2-3-version)
 - \3. kubernetes 설치
   - [3-1. host 등록](#3-1-host-등록)
   - [3-2. ssh key 배포](#3-2-ssh-key-배포)
@@ -31,7 +29,6 @@
 
 ## 1. 개요
 
-- CDM-Cloud 설치를 위한 셋팅
 - HA 구성을 위한 3개 노드에 설치
 
 <br>
@@ -44,19 +41,6 @@
 - k8s1 : k8s1 (192.168.x.x)
 - k8s2 : k8s2 (192.168.x.x)
 - k8s3 : k8s3 (192.168.x.x)
-
-### 2-2. specs
-
-- OS : CentOS 7
-- HDD :
-- MEM :
-- Network :
-
-### 2-3. version
-
-- Kubespary :
-- Kubenetes : 1.21.2
-- ansible : 2.10.0
 
 <br>
 <br>
@@ -177,25 +161,29 @@ EOF
 - `kubespray node`
 
 ```
-[root]# yum install -y python3 python3-pip wget git
+[### Python38 저장소 설치
+[root]# yum install -y centos-release-scl
 
-# redhat 이슈 - https://daehancni.tistory.com/8
+### Python38 설치
+[root]# yum install -y rh-python38 rh-python38-python-pip which wget git
+[root]# scl enable rh-python38 bash
+[root]# vi ~/.bash_profile
+...
+scl enable rh-python38 bash
+...
+[root]# python --version
+[root]# python3 --version
 
-[root]# dnf install python3-pip
-(주의)
+### 설치
+[root]# python3 -m pip install --upgrade pip
+[root]# pip install ansible                   ### ansible 6.0.0
+[root]# pip install netaddr jinja2            ### netaddr 0.8.0 / jinja2 3.1.2
 
- 사용중인 OS가 RHEL8일 경우, Ansible 설치를 위해서는 Pip를 설치하면 안된다. 그 이유는 CentOS 8에서 Ansible 설치를 위해 EPEL 리파짓토리(repository)를 사용하며 정상적인 동작한다. 하지만 이는 공식적인 패키지(official package)는아니다. 그러므로 ansible 설치를 위해 PIP (the Python package manager)를 사용한다.
-
- 그러므로 아래 설치버전의 ansible을 RHEL8 에서의 설치를 위해서는 Redhat에서 제공되는 리파짓토리(repository)를 활성화하여 설치하여야 한다.
-
- RHEL 8에서 Ansible 설치를 위한 리파짓토리 (repository) 활성화는 아래 명령어를 통하여 수행할 수 있다.
-
-#subscription-manager repos --enable ansible-2.8-for-rhel-8-x86_64-rpms
 ```
 
 <br>
 
-### 3-9. util install-2
+### 3-9. util install-2 (Ansible5 이하에서 설치시)
 
 - `kubespray node`
 
@@ -293,10 +281,6 @@ all:
 ```
 [root]# vi inventory/mycluster/group_vars/k8s_cluster/addons.yml
 
-# Kubernetes dashboard     ## option
-# RBAC required. see docs/getting-started.md for access details.
-dashboard_enabled: true
-
 # Helm deployment    ## helm chart 사용 위해
 helm_enabled: true
 
@@ -306,11 +290,13 @@ metrics_server_kubelet_insecure_tls: false
 
 # Nginx ingress controller deployment     ## 파악 못함
 ingress_nginx_enabled: true
+```
+```
 [root]# vi inventory/mycluster/group_vars/k8s_cluster/k8s-cluster.yml
 
 # Choose network plugin (cilium, calico, weave or flannel. Use cni for generic cni plugin)
 # Can also be set to 'cloud', which lets the cloud provider setup appropriate routing
-kube_network_plugin: weave      
+kube_network_plugin: calico      
 
 # Setting multi_networking to true will install Multus: https://github.com/intel/multus-cni
 kube_network_plugin_multus: true   
@@ -320,7 +306,7 @@ kube_network_plugin_multus: true
 kube_proxy_mode: ipvs      ## weave proxy mode
 
 # Kubernetes cluster name, also will be used as DNS domain
-cluster_name: datacommand     ## option
+cluster_name: kube     ## option
 ```
 
 <br>
@@ -434,14 +420,20 @@ kube-system     metrics-server-86f4df7ff-lkhp6    1/2     Running   3          3
 kube-system     nodelocaldns-fv25k                1/1     Running   0          3m43s
 kube-system     nodelocaldns-p97nm                1/1     Running   0          3m43s
 kube-system     nodelocaldns-twr2f                1/1     Running   0          3m43s
-kube-system     weave-net-9l9cb                   2/2     Running   1          4m40s
-kube-system     weave-net-jgj8h                   2/2     Running   1          4m40s
-kube-system     weave-net-swwn9                   2/2     Running   1          4m40s
+kube-system     calico-net-9l9cb                  2/2     Running   1          4m40s
+kube-system     calico-net-jgj8h                  2/2     Running   1          4m40s
+kube-system     calico-net-swwn9                  2/2     Running   1          4m40s
+```
+
+```
 [root]# kubectl get nodes --all-namespaces
 NAME   STATUS   ROLES                  AGE     VERSION
 k8s1   Ready    control-plane,master   7m45s   v1.21.2
 k8s2   Ready    control-plane,master   7m14s   v1.21.2
 k8s3   Ready    control-plane,master   7m      v1.21.2
+```
+
+```
 [root]# kubectl get deployment --all-namespaces
 NAMESPACE     NAME             READY   UP-TO-DATE   AVAILABLE   AGE
 kube-system   coredns          2/2     2            2           5m15s
