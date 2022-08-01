@@ -44,13 +44,17 @@ libprotoc 3.12.4
 [root@go184]# exit
 
 ### 실행중인 컨테이너를 이미지로 만들기
-[root]# docker commit -a "devops" -m "golang1.18.4" go184 registry.datacommand.co.kr/golang:1.18.4
+[root]# docker commit -a "devops" -m "golang1.18.4" go184 <DIR>/golang:1.18.4
 
 ### 레지스트리 푸쉬
-[root]# docker push registry.datacommand.co.kr/golang:1.18.4 
+[root]# docker push <DIR>/golang:1.18.4 
 ```
-우선 테스트에선 `protobuf`와 `go-micro`를 **v2**와 **v3**, **v4**버전을 다 `go get` 했습니다. 실 사용 golang에선 현재 최신버전인
+저희 회사에서 gloang 이미지에 `google api` 라이브러리와 `go-micro`, `protobuf`를 넣어 사용하기때문에 설치를 해서 이미지를 만들었습니다.
+
+우선 테스트에선 `protobuf`와 `go-micro`를 **v2**와 **v3**, **v4**버전을 다 `go get` 했습니다. 실 사용 golang에선 현재(2022.08) 최신버전인
 **v4**만 사용합니다.
+
+그 다음 정상작동 확인을 위해 `docker run -d -it --name go184 <DIR>/golang:1.18.4` 명령어로 확인합니다.
 
 <br>
 <br>
@@ -69,33 +73,15 @@ libprotoc 3.12.4
 
 ### 2-2. go.mod 
 
-go version이 `1.14`에서 `1.18`로 바뀌면서 그냥 build를 하면 `go.mod` 내의 바뀐 버전을 적용시키기위해 `go mod tidy`와 `go mod vendor`를 해줍니다. 
-
-- connection refused 에러가 뜬다면 변수설정 
-```dockerfile
-export GOFLAGS='-mod=vendor'
-export GOPRIVATE=10.1.1.220/**
-export GOINSECURE=10.1.1.220/**
-```
+go version이 `1.14`에서 `1.18`로 바뀌면서 그냥 build를 하면 `go.mod` 내의 바뀐 버전을 적용시키기위해 `go mod tidy`와 `go mod vendor`를 해줍니다.
 
 <br>
 
 ### 2-3. build
 
 ```
-[root]# docker build -t registry.datacommand.co.kr/<NAME>:<VERSION> .
+[root]# docker build -t <DIR>/<NAME>:<VERSION> .
 ```
-
-각 서비스마다 `docker build`를 하여 image를 생성하고 test 하도록 하겠습니다. 특정 서비스만 서비스하고싶다면 빌드 후 실행을 **cdm-cloud** -> **cdm-center**
--> **cdm-dr** -> **cdm-replicator** 순서로 하시면 됩니다.
-
-<br>
-
-### 2-4 error
-```dockerfile
-The command '/bin/sh -c GOFLAGS='-mod=vendor' CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o registerd cmd/registerd/registerd.go' returned a non-zero code: 2
-```
-만약 `docker build`할때 위와같은 오류가 발생한다면 common폴더에 파일이 없는것입니다.
 
 <br>
 <br>
