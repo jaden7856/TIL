@@ -34,13 +34,13 @@ libprotoc 3.12.4
 [roor@go184]# go mod init test
 [root@go184]# go get -d -u google.golang.org/protobuf
 [root@go184]# go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-[root@go184]# go get -d -u github.com/micro/micro/v3/cmd/protoc-gen-micro
-[root@go184]# go install github.com/micro/micro/v3/cmd/protoc-gen-micro
-[root@go184]# go get -d -u github.com/golang/protobuf/protoc-gen-go
-[root@go184]# go get -d -u github.com/micro/micro/v2/cmd/protoc-gen-micro
 [root@go184]# go get -d -u go-micro.dev/v4
-[root@go184]# go get golang.org/x/lint/golint
-[root@go184]# go get github.com/t-yuki/gocover-cobertura
+[root@go183]# go get -d -u github.com/micro/micro/v3/cmd/protoc-gen-micro
+[root@go183]# go install github.com/micro/micro/v3/cmd/protoc-gen-micro
+[root@go184]# go get -d -u golang.org/x/lint/golint
+[root@go184]# go install golang.org/x/lint/golint
+[root@go184]# go get -d -u github.com/t-yuki/gocover-cobertura
+[root@go184]# go install github.com/t-yuki/gocover-cobertura
 [root@go184]# exit
 
 ### 실행중인 컨테이너를 이미지로 만들기
@@ -51,8 +51,7 @@ libprotoc 3.12.4
 ```
 저희 회사에서 gloang 이미지에 `google api` 라이브러리와 `go-micro`, `protobuf`를 넣어 사용하기때문에 설치를 해서 이미지를 만들었습니다.
 
-우선 테스트에선 `protobuf`와 `go-micro`를 **v2**와 **v3**, **v4**버전을 다 `go get` 했습니다. 실 사용 golang에선 현재(2022.08) 최신버전인
-**v4**만 사용합니다.
+하지만 현재 `go-micro`의 v4.8.0버전에서는 `protoc-gen-micro`가 없는 관계로 v3버전으로 다운을 받았습니다.
 
 그 다음 정상작동 확인을 위해 `docker run -d -it --name go184 <DIR>/golang:1.18.4` 명령어로 확인합니다.
 
