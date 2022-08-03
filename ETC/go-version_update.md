@@ -32,14 +32,10 @@ libprotoc 3.12.4
 [roor@go184]# mkdir test
 [roor@go184]# cd test
 [roor@go184]# go mod init test
-[root@go184]# go get -d -u google.golang.org/protobuf
 [root@go184]# go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+[root@go183]# go install github.com/micro/micro/v3/cmd/protoc-gen-micro@latest
 [root@go184]# go get -d -u go-micro.dev/v4
-[root@go183]# go get -d -u github.com/micro/micro/v3/cmd/protoc-gen-micro
-[root@go183]# go install github.com/micro/micro/v3/cmd/protoc-gen-micro
-[root@go184]# go get -d -u golang.org/x/lint/golint
 [root@go184]# go install golang.org/x/lint/golint
-[root@go184]# go get -d -u github.com/t-yuki/gocover-cobertura
 [root@go184]# go install github.com/t-yuki/gocover-cobertura
 [root@go184]# exit
 
@@ -52,8 +48,20 @@ libprotoc 3.12.4
 저희 회사에서 gloang 이미지에 `google api` 라이브러리와 `go-micro`, `protobuf`를 넣어 사용하기때문에 설치를 해서 이미지를 만들었습니다.
 
 하지만 현재 `go-micro`의 v4.8.0버전에서는 `protoc-gen-micro`가 없는 관계로 v3버전으로 다운을 받았습니다.
+저야 `protoc-gen-micro`를 회사에서 사용하기 때문에 설치했지만 보통은 `protoc-gen-go-grpc`를 사용하기때문에 유의해주세요.
 
 그 다음 정상작동 확인을 위해 `docker run -d -it --name go184 <DIR>/golang:1.18.4` 명령어로 확인합니다.
+
+<br>
+
+#### Go get
+- `-d` : 설치는 하지 않고 소스 파일만 다운로드합니다.
+
+- `-u` : 패키지 및 해당 종속성을 업데이트합니다.
+
+- `-t` : 패키지에 대한 테스트를 빌드하는 데 필요한 패키지도 다운로드합니다.
+
+- `-v` : 진행 및 디버그 출력
 
 <br>
 <br>
