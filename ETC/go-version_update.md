@@ -40,7 +40,7 @@ libprotoc 3.12.4
 [root@go184]# exit
 
 ### 실행중인 컨테이너를 이미지로 만들기
-[root]# docker commit -a "devops" -m "golang1.18.4" go184 <DIR>/golang:1.18.4
+[root]# docker commit -a "devops" -m "golang1.18.4" go184 <DIR(option)>/golang:1.18.4
 
 ### 레지스트리 푸쉬
 [root]# docker push <DIR>/golang:1.18.4 
@@ -87,7 +87,15 @@ go version이 `1.14`에서 `1.18`로 바뀌면서 그냥 build를 하면 `go.mod
 ### 2-3. build
 
 ```
-[root]# docker build -t <DIR>/<NAME>:<VERSION> .
+[root]# docker build -t <DIR(option)>/<NAME>:<VERSION> .
+```
+
+<br>
+
+### 2-4. push
+
+```
+[root]# docker push <DIR(option)>/<NAME>:<VERSION>
 ```
 
 <br>
