@@ -1,8 +1,12 @@
 # Go version update
 
 회사에서 사용하는 라이브러리들과 기능들을 전체적으로 업데이트 해야하는 업무를 가지게 되었습니다.
-처음엔 가볍게 생각했지만 회사내의 서비스들이 Microservice인데다가 방대하여 고치는데 많은 애를 먹었는데요.
-간단하게 작업 순서와 기타 방법들을 정리했습니다.
+그중에서도 여기서 정리할 내용은 golang version upgrade 인데요.
+
+처음엔 가볍게 생각했지만 회사내의 서비스들이 Microservice인데다가 방대하여 고치는데 많은 애를 먹었지만, 
+간단하게 작업 순서와 기타 방법들을 정리했습니다. 
+
+그래도 Golang은 버전 업데이트나 라이브러리 관리가 엄청 쉬운편이라 좋았습니다.
 
 ## 1. golang 이미지 파일 만들기
 
@@ -101,4 +105,18 @@ go version이 `1.14`에서 `1.18`로 바뀌면서 그냥 build를 하면 `go.mod
 <br>
 <br>
 
-## 3. ymal파일
+### 2-5. Apply
+
+이제 서비스들의 yaml 파일에 생성한 이미지의 name을 적어주고 실행합니다.
+```
+[root]# kubectl apply -f <ymal file name>
+```
+
+<br>
+
+#### 2-6-1. kubectl pod의 logs 오류 `syntax error: unexpected word (expecting "do")`
+- 위의 오류들은 앞에 특정 shell script파일이 windows에서 작업을 하여 linux에서 개행 오류로 인한 것입니다.
+```
+# vi -b yourscriptfile.sh 
+```
+위의 명령어로 `^M` 문자가 있다면 삭제를 해주세요
