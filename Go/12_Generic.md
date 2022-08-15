@@ -1,4 +1,4 @@
-# Generic
+# Go Collections With Generics
 Golang `1.18` version 이후로 새롭게 추가된 기능인 Generic 프로그래밍에 대해 알아보자.
 
 제너릭은 타입 파라미터를 통해서 하나의 함수나 타입이 여러 타입에 대해서 동작하도록 해주는 프로그래밍 기법입니다. 자바나 C++, C#과 같은 다른 언어에서 
@@ -31,8 +31,12 @@ func SumFloats(m map[string]float64) float64 {
 그러면 위의 코드를 `Generic`을 활용하여 알아봅시다.
 
 <br>
+<br>
 
 ---
+
+## Using Generics With Multiple Types
+
 **`Generic`함수는 타입 파라미터를 통해서 여러 타입에 대해서 동작하는 함수를 말합니다.**
 
 ![12_Generic.assets/1.png](12_Generic.assets/1.png)
@@ -54,7 +58,7 @@ func SumIntsOrFloats[K comparable, V int64 | float64](m map[K]V) V {
     return s
 }
 ```
-위 코드에서 다음을 수행합니다.
+위 코드는 다음을 수행합니다.
 
 - `SumIntsOrFloats`의 두개의 유형 매개변수(대괄호 안에 있음) `K`와 `V` 매개변수를 사용하는 하나의 인수가 있는 함수 `mmap[K]V`를 선언합니다. 
 함수는 type `V` 값을 반환합니다.
@@ -71,24 +75,40 @@ Go는 지도 키가 비교 가능해야 합니다. 따라서 맵 변수의 키�
 - `K`및 `V`는 유형 매개변수에 대해 이미 지정된 유형입니다. `map[K]V`는 비교할 수 있는 유형이므로 유효한 지도 유형 임을 알고 있습니다.
 
 <br>
+<br>
 
-main.go 에서 아래에 다음 코드를 붙여넣습니다.
+---
+
+## Declare a type constraint
+수에서 타입 제한은 `any`를 사용했습니다. `any`는 모든 타입이 다 가능하다는 뜻입니다. 아래 간단한 함수를 살펴보겠습니다.
 ```go
-func main() {
-    ints := map[string]int64{
-    "first":  34,
-    "second": 12,
-    }
-    
-    // Initialize a map for the float values
-    floats := map[string]float64{
-    "first":  35.98,
-    "second": 26.99,
-    }
-	
-    fmt.Printf("Generic Sums: %v and %v\n",
-        SumIntsOrFloats(ints),
-        SumIntsOrFloats(floats))
+func add[T any](a, b T) T {
+    return a + b
+}
+```
+add() 함수는 `T`타입 파라미터가 정의되어 있고 `T`타입 제한은 `any`입니다. 따라서 `a`, `b` 두 개의 인자는 모든 타입이 가능합니다. 
+하지만 이 함수는 다음과 같은 빌드 에러가 발생합니다.
+```
+invalid operation: operator + not defined on a (variable of type T constrained by any)
+```
+위의 내용은 `T`타입 제한 `any`에는 `+` 연산자가 정의되어 있지 않다는 뜻입니다. `T`타입 제한이 `any`이기 때문에 모든 타입이 가능합니다. 하지만, 어떤 타입이 올지 모르기 때문에 
+**그 타입이 `+`연산자가 지원되는지 알 수 없어 이 에러가 발생한 겁니다.** 우리는 특정 조건을 정의해서 그 타입이 `+`연산자를 지원하고 있음을 알려줘야 합니다.
+
+```go
+func add[T int8 | int16 | int32 | int64 | int](a, b T) T {
+    return a + b
+}
+```
+이렇듯 타입의 특정 연산이나 기능을 사용하기 위해서는 타입 제한을 통해 그 연산자나 기능이 가능함을 보여줘야 합니다.
+하지만 매번 이렇게 조건을 길게 적어주는 건 귀찮겠죠. 그래서 타입 제한만 따로 정의할 수 있습니다.
+
+```go
+type Integer interface {
+    int8 | int16 | int32 | int64 | int
+}
+
+func add[T Integer](a, b T) T {
+    return a + b
 }
 ```
 
@@ -96,47 +116,70 @@ func main() {
 <br>
 
 ---
-제네릭 함수의 타입 파라미터는 그 함수가 호출되는 입력 인자에 따라 달라집니다.
-Print(1, 2)가 호출될 때 1, 2가 모두 int 타입이므로 T는 int 타입이 됩니다. 이때 Print() 함수는 다음 함수와 같다고 볼 수 있습니다.
-```go
-func Print(a, b int) {
-    fmt.Println(a, b)
-}
-```
 
-Print(“Hello”, “World”)가 호출될 때는 Print(a, b string)으로 동작하는 거죠.
-하지만 Print(1, “Hello”)는 서로 다른 타입의 두 인자 모두 T 타입으로 정의되어 있기 때문에 T 타입을 하나의 타입으로 정의할 수 없어 에러가 발생한 것입니다.
-이렇게 여러 개의 다른 타입에서도 동작하게 만들고 싶을 때는 각 타입 갯수에 맞는 함수 파라미터를 정의해 줘야 합니다.
+## Restricting Generic Types
 
+<br>
+<br>
+
+---
+
+## Generic Refactoring
+지금까지 Generic에 대해 조금 배우고, Generic을 활용해보기 위해서 저희 회사코드중 Generic이 필요한 코드를 가져왔습니다. 밑의 코드는 Gorm Model 타입과
+Protobuf 타입을 서로 변환해주는 코드입니다. 
+
+아래의 코드가 리시버 인자와 내부 Gorm Model 변수가 다른것 외엔 코드가 계속 반복이 되고있는데 Generic을 이용해 하나로 만들어 보겠습니다.  
 ```go
 // ProtoToModel proto file 을 Gorm Model 로 변환하여 반환
-func (x *Node) ProtoToModel() (*model.PolicyNode, error) {
+func (x *Node) ProtoToModel() (*model.Node, error) {
    b, err := json.Marshal(x)
-   if err != nil {
-	   return nil, errors.Unknown(err)
-   }
+   if err != nil { return nil, err }
    
-    var m model.PolicyNode
-    if err := json.Unmarshal(b, &m); err != nil {
-        return nil, errors.Unknown(err)
-    }
+    var m model.Node
+    if err := json.Unmarshal(b, &m); err != nil { return nil, err }
 
     return &m, nil
 }
    
 // ModelToProto Gorm Mode 을 proto file 로 변환하여 반환
-func (x *Node) ModelToProto(m *model.PolicyNode) error {
+func (x *Node) ModelToProto(m *model.Node) error {
    b, err := json.Marshal(m)
-   if err != nil {
-	   return errors.Unknown(err)
-   }
+   if err != nil { return err }
 
    _ = json.Unmarshal(b, x)
    
    return nil
 }
+
+// ProtoToModel proto file 을 Gorm Model 로 변환하여 반환
+func (x *Object) ProtoToModel() (*model.Object, error) {
+    b, err := json.Marshal(x)
+    if err != nil { return nil, err }
+
+    var m model.Object
+    if err := json.Unmarshal(b, &m); err != nil { return nil, err }
+    
+    return &m, nil
+}
+
+// ModelToProto Gorm Mode 을 proto file 로 변환하여 반환
+func (x *Object) ModelToProto(m *model.Object) error {
+    b, err := json.Marshal(m)
+    if err != nil { return err }
+    
+    _ = json.Unmarshal(b, x)
+    
+    return nil
+}
+                                            :
+                                            :
 ```
 
+<br>
+
+---
+위의 코드에서 json을 `Marshal -> Unmarshal` 하는 코드는 다 똑같습니다. 그 외의 다른 부분이 Proto 인자와 Model 변수입니다.
+그 값을 인풋에 넣도록 하겠습니다.
 ```go
 func GeModel[T1 any, T2 any](from *T1, to *T2) error {
     b, err := json.Marshal(from)
@@ -151,3 +194,17 @@ func GeModel[T1 any, T2 any](from *T1, to *T2) error {
     return nil
 }
 ```
+위의 코드와 같이 `T1`과 `T2`를 Generic으로 `any`값을 주고 인풋인자에 넣었습니다. 여기서 둘다 포인트로 준 이유는 아웃풋이 `error`만 있어도
+외부에서 바뀐값을 가져오기 위해서 입니다.
+
+`ModelToProto`와 `ProtoToModel` 두개의 함수를 하나로 만들 뿐만아니라 다른 인풋에 따른 여러개의 함수들도 하나로 만들었습니다.
+이처럼 Generic이 쓰일 수 있는 경우라면 쓰는게 좋겠죠?
+
+<br>
+<br>
+
+### 출처
+- https://go.dev/doc/tutorial/generics
+- https://itnext.io/how-to-use-golang-generics-with-structs-8cabc9353d75
+- https://goldenrabbit.co.kr/2022/01/28/%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-go-%EC%96%B8%EC%96%B4-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-go-%EC%A0%9C%EB%84%A4%EB%A6%AD%EC%9D%98-%EC%9D%B4%ED%95%B4/
+- https://www.digitalocean.com/community/tutorials/how-to-use-generics-in-go
