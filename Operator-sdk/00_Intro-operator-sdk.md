@@ -28,24 +28,87 @@ SDK는 Go, Ansible 또는 Helm에서 연산자를 개발하기 위한 워크플�
 - SDK 및 컨트롤러 런타임 API를 사용하여 컨트롤러에 대한 조정 로직 작성
 - SDK CLI를 사용하여 운영자 배포 매니페스트 빌드 및 생성
 
+
+- Runtime Controller Package
+  - Controller가 관리할 CR의 변경을 감지하고 SDK Controller Package의 Reconcile Loop가 동작하도록 합니다.
+- Runtime Manager Package
+  - Kubernetes Client 및 Cache를 초기화합니다.
+- SDK Controller Package
+  - 실제 Controller 로직을 수행하는 Reconcile Loop와 Runtime Manager Package로 부터 전달받은 Kubernetes Client가 포함되어 있습니다.
+
+<br>
+
+### 동작 흐름
+
+- **#Kubernetes**
+
+![img.png](00_Intro-operator-sdk.assets/1.png)
+
+<br>
+
+- **Operator**
+
+![img.png](00_Intro-operator-sdk.assets/2.png)
+
 <br>
 <br>
 
-## Install
+## WHAT IS CR(Custom Resource)?
+- **Custom Resource**는 Custom Object의 모음이며 API 확장을 위한 기본 리소스로 사용할 객체를 정의하고 추상화한 구조적 데이터와 같습니다.
 
-앞서 말했듯이 이 자료에서는 Go를 이용하여 SDK를 사용할 것이기 때문에 Go로 SDK를 설치하겠습니다. 
-**유의사항으로 `operator-sdk`릴리즈 버전에 따라 golang version 을 맞춰주세요 현재(22.11.03)에선 1.19 버전이 필요합니다.**
-```
-git clone https://github.com/operator-framework/operator-sdk
-cd operator-sdk
-git checkout master
-make install
 
-# 해당 명령어를 입력했을때 version이 출력되면 설치 완료입니다. 
-operator-sdk version
-```
+- **Custom Resource**에서의 객체 정의는 완전히 새로운 객체가 아닌 **이미 존재하는 Deployments, Services와 같은 기본 객체를 목적에 맞게 조합하고 
+추상화해서 새로운 이름으로 명시할 수 있다는 의미**입니다. 
+
+
+- **Custom Resource Definition**은 Costom Resource가 데이터로 어떤 항목이 정의되어야 하는지 등을 저장하는 선언적 메타데이터 객체일 뿐입니다.
+(XML Schema 와 XML의 관게를 생각하면 이해하기 좋음.)
+
+
+- **Custom Resource**는 `kubectl` 을 통해서 사용 가능.
 
 <br>
 <br>
 
-# 
+## Kubernetes 용어
+
+### **Kubernetes Object**
+
+**"Persistent entities in the Kubernetes system"** 로 정의되어 있으며 Kubernetes에 저장된 실체들 이라고 생각하면 됩니다.
+
+이 객체들로 다음과 같은 정보를 나타낼 수 있습니다.
+- 애플리케이션이 배정된 노드들
+- 애플리케이션이 사용할 수 있는 리소스들
+- 애플리케이션 동작에 대한 정책 (어떻게 재 시작할지, 업데이트할지 등)
+
+**Kubernetes 객체들은 생성했을 때 생성된 실체가 존재하는 것이 아니라 `Status`를 의미합니다.** 예를 들어 `kubectl`을 통해 Pod 1개를 생성하는 
+요청을 보내면 Kubernetes는 1개의 Pod가 필요한 Status를 기록합니다. 그리고 Kubernetes는 현재의 Status와 기록된 Status를 비교해서 원하는 
+Status를 맞추도록 동작하게 되는 원리입니다.
+
+<br>
+
+### Object Spec and Status
+
+모든 Kubernetes 객체들은 공통적으로 두 개의 필드를 가지게 됩니다. `create api`를 하게 되면 `/api` 폴더에 `_types.go` 파일이 생성이 됩니다.
+그 안의 코드중 `Spec`과 `Status` 객체 설명입니다.
+- **`Spec`** - 객체가 가질 Status에 대한 명세 정보
+- **`Status`** - 실체 클러스터에서 객체가 가진 상태 정보 (Kubernetes가 계속 검증하고 반영)
+
+<br>
+
+### Kubernetes API
+
+Kubernetes의 객체를 이용해서 CRUD 작업을 하기 위해서는 Kubernetes API를 통해야 합니다. 즉, 사용자가 `kubectl`을 사용해서 객체 생성 명령을 실행하면 
+`kubectl`은 Kubernetes API로 요청을 하고 Kubernetes는 해당 객체를 생성하게 됩니다. 
+
+이 설명은 위에서 설명했던 [동작 흐름](#동작-흐름)
+
+ex) 물론 `kubectl`이 아닌 Kubernetes API 클라이언트 라이브러리를 통해서 작업도 가능
+
+<br>
+<br>
+
+### 참고
+- https://sdk.operatorframework.io/docs/overview/
+- https://frozenpond.tistory.com/111
+- https://ccambo.blogspot.com/2020/12/kubernetes-operator-kubernetes-operator.html
