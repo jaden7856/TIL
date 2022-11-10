@@ -53,19 +53,36 @@ SDK는 Go, Ansible 또는 Helm에서 연산자를 개발하기 위한 워크플�
 <br>
 <br>
 
-## WHAT IS CR(Custom Resource)?
-- **Custom Resource**는 Custom Object의 모음이며 API 확장을 위한 기본 리소스로 사용할 객체를 정의하고 추상화한 구조적 데이터와 같습니다.
+## WHAT IS CR(Custom Resource), CRD(Custom Resource Definition)?
+
+#### **CR(Custom Resource)**
+
+- Custom Object의 모음이며 API 확장을 위한 기본 리소스로 사용할 객체를 정의하고 추상화한 구조적 데이터와 같습니다.
 
 
-- **Custom Resource**에서의 객체 정의는 완전히 새로운 객체가 아닌 **이미 존재하는 Deployments, Services와 같은 기본 객체를 목적에 맞게 조합하고 
-추상화해서 새로운 이름으로 명시할 수 있다는 의미**입니다. 
+- 객체 정의는 완전히 새로운 객체가 아닌 **이미 존재하는 Deployments, Services와 같은 기본 객체를 목적에 맞게 조합하고 
+추상화해서 새로운 이름으로 명시할 수 있다는 의미**입니다.
 
 
-- **Custom Resource Definition**은 Costom Resource가 데이터로 어떤 항목이 정의되어야 하는지 등을 저장하는 선언적 메타데이터 객체일 뿐입니다.
-(XML Schema 와 XML의 관게를 생각하면 이해하기 좋음.)
+- CRD의 Spec을 지키는 객체들의 실제 상태 데이터 조합입니다. (Desired State 관점)
 
 
-- **Custom Resource**는 `kubectl` 을 통해서 사용 가능.
+- CRD의 Spec을 지키는 객체들의 실제 상태 데이터 조합입니다. (Desired State 관점)
+
+<br>
+
+#### **CRD(Custom Resource Definition)** 
+Custom Resource **`Definition`** 이라는 이름에서 알 수 있듯이 커스텀 리소스가 어떤 데이터로 구성되어 있는지를 정의하는 객체일 뿐 CRD 만으로는 
+실제 Custom Resource를 생성하지는 않으며, 단지 커스텀 리소스의 데이터에 어떤 항목이 정의되어야 하는지 등을 저장하는 선언적 메타데이터 객체일 뿐입니다.
+
+- Costom Resource가 데이터로 어떤 항목이 정의되어야 하는지 등을 저장하는 선언적 메타데이터 객체일 뿐입니다.
+    (XML Schema 와 XML의 관게를 생각하면 이해하기 좋음.)
+
+
+- `kubectl` 을 통해서 사용 가능합니다.
+
+
+- Operator로 사용할 상태 관리용 객체들의 Spec을 정의합니다. (Schema 관점)
 
 <br>
 <br>
@@ -101,12 +118,20 @@ Status를 맞추도록 동작하게 되는 원리입니다.
 Kubernetes의 객체를 이용해서 CRUD 작업을 하기 위해서는 Kubernetes API를 통해야 합니다. 즉, 사용자가 `kubectl`을 사용해서 객체 생성 명령을 실행하면 
 `kubectl`은 Kubernetes API로 요청을 하고 Kubernetes는 해당 객체를 생성하게 됩니다. 
 
-이 설명은 위에서 설명했던 [동작 흐름](#동작-흐름)
-
-ex) 물론 `kubectl`이 아닌 Kubernetes API 클라이언트 라이브러리를 통해서 작업도 가능
+이 설명은 위에서 설명했던 [동작 흐름](#동작-흐름) (물론 `kubectl`이 아닌 Kubernetes API 클라이언트 라이브러리를 통해서 작업도 가능)
 
 <br>
 <br>
+
+### Controller
+
+[컨트롤러](https://kubernetes.io/docs/concepts/architecture/controller/) 는 Kubernetes의 핵심 구성 요소이며 operator logic 이 발생하는 곳입니다.
+
+Reconcile 은 시스템의 실제 상태에 원하는 CR 상태를 적용하는 역할을 합니다. 감시된 CR 또는 리소스에서 이벤트가 발생할 때마다 실행되며 해당 상태가 일치하는지 여부에 따라 일부 값을 반환합니다.
+
+이러한 방식으로 모든 컨트롤러에는 reconcile loop 를 구현하는 Reconciler 개체의 `Reconcile()` 메서드가 있습니다.
+
+![img.png](00_Intro-operator-sdk.assets/3.png)
 
 ### 참고
 - https://sdk.operatorframework.io/docs/overview/
