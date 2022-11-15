@@ -2,8 +2,8 @@
 
 > `/var/lib/docker` 디렉토리에 저장이 되며 내용은 Docker가 스토리지에 사용하는 드라이버에 따라 다릅니다.
 
-**커널 지원에 따라 `overlay`, `overlay2`, `btrfs`, `devicemapper` 또는 `zfs`가 될 수 있습니다. 
-대부분은 `aufs`이지만, RedHat은 `device-mapper`를 사용했습니다.**
+사용하는 드라이버는 **커널 지원에 따라 `overlay`, `overlay2`, `btrfs`, `devicemapper` 또는 `zfs`가 될 수 있습니다. 
+
 
 `-s` 또는 `--storage-driver=` 옵션을 사용하여 Docker 데몬에 스토리지 드라이버를 수동으로 설정할 수 있습니다.
 
