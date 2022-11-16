@@ -10,9 +10,11 @@ Kubernetes API와 결합하여 해당 작업을 실행하는 것을 용이하게
 
 Operator SDK는 `controller-runtime` 라이브러리를 사용하여 다음을 제공하여 연산자를 더 쉽게 작성하는 프레임워크입니다.
 
-- 운영 로직을 보다 직관적으로 작성하기 위한 고급 API 및 추상화
-- 새 프로젝트를 빠르게 부트스트랩하기 위한 스캐폴딩 및 코드 생성 도구
-- 일반적인 연산자 사용 사례를 다루는 확장
+- 운영자의 입장에서 관리할 대상에 대한 규정 (Spec)을 정의하고 Kubernetes에 등록한다. (Kubernetes의 CRD로 생성)
+- 관리할 대상이 유지해야 할 상태 정보를 규정에 맞도록 지정하고 Kubernetes에 등록한다. (Kubernetes의 CR 객체로 생성 - 상태 데이터로서 ETCD에 저장관리)
+- 상태 유지를 위한 컨트롤러를 구성해서 Kuberentes에 등록 (Kubernetes의 CC로 생성 - 원하는 상태 유지 작업)
+
+---
 
 <br>
 <br>
@@ -36,6 +38,8 @@ SDK는 Go, Ansible 또는 Helm에서 연산자를 개발하기 위한 워크플�
 - SDK Controller Package
   - 실제 Controller 로직을 수행하는 Reconcile Loop와 Runtime Manager Package로 부터 전달받은 Kubernetes Client가 포함되어 있습니다.
 
+---
+
 <br>
 
 ### 동작 흐름
@@ -49,6 +53,8 @@ SDK는 Go, Ansible 또는 Helm에서 연산자를 개발하기 위한 워크플�
 - **Operator**
 
 ![img.png](00_Intro-operator-sdk.assets/2.png)
+
+---
 
 <br>
 <br>
@@ -84,12 +90,31 @@ Custom Resource **`Definition`** 이라는 이름에서 알 수 있듯이 커스
 
 - Operator로 사용할 상태 관리용 객체들의 Spec을 정의합니다. (Schema 관점)
 
+---
+
+<br>
+<br>
+
+## Controller
+
+[컨트롤러](https://kubernetes.io/docs/concepts/architecture/controller/) 는 Kubernetes의 핵심 구성 요소이며 operator logic 이 발생하는 곳입니다.
+
+Reconcile 은 시스템의 실제 상태에 원하는 CR 상태를 적용하는 역할을 합니다. 감시된 CR 또는 리소스에서 이벤트가 발생할 때마다 실행되며 해당 상태가 일치하는지 여부에 따라 일부 값을 반환합니다.
+
+이러한 방식으로 모든 컨트롤러에는 reconcile loop 를 구현하는 Reconciler 개체의 `Reconcile()` 메서드가 있습니다.
+
+![img.png](00_Intro-operator-sdk.assets/3.png)
+
+**Controller는 객체의 `.spec (Wanted)` 정보를 읽고 객체의 상태 (current state)와 비교해서 처리한 후에 `.status (to ETCD)`를 갱신하는 컨트롤 루프입니다.**
+
+---
+
 <br>
 <br>
 
 ## Kubernetes 용어
 
-### **Kubernetes Object**
+### Kubernetes Object
 
 **"Persistent entities in the Kubernetes system"** 로 정의되어 있으며 Kubernetes에 저장된 실체들 이라고 생각하면 됩니다.
 
@@ -120,18 +145,10 @@ Kubernetes의 객체를 이용해서 CRUD 작업을 하기 위해서는 Kubernet
 
 이 설명은 위에서 설명했던 [동작 흐름](#동작-흐름) (물론 `kubectl`이 아닌 Kubernetes API 클라이언트 라이브러리를 통해서 작업도 가능)
 
+---
+
 <br>
 <br>
-
-### Controller
-
-[컨트롤러](https://kubernetes.io/docs/concepts/architecture/controller/) 는 Kubernetes의 핵심 구성 요소이며 operator logic 이 발생하는 곳입니다.
-
-Reconcile 은 시스템의 실제 상태에 원하는 CR 상태를 적용하는 역할을 합니다. 감시된 CR 또는 리소스에서 이벤트가 발생할 때마다 실행되며 해당 상태가 일치하는지 여부에 따라 일부 값을 반환합니다.
-
-이러한 방식으로 모든 컨트롤러에는 reconcile loop 를 구현하는 Reconciler 개체의 `Reconcile()` 메서드가 있습니다.
-
-![img.png](00_Intro-operator-sdk.assets/3.png)
 
 ### 참고
 - https://sdk.operatorframework.io/docs/overview/
