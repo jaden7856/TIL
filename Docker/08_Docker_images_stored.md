@@ -74,12 +74,17 @@ $ docker inspect golang:1.19.3
         "VirtualSize": 2777932612,
         "GraphDriver": {
             "Data": {
-                "LowerDir": "/var/lib/docker/overlay2/b6d...519/diff:
-                             /var/lib/docker/overlay2/317...766/diff:
-                             /var/lib/docker/overlay2/4da...371/diff",
-                "MergedDir": "/var/lib/docker/overlay2/4da...371/merged",
-                "UpperDir": "/var/lib/docker/overlay2/4da...371/diff",
-                "WorkDir": "/var/lib/docker/overlay2/4da...371/work"
+                "LowerDir": "/var/lib/docker/overlay2/17b...cc8/diff:
+                             /var/lib/docker/overlay2/b6d...0ad/diff:
+                             ...
+                             /var/lib/docker/overlay2/4c2...381/diff:
+                             /var/lib/docker/overlay2/5b6...f2f/diff",
+                "MergedDir": "/var/lib/docker/overlay2/b8c...152/merged",
+                "UpperDir": "/var/lib/docker/overlay2/b8c...152/diff",
+                "WorkDir": "/var/lib/docker/overlay2/b8c...152/work"
+            },
+            "Name": "overlay2",
+  ...
 ```
 **LowerDir** 에는 이미지의 읽기 전용 레이어가 포함되어 있습니다. **UpperDir** 에는 변경 사항을 나타내는 읽기-쓰기 계층입니다.
 
