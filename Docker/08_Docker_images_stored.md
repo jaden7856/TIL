@@ -109,7 +109,7 @@ drwxrwxrwt. 2 root root  6 Oct 28 02:15 tmp
 를 조회하면 컨테이너 내부 파일들을 다 볼 수 있습니다.
 
 ```
-$ ll overlay2/e20...1cd/merged/
+$ ll /var/lib/docker/overlay2/e20...1cd/merged/
 
 total 0
 drwxr-xr-x. 1 root root 28 Oct 25 05:23 bin
