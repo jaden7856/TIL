@@ -102,4 +102,35 @@ drwxrwxrwt. 2 root root  6 Oct 28 02:15 tmp
 
 ```
 
+**MergedDir**는 Docker가 컨테이너를 실행하는 데 사용하는 **UpperDir** 및 **LowerDir**의 결과를 나타냅니다.
+**WorkDir**는 `overlay2`의 내부 디렉토리이므로 비어 있어야 합니다.
+
+**MergedDir**는 image 가 아닌 컨테이너 `run`을 한 digest 를 조회하면 그 컨테이너 내부 파일들을 다 볼 수 있습니다.
+
+```
+$ ll overlay2/e20...1cd/merged/
+
+total 0
+drwxr-xr-x. 1 root root 28 Oct 25 05:23 bin
+drwxr-xr-x. 2 root root  6 Sep  3 08:10 boot
+drwxr-xr-x. 1 root root 43 Nov 18 01:36 dev
+drwxr-xr-x. 1 root root 66 Nov 18 01:36 etc
+drwxrwxrwx. 1 root root 28 Nov  3 00:52 go
+drwxr-xr-x. 2 root root  6 Sep  3 08:10 home
+drwxr-xr-x. 1 root root 30 Oct 25 20:48 lib
+drwxr-xr-x. 2 root root 34 Oct 23 20:00 lib64
+drwxr-xr-x. 2 root root  6 Oct 23 20:00 media
+drwxr-xr-x. 2 root root  6 Oct 23 20:00 mnt
+drwxr-xr-x. 2 root root  6 Oct 23 20:00 opt
+drwxr-xr-x. 2 root root  6 Sep  3 08:10 proc
+drwx------. 1 root root 18 Nov 18 01:36 root
+drwxr-xr-x. 3 root root 30 Oct 23 20:00 run
+drwxr-xr-x. 1 root root 20 Oct 25 05:23 sbin
+drwxr-xr-x. 2 root root  6 Oct 23 20:00 srv
+drwxr-xr-x. 2 root root  6 Sep  3 08:10 sys
+drwxrwxrwt. 1 root root  6 Oct 28 02:15 tmp
+drwxr-xr-x. 1 root root 53 Oct 23 20:00 usr
+drwxr-xr-x. 1 root root 41 Oct 23 20:00 var
+```
+
 ---
