@@ -105,7 +105,8 @@ drwxrwxrwt. 2 root root  6 Oct 28 02:15 tmp
 **MergedDir**는 Docker가 컨테이너를 실행하는 데 사용하는 **UpperDir** 및 **LowerDir**의 결과를 나타냅니다.
 **WorkDir**는 `overlay2`의 내부 디렉토리이므로 비어 있어야 합니다.
 
-**MergedDir**는 image 가 아닌 컨테이너 `run`을 한 digest 를 조회하면 그 컨테이너 내부 파일들을 다 볼 수 있습니다.
+**MergedDir**는 `docker inspect <IMAGE_ID>` 가 아닌 컨테이너 `run`을 한 `docker inspect <CONTAINER_ID>` 를 조회하면 나타나는 **MergedDir**
+를 조회하면 컨테이너 내부 파일들을 다 볼 수 있습니다.
 
 ```
 $ ll overlay2/e20...1cd/merged/
