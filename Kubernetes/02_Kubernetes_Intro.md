@@ -6,14 +6,53 @@
 
 **쿠버네트스의 가장 큰 특징은 다양한 부품을 조합해 유연한 애플리케이션을 구축할 수 있다는 점이다.**
 
+<br>
+<br>
 
+## Kubernetes 용어
+
+### Kubernetes Object
+
+**"Persistent entities in the Kubernetes system"** 로 정의되어 있으며 Kubernetes에 저장된 실체들 이라고 생각하면 됩니다.
+
+이 객체들로 다음과 같은 정보를 나타낼 수 있습니다.
+- 애플리케이션이 배정된 노드들
+- 애플리케이션이 사용할 수 있는 리소스들
+- 애플리케이션 동작에 대한 정책 (어떻게 재 시작할지, 업데이트할지 등)
+
+**Kubernetes 객체들은 생성했을 때 생성된 실체가 존재하는 것이 아니라 `Status`를 의미합니다.** 예를 들어 `kubectl`을 통해 Pod 1개를 생성하는
+요청을 보내면 Kubernetes는 1개의 Pod가 필요한 Status를 기록합니다. 그리고 Kubernetes는 현재의 Status와 기록된 Status를 비교해서 원하는
+Status를 맞추도록 동작하게 되는 원리입니다.
+
+<br>
+
+### Object Spec and Status
+
+모든 Kubernetes 객체들은 공통적으로 두 개의 필드를 가지게 됩니다. `create api`를 하게 되면 `/api` 폴더에 `_types.go` 파일이 생성이 됩니다.
+그 안의 코드중 `Spec`과 `Status` 객체 설명입니다.
+- **`Spec`** - 객체가 가질 Status에 대한 명세 정보
+- **`Status`** - 실체 클러스터에서 객체가 가진 상태 정보 (Kubernetes가 계속 검증하고 반영)
+
+<br>
+
+### Kubernetes API
+
+Kubernetes의 객체를 이용해서 CRUD 작업을 하기 위해서는 Kubernetes API를 통해야 합니다. 즉, 사용자가 `kubectl`을 사용해서 객체 생성 명령을 실행하면
+`kubectl`은 Kubernetes API로 요청을 하고 Kubernetes는 해당 객체를 생성하게 됩니다.
+
+이 설명은 위에서 설명했던 [동작 흐름](#동작-흐름) (물론 `kubectl`이 아닌 Kubernetes API 클라이언트 라이브러리를 통해서 작업도 가능)
+
+---
+
+<br>
+<br>
 
 # Kubernetes 명령어
 
 터미널 창에서 `kubectl` 명령을 실행하려면 다음의 구문을 사용한다.
 
 ```
-kubectl [command] [TYPE] [NAME] [flags]
+$ kubectl [command] [TYPE] [NAME] [flags]
 ```
 
 다음은 `command`, `TYPE`, `NAME` 과 `flags` 에 대한 설명이다.
@@ -30,48 +69,39 @@ kubectl [command] [TYPE] [NAME] [flags]
   kubectl get po pod1
   ```
 
-  
-
 - `NAME`: 리소스 이름을 지정한다. 이름은 대소문자를 구분한다. 이름을 생략하면, 모든 리소스에 대한 세부 사항이 표시된다. 예: `kubectl get pods`
+ 
+여러 리소스에 대한 작업을 수행할 때, 타입 및 이름별로 각 리소스를 지정하거나 하나 이상의 파일을 지정할 수 있다.
 
-  여러 리소스에 대한 작업을 수행할 때, 타입 및 이름별로 각 리소스를 지정하거나 하나 이상의 파일을 지정할 수 있다.
+<br>
 
-  - 타입 및 이름으로 리소스를 지정하려면 다음을 참고한다.
+타입 및 이름으로 리소스를 지정하려면 다음을 참고한다.
 
-    - 리소스가 모두 동일한 타입인 경우 리소스를 그룹화하려면 다음을 사용한다. 
+- 리소스가 모두 동일한 타입인 경우 리소스를 그룹화하려면 다음을 사용한다. 
+  - `TYPE1 name1 name2 name<#>`
+  - 예) `kubectl get pod example-pod1 example-pod2`
 
-      - ```
-        TYPE1 name1 name2 name<#>
-        ```
 
-      - 예: `kubectl get pod example-pod1 example-pod2`
+- 여러 리소스 타입을 개별적으로 지정하려면 다음을 사용한다.
+  - `TYPE1/name1 TYPE1/name2 TYPE2/name3 TYPE<#>/name<#>`
+  - 예) `kubectl get pod/example-pod1 replicationcontroller/example-rc1`
 
-    - 여러 리소스 타입을 개별적으로 지정하려면 다음을 사용한다.
+<br>
 
-      -  ```
-        TYPE1/name1 TYPE1/name2 TYPE2/name3 TYPE<#>/name<#>
-        ```
+하나 이상의 파일로 리소스를 지정하려면 다음을 사용한다. 
+```shell
+-f file1 -f file2 -f file<#>
+```
+- YAML이 특히 구성 파일에 대해 더 사용자 친화적이므로, [JSON 대신 YAML을 사용한다](https://kubernetes.io/ko/docs/concepts/configuration/overview/#일반적인-구성-팁).
+  예: `kubectl get -f ./pod.yaml`
 
-      - 예: `kubectl get pod/example-pod1 replicationcontroller/example-rc1`
-      
-      
-
-  - 하나 이상의 파일로 리소스를 지정하려면 다음을 사용한다. 
-
-    - ```
-      -f file1 -f file2 -f file<#>
-      ```
-
-    - YAML이 특히 구성 파일에 대해 더 사용자 친화적이므로, [JSON 대신 YAML을 사용한다](https://kubernetes.io/ko/docs/concepts/configuration/overview/#일반적인-구성-팁).
-      예: `kubectl get -f ./pod.yaml`
-    
-    
 
 - `flags`: 선택적 플래그를 지정한다. 예를 들어, `-s` 또는 `--server` 플래그를 사용하여 쿠버네티스 API 서버의 주소와 포트를 지정할 수 있다.
 
 > **주의:** 커맨드 라인에서 지정하는 플래그는 기본값과 해당 환경 변수를 무시한다.
 
-
+<br>
+<br>
 
 ### Basic Commands(Intermediate)
 
@@ -82,7 +112,7 @@ kubectl [command] [TYPE] [NAME] [flags]
 
 - `# kubectl delete [COMMAND] [NAME]` -- 삭제
 
-
+<br>
 
 ### Basic Commands (Beginner)
 
@@ -95,7 +125,7 @@ kubectl [command] [TYPE] [NAME] [flags]
 
 - `# systemctl start kubelet` -- kubelet 재시작
 
-
+<br>
 
 ### Troubleshooting and Debugging Commands
 
@@ -106,7 +136,7 @@ kubectl [command] [TYPE] [NAME] [flags]
 
 - `# kubectl port-forward [type] [name] [port:port]` -- 파드 이름과 같이 리소스 이름을 사용하여 일치하는 파드를 선택해 포트 포워딩하는 것을 허용
 
-
+<br>
 
 ### Advanced Commands
 
@@ -120,7 +150,7 @@ kubectl [command] [TYPE] [NAME] [flags]
   - `kubectl rollout undo <TYPE> <NAME> --to-revision=<revision>` -- 특정 `revision`으로 수정을 합니다.
 - `# kubectl annotate deployment/echo kubernetes.io/change-cause="<바꿀 이름>"` -- `history`의 이름을 자신이 알아보기 쉽게 원하는 이름으로 변경
 
-
+<br>
 
 ### Other Commands
 
@@ -138,7 +168,8 @@ kubectl api-resources --verbs=list,get       # "list"와 "get"의 요청 동사�
 kubectl api-resources --api-group=extensions # "extensions" API 그룹의 모든 리소스
 ```
 
-
+<br>
+<br>
 
 ## Kubernetes 주요 개념
 
@@ -155,7 +186,8 @@ kubectl api-resources --api-group=extensions # "extensions" API 그룹의 모든
 | Persistent Volume       | 파드가 사용할 스토리지의 크기 및 종류를 정의                 |
 | Persistent Volume Claim | 퍼시스턴트 볼륨을 동적으로 확보                              |
 
-
+<br>
+<br>
 
 # 리소스[RESOURCE] 종류
 
