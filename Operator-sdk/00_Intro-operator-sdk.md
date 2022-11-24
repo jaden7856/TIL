@@ -1,11 +1,14 @@
 # WHAT IS OPERATOR SDK?
 > Operator SDK 는 Operator 를 build, test 및 packaging 하기 위한 오픈 소스 도구 모음입니다.
 
-<br>
+Kubernetes Operator는 사용자 지정 Kubernetes 리소스를 모니터링하고 변경 시 일부 작업을 수행하는 응용 프로그램입니다.
 
-## WHAT CAN I DO WITH OPERATOR SDK?
+![img.png](00_Intro-operator-sdk.assets/0.png)
 
-Operator SDK는 심층적인 응용 프로그램별 운영 지식이 필요할 수 있는 **Kubernetes 네이티브 응용 프로그램을 구축하는 과정을 단순화**합니다.
+Operator 는 단순히 응용 프로그램이기 때문에 기술적으로 원하는 프로그래밍 언어로 작성할 수 있으며 원하는 위치에 배포할 수 있습니다. 
+그러나 실용적인 프로그래머가 되려면 좋은 Kubernetes 클라이언트가 있는 언어와 Kubernetes 클러스터에서 간단하게 도킹하고 실행할 수 있는 언어를 선택해야 합니다.
+
+Operator SDK는 응용 프로그램별 많은 운영 지식이 필요할 수 있는 **Kubernetes 네이티브 응용 프로그램을 구축하는 과정을 단순화**합니다.
 Operator SDK는 이러한 장벽을 낮출 뿐만 아니라 계량 또는 모니터링과 같은 많은 일반적인 **관리 기능에 필요한 상용 코드의 양을 줄이는 데도 도움**이 됩니다.
 
 Operator SDK는 `controller-runtime` 라이브러리를 사용하여 다음을 제공하여 연산자를 더 쉽게 작성하는 프레임워크입니다.
@@ -15,8 +18,8 @@ Operator SDK는 `controller-runtime` 라이브러리를 사용하여 다음을 �
 - OLM(Operator Lifecycle Manager)과의 통합을 통해 클러스터에서 Operator 패키징, 설치 및 실행을 간소화
 - Prometeus Operator가 배포된 클러스터에서 사용할 수 있도록 생성된 Go-based Operator 에서 자동으로 설정되는 metrics
 
-Kubernetes 기반 클러스터(예: OpenShift Container Platform)에 대한 클러스터 관리자 권한을 가진 운영자 작성자는 **Operator SDK CLI를 사용하여 
-Go, Ansible 또는 Helm 기반의 자체 운영자를 개발할 수 있습니다.**
+Kubernetes 기반 클러스터(예: OpenShift Container Platform)에 대한 클러스터 관리자 권한을 가진 Operator 작성자는 **Operator SDK CLI를 사용하여
+Go, Ansible 또는 Helm 기반의 자체 Operator를 개발할 수 있습니다.**
 
 ---
 
@@ -25,27 +28,21 @@ Go, Ansible 또는 Helm 기반의 자체 운영자를 개발할 수 있습니다
 
 ## Workflow
 
-SDK는 Go, Ansible 또는 Helm에서 연산자를 개발하기 위한 워크플로를 제공합니다.
-
 - SDK 명령줄 인터페이스(CLI)를 사용하여 새 운영자 프로젝트 생성
 - CRD(Custom Resource Definitions)를 추가하여 새 리소스 API 정의
 - Operator SDK API를 사용하여 감시할 리소스를 지정
 - SDK 및 컨트롤러 런타임 API를 사용하여 컨트롤러에 대한 조정 로직 작성
 - Operator SDK CLI를 사용하여 Operator deployment manifests 를 generate 하고 build
 
----
-
 <br>
 
-- **#Kubernetes**
+- **Kubernetes**
 
 ![img.png](00_Intro-operator-sdk.assets/1.png)
 
 <br>
 
 - **Operator**
-
-Kubernetes Operator는 사용자 지정 Kubernetes 리소스를 모니터링하고 변경 시 일부 작업을 수행하는 응용 프로그램입니다.
 
 ![img.png](00_Intro-operator-sdk.assets/2.png)
 
@@ -88,11 +85,11 @@ Custom Resource **`Definition`** 이라는 이름에서 알 수 있듯이 커스
 
 ### Controller
 
-[컨트롤러](https://kubernetes.io/docs/concepts/architecture/controller/) 는 Kubernetes의 핵심 구성 요소이며 operator logic 이 발생하는 곳입니다. 
-워크로드에 맞게 사용자 지정되며, CR의 값으로 표시되는 원하는 상태와 일치하도록 워크로드의 현재 상태를 구성합니다.
+[컨트롤러](https://kubernetes.io/docs/concepts/architecture/controller/) 는 Kubernetes의 핵심 구성 요소이며 Operator의 두뇌입니다. 
+워크로드에 맞게 사용자 맞춤이되며, CR의 값으로 표시되는 원하는 상태와 일치하도록 워크로드의 현재 상태를 구성합니다.
 
 모든 컨트롤러에는 reconcile loop 를 구현하는 Reconciler 개체의 `Reconcile()` 메서드가 있습니다.
-Reconcile 은 시스템의 실제 상태에 원하는 CR 상태를 적용하는 역할을 합니다. 감시된 CR 또는 리소스에서 이벤트가 발생할 때마다 실행되며 해당 상태가 일치하는지 여부에 따라 일부 값을 반환합니다.
+`Reconcile` 은 시스템의 실제 상태에 원하는 CR 상태를 적용하는 역할을 합니다. 감시된 CR 또는 리소스에서 이벤트가 발생할 때마다 실행되며 해당 상태가 일치하는지 여부에 따라 일부 값을 반환합니다.
 
 ![img.png](00_Intro-operator-sdk.assets/3.png)
 
@@ -110,13 +107,50 @@ Reconcile 은 시스템의 실제 상태에 원하는 CR 상태를 적용하는 
 
 마찬가지로, **위에서 설명했던 Operator 의 컨트롤러**는 특정 CR 유형을 감시하고 애플리케이션별 작업을 수행하여 워크로드의 현재 상태를 CR에 표시된 대로 원하는 상태와 일치시킵니다.
 
-밑의 다이어그램은 `control plane`이 어떻게 루프에서 컨트롤러를 실행하는지 보여줍니다.
+<br>
+
+### The reconciliation loop in the control plane
+
+일반적인 Kubernetes 클러스터에서 컨트롤러 관리자는 **control loop** 의 **reconciliation loop** 에서 컨트롤러를 실행합니다. 각 컨트롤러는 
+클러스터 동작의 특정 부분을 관리합니다. 컨트롤러 관리자는 `Reconcile()` 메서드를 호출하여 각 컨트롤러를 실행할 수 있는 **control loop** 를 실행합니다.
 
 ![img.png](00_Intro-operator-sdk.assets/4.png)
 
-`control plane`의 컨트롤러는 stateless workload 에 최적화되어 있으며, 하나의 컨트롤러 집합은 모든  stateless workload 에 대해 작동합니다.
-그 이유는 모두 매우 유사하기 때문입니다. Operator 의 컨트롤러는 특정 stateful workload 에 대해 커스터마이즈 합니다.
-**각 stateful workload 에는 이 워크로드를 관리하는 방법을 아는 자체 컨트롤러가 있는 운영자가 있습니다.**
+<br>
+
+### The reconciliation loop in the worker nodes
+
+Kubernetes 컨트롤러가 `control plane`에서 실행되는 반면, **Operator의 컨트롤러는 Worker 노드에서 실행됩니다.** 이는 Operator가 Kubernetes 클러스터에 
+워크로드로 배포되기 때문입니다. 다른 워크로드와 마찬가지로 클러스터는 Worker 노드에서 Operator의 워크로드를 호스팅합니다.
+
+각 Operator는 **컨트롤러 관리자의 컨트롤러 목록에 custom 컨트롤러를 추가하여** reconciliation loop**를 확장합니다**
+
+![img.png](00_Intro-operator-sdk.assets/5.png)
+
+컨트롤러 관리자는 조정 루프를 실행할 때 다음 두 가지 작업을 수행합니다.
+
+- control plane의 각 컨트롤러에 `reconcile`을 지시합니다.
+- 각 Operator의 custom 컨트롤러에 `reconcile`을 지시합니다.
+
+<br>
+
+### Reconcile states
+
+Kubernetes의 컨트롤러와 Operator의 custom 컨트롤러가 조화를 이루는 방식은 밑의 그림과 유사합니다.
+
+![img.png](00_Intro-operator-sdk.assets/6.png)
+
+Operator 컨트롤러는 Kubernetes 컨트롤러보다 한 수준 높은 추상화를 수행합니다. Kubernetes 컨트롤러는 `Deployment` 및 `Job`과 같은
+built-in `Kind`를 `Pod` 등의 lower-level로 reconcile 합니다.
+
+Custom 컨트롤러는 `Memcached`와 `Ecd` 같은 CRD를 `Deployment`와 `Service`같은 `Kind`워크로드로 reconcile 합니다.
+따라서 custom 컨트롤러의 현재 상태는 Kubernetes 컨트롤러가 원하는 상태가 됩니다.
+
+위의 두 `Kind`의 컨트롤러 모두 원하는 상태와 현재 상태를 reconcile 하지만 Operator의 custom resource에 대한 워크로드를 배포하려면 두 번의 변환이 필요합니다.
+
+- Operator의 컨트롤러는 custom resource를 Opreator의 현재 상태이자 **control plane**의 원하는 상태인 관리형 리소스 집합(워크로드)으로 변환합니다.
+- Kubernetes 컨트롤러는 관리되는 리소스를 **control plane**의 현재 상태에서 실행 중인 Pod(aka 피연사자)로 변환합니다.
+
 
 ---
 
