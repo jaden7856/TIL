@@ -6,11 +6,11 @@ Operator 를 사용하려면 먼저 클러스터의 workload 로 Operator 를 �
 <br>
 
 ## Operator technologies
-Operator 는 일반적으로 Go, Ansible 또는 Helm의 세 가지 주요 기술 중 하나로 구현됩니다.
+Operator SDK 는 일반적으로 Go, Ansible 또는 Helm의 세 가지 주요 기술 중 하나로 구현됩니다.
 
 - Go: Go로 작성된 코드는 강력하며 쿠베르네테스가 할 수 있는 거의 모든 것을 할 수 있습니다. 쿠버네티스 자체가 Go 에서 구현되기 때문에 Go 에서 구현된 Operator 가 잘 맞습니다.
 
-- Ansible: Ansible 은 이미 Ansible 모듈을 작성한 인프라 팀에게 좋은 선택입니다. Ansible 은 선언적이고 인간이 읽을 수 있으며 바둑만큼 많은 기능을 표현할 수 있습니다.
+- Ansible: Ansible 은 이미 Ansible 모듈을 작성한 인프라 팀에게 좋은 선택입니다. Ansible 은 선언적이고 인간이 읽을 수 있으며 Go 만큼 많은 기능을 표현할 수 있습니다.
 
 - Helm: Helm 은 구현이 간단하지만, 기능은 Helm 기능으로 제한됩니다.
 
@@ -50,6 +50,8 @@ SDK에는 Operator를 개발하는 데 사용할 수 있는 미리 빌드된 `Ma
 - **`make deploy`** -- Operator의 모든 리소스를 클러스터에 배포합니다.
 - **`make undeploy`** -- 클러스터에서 Operator의 배포된 리소스를 모두 삭제합니다.
 
+---
+
 <br>
 <br>
 
@@ -59,18 +61,21 @@ SDK에는 Operator를 개발하는 데 사용할 수 있는 미리 빌드된 `Ma
 mkdir -p $HOME/projects/test-operator
 cd $HOME/projects/test-operator
 
+# 빌드 중에 $GOPATH 대신 모듈에 있는 패키지를 사용합니다.
 export GO111MODULE=on
 
 # domain 을 `example.com` 으로 설정을 하면 API groups 가 `<group>.example.com`로 된다.
 operator-sdk init --domain <example.com> --repo github.com/<example>/test-operator
 ```
 
-`--domain`은 생성될 API group 의 접두사로 사용됩니다. API group 은 Kubernetes API의 일부를 그룹화하는 메커니즘입니다.
-중요한 것은 RBAC를 사용하여 리소스 유형에 대한 액세스를 제어할 수 있는 방법을 결정하기 때문에 이해하기 쉽게 의미 있는 group 으로 
-리소스 유형을 그룹화하도록 도메인 이름을 지정해야 합니다. 자세한 정보는 [Kubernetes 문서](https://kubernetes.io/docs/reference/using-api/#api-groups) 
+`--domain`은 생성될 API group 의 접두사로 사용됩니다. API group 은 **Kubernetes API의 일부를 그룹화하는 메커니즘**입니다.
+중요한 것은 RBAC를 사용하여 리소스 유형에 대한 액세스를 제어할 수 있는 방법을 결정하기 때문에 **이해하기 쉽게 의미 있는 group 으로 
+리소스 유형을 그룹화하도록 도메인 이름을 지정**해야 합니다. 자세한 정보는 [Kubernetes 문서](https://kubernetes.io/docs/reference/using-api/#api-groups) 
 및 [Kubebuilder 문서](https://book.kubebuilder.io/cronjob-tutorial/gvks.html)를 확인하세요.
 
 **Note** 로컬 환경이 Apple Silicon(`darwin/arm64`)인 경우 `go/v4-alpha` init 명령어에 플래그 `--plugins=go/v4-alpha`를 추가하여 사용하세요.
+
+---
 
 <br>
 
@@ -87,6 +92,8 @@ mgr, err := ctrl.NewManager(cfg, manager.Options{Namespace: namespace})
 mgr, err := ctrl.NewManager(cfg, manager.Options{Namespace: ""})
 ```
 
+---
+
 <br>
 <br>
 
@@ -95,6 +102,8 @@ mgr, err := ctrl.NewManager(cfg, manager.Options{Namespace: ""})
 ```shell
 operator-sdk create api --group <example> --version v1alpha1 --kind Test --resource --controller
 ```
+
+---
 
 <br>
 
