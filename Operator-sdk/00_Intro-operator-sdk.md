@@ -123,7 +123,7 @@ Custom Resource **`Definition`** 이라는 이름에서 알 수 있듯이 커스
 Kubernetes 컨트롤러가 `control plane`에서 실행되는 반면, **Operator의 컨트롤러는 Worker 노드에서 실행됩니다.** 이는 Operator가 Kubernetes 클러스터에 
 워크로드로 배포되기 때문입니다. 다른 워크로드와 마찬가지로 클러스터는 Worker 노드에서 Operator의 워크로드를 호스팅합니다.
 
-각 Operator는 **컨트롤러 관리자의 컨트롤러 목록에 custom 컨트롤러를 추가하여** reconciliation loop**를 확장합니다**
+각 Operator는 **컨트롤러 관리자의 컨트롤러 목록에 custom 컨트롤러를 추가하여 reconciliation loop를 확장합니다**
 
 ![img.png](00_Intro-operator-sdk.assets/5.png)
 
