@@ -177,8 +177,11 @@ spec:
 ## 만약 이미지가 private registry에 있다면?
 
 이미지가 개인 레지스트리에 있는 경우에도 이미지 스트림을 사용할 수 있습니다.
+private registry에서 외부 private registry와 docker Hub private registry 2가지 경우가 있습니다.
 
-먼저 레지스트리가 암호로 보호된 경우 OpenShift가 이미지를 가져올 수 있도록 외부 레지스트리에 대한 자격 증명으로 암호를 만드십시오.
+### 첫번째, Docker Hub private registry 경우입니다.
+
+레지스트리가 암호로 보호된 경우 OpenShift가 이미지를 가져올 수 있도록 외부 레지스트리에 대한 자격 증명으로 암호를 만드십시오.
 
 프라이빗 레지스트리에 연결합니다.
 
@@ -195,6 +198,31 @@ $ oc create secret docker-registry my-mars-secret \
 $ oc secrets link builder my-mars-secret
 $ oc secrets link default my-mars-secret --for=pull
 ```
+
+<br>
+
+### 두번째, 외부 private registry 입니다.
+
+이미지 레지스트리에서 이미지를 가져올 때 빌드에서 신뢰할 추가 CA(인증 기관)를 설정하려면 이 부분을 보시면 됩니다.
+
+이 절차를 수행하려면 클러스터 관리자가 ConfigMap을 생성하고 ConfigMap에 추가 CA를 키로 추가해야 합니다.
+
+자체 서명 인증서를 사용하는 레지스트리의 경우 신뢰할 수 있는 인증서가 있는 openshift-config 네임스페이스에 ConfigMap을 생성합니다. 
+각 CA 파일에 대해 ConfigMap의 키가 hostname[..port] 형식의 레지스트리 호스트 이름인지 확인하십시오.
+
+```
+$ oc create configmap registry-cas -n openshift-config \
+--from-file=myregistry.corp.com..8080=/root/ca.crt \
+--from-file=otherregistry.com=/<파일 저장위치>/ca.crt
+```
+
+클러스터 이미지 구성을 업데이트합니다.
+
+```
+$ oc patch image.config.openshift.io/cluster --patch '{"spec":{"additionalTrustedCA":{"name":"registry-cas"}}}' --type=merge
+```
+
+<br>
 
 이제 `oc import-image` 명령을 사용하여 이미지를 가져올 수 있습니다.
 
